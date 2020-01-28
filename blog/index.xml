@@ -12,12 +12,14 @@
     
     
     <item>
-      <title>A New Year a New Posibility</title>
-      <link>https://2cloudlab.com/blog/a-new-year-a-new-posibility/</link>
-      <pubDate>Sun, 15 Jul 2018 12:29:40 +0600</pubDate>
+      <title>如何在企业中高效使用terraform</title>
+      <link>https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/</link>
+      <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
       
-      <guid>https://2cloudlab.com/blog/a-new-year-a-new-posibility/</guid>
-      <description>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas sit expedita, iusto repellendus cumque, officia architecto consequatur illo fuga eum sed ut autem eos voluptas. Nemo, a, rem! Atque quisquam aperiam eaque tenetur autem, soluta itaque omnis. Minus nesciunt, sint, animi illum quo ab voluptate esse delectus unde maiores iure, quasi a suscipit ipsam aliquid voluptatem. Perspiciatis eveniet, pariatur illum aut cum dolor neque consequatur error aliquid facilis in quasi temporibus assumenda tempore, doloremque autem saepe enim nihil.</description>
+      <guid>https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/</guid>
+      <description>terraform是一个用go语言编写的跨平台、开源、只有单个运行文件的命令行程序。terraform通过解析和执行terraform configuration文件集合，最终会在短时间内生成分布式软件所运行的环境，避免了手动配置环境，减少出错的可能性。在企业里，要想高效地使用terraform来正确且快速地生成分布式软件所运行的环境，不仅需要掌握terraform知识，还需要结合工程方面的实践经验（比如版本控制，模块划分，测试）以及其它工具（比如Packer、Docker、Kubernetes）来共同实现。
+ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas alias ut totam labore, rerum soluta harum vitae pariatur, optio, ad dolore, nihil eligendi nesciunt repellat esse provident sapiente. Repellendus, minus!
+ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis expedita repellendus laboriosam aliquid. Neque doloribus ea, id reprehenderit alias saepe debitis eligendi molestias odit, nesciunt rem. Dolorem saepe, provident dolore nesciunt laudantium nostrum enim natus veritatis harum maxime et iure ratione, nulla.</description>
     </item>
     
     <item>

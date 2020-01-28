@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cloudcomputing on 2cloudlab | 企业数字化转型的催化剂</title>
+    <link>https://2cloudlab.com/tags/cloudcomputing/</link>
+    <description>Recent content in cloudcomputing on 2cloudlab | 企业数字化转型的催化剂</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 15 Jul 2019 12:29:40 +0600</lastBuildDate>
+    
+	<atom:link href="https://2cloudlab.com/tags/cloudcomputing/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>如何在企业中高效使用terraform</title>
+      <link>https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/</link>
+      <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/</guid>
+      <description>terraform是一个用go语言编写的跨平台、开源、只有单个运行文件的命令行程序。terraform通过解析和执行terraform configuration文件集合，最终会在短时间内生成分布式软件所运行的环境，避免了手动配置环境，减少出错的可能性。在企业里，要想高效地使用terraform来正确且快速地生成分布式软件所运行的环境，不仅需要掌握terraform知识，还需要结合工程方面的实践经验（比如版本控制，模块划分，测试）以及其它工具（比如Packer、Docker、Kubernetes）来共同实现。
+ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas alias ut totam labore, rerum soluta harum vitae pariatur, optio, ad dolore, nihil eligendi nesciunt repellat esse provident sapiente. Repellendus, minus!
+ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis expedita repellendus laboriosam aliquid. Neque doloribus ea, id reprehenderit alias saepe debitis eligendi molestias odit, nesciunt rem. Dolorem saepe, provident dolore nesciunt laudantium nostrum enim natus veritatis harum maxime et iure ratione, nulla.</description>
+    </item>
+    
+  </channel>
+</rss>

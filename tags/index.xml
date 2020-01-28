@@ -6,26 +6,44 @@
     <description>Recent content in Tags on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Jul 2018 12:29:40 +0600</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jul 2019 12:29:40 +0600</lastBuildDate>
     
 	<atom:link href="https://2cloudlab.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>inspiration</title>
-      <link>https://2cloudlab.com/tags/inspiration/</link>
-      <pubDate>Sun, 15 Jul 2018 12:29:40 +0600</pubDate>
+      <title>cicd</title>
+      <link>https://2cloudlab.com/tags/cicd/</link>
+      <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
       
-      <guid>https://2cloudlab.com/tags/inspiration/</guid>
+      <guid>https://2cloudlab.com/tags/cicd/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>motivation</title>
-      <link>https://2cloudlab.com/tags/motivation/</link>
-      <pubDate>Sun, 15 Jul 2018 12:29:40 +0600</pubDate>
+      <title>cloudcomputing</title>
+      <link>https://2cloudlab.com/tags/cloudcomputing/</link>
+      <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
       
-      <guid>https://2cloudlab.com/tags/motivation/</guid>
+      <guid>https://2cloudlab.com/tags/cloudcomputing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>devops</title>
+      <link>https://2cloudlab.com/tags/devops/</link>
+      <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>terraform</title>
+      <link>https://2cloudlab.com/tags/terraform/</link>
+      <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/terraform/</guid>
       <description></description>
     </item>
     
