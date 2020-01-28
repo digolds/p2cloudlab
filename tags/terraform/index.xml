@@ -18,8 +18,8 @@
       
       <guid>https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/</guid>
       <description>terraform是一个用go语言编写的跨平台、开源、只有单个运行文件的命令行程序。terraform通过解析和执行terraform configuration文件集合，最终会在短时间内生成分布式软件所运行的环境，避免了手动配置环境，减少出错的可能性。在企业里，要想高效地使用terraform来正确且快速地生成分布式软件所运行的环境，不仅需要掌握terraform知识，还需要结合工程方面的实践经验（比如版本控制，模块划分，测试）以及其它工具（比如Packer、Docker、Kubernetes）来共同实现。
- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas alias ut totam labore, rerum soluta harum vitae pariatur, optio, ad dolore, nihil eligendi nesciunt repellat esse provident sapiente. Repellendus, minus!
- Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis expedita repellendus laboriosam aliquid. Neque doloribus ea, id reprehenderit alias saepe debitis eligendi molestias odit, nesciunt rem. Dolorem saepe, provident dolore nesciunt laudantium nostrum enim natus veritatis harum maxime et iure ratione, nulla.</description>
+企业里的研发工程师根据产品经理的需求，在自己的电脑上完成编码、测试、Code Review并最终提交代码。理想情况下，已经研发完成的功能会第一时间交付到客户，并为其带来价值。但实际情况并非如此，企业中研发工程师提交完代码之后，这些修改会像流水线一样传递到下一名工人的手里，他们分别是测试工程师和Devops研发工程师。这些角色共同在这条流水线上完成产品的研发、测试和交付，最终把产品及时发布到线上，以供客户使用。因此流水线的流畅性决定了企业响应市场的能力，在软件行业中，这条流水线就是业内常说的CICD
+Software delivery consists of all of the work you need to do to make the code available to a customer, such as running that code on production servers, making the code resilient to outages and traffic spikes, and protecting the code from attackers. Before you dive into the details of Terraform, it’s worth taking a step back to see where Terraform fits into the bigger picture of software delivery.</description>
     </item>
     
   </channel>
