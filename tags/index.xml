@@ -6,10 +6,28 @@
     <description>Recent content in Tags on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Jul 2019 12:29:40 +0600</lastBuildDate>
+    <lastBuildDate>Tue, 15 Oct 2019 12:21:58 +0600</lastBuildDate>
     
 	<atom:link href="https://2cloudlab.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>business</title>
+      <link>https://2cloudlab.com/tags/business/</link>
+      <pubDate>Tue, 15 Oct 2019 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/business/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>people</title>
+      <link>https://2cloudlab.com/tags/people/</link>
+      <pubDate>Tue, 15 Oct 2019 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/people/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>cicd</title>
@@ -80,24 +98,6 @@
       <pubDate>Sun, 15 Jul 2018 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/tech/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>business</title>
-      <link>https://2cloudlab.com/tags/business/</link>
-      <pubDate>Sun, 15 Jul 2018 12:21:58 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/tags/business/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>people</title>
-      <link>https://2cloudlab.com/tags/people/</link>
-      <pubDate>Sun, 15 Jul 2018 12:21:58 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/tags/people/</guid>
       <description></description>
     </item>
     
