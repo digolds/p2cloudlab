@@ -176,8 +176,13 @@
 <li>为Terraform配置云服务账号</li>
 <li>使用Terraform执行<code>.tf</code>脚本生成基础资源</li>
 </ol>
-<p>如果一切顺利，那么软件所依赖的环境会顺利生成出来，但是现实世界中，有诸多不确定的因素
-其作用是通过执行terraform configuration脚本文件来创建服务资源（这些资源有EC2实例、RDS实例等等）并在这些资源上部署软件服务（这些软件服务有自主研发的软件服务、MYSQL服务、Redis服务等等）。</p>
+<p>如果一切顺利，那么软件所依赖的环境会顺利生成出来，但是现实世界中，有诸多不确定的因素导致无法顺利生成环境。这些因素大部分是人为的，因此需要一套工具和规则来杜绝人为因素所引发的问题。以下清单列举了多人同时使用terraform的最佳实践:</p>
+<ol>
+<li>需要准备版本控制工具(git)和源码托管仓库(github)</li>
+<li>为每一名员工提供云服务商的账号，这些账号的权限随着员工角色的改变而改变</li>
+<li>共享terraform状态</li>
+</ol>
+<p>接下来解释企业为何需要具备以上经验。</p>
 <h2 id="devopsterraform">在企业中建立Devops团队以及Terraform规范</h2>
 <p>在企业内部，一般是由devops工程师来使用terraform工具，编写terraform脚本，除此之外devops工程师还需要使用其它工具比如Python、Go、Bash、Packer、Git、Docker、Kubernetes来配合。除了掌握这些工具之外，还需要具备工程学方面的经验和devops方面的经验。拥有这些经验和工具是打造一条<strong>高效CICD流水线</strong>的基本条件。<strong>CICD</strong>分为2个阶段：<strong>持续集成（CI）和持续发布（CD）</strong>，每个阶段都有相对应的任务清单，比如：CI阶段需要解决研发、版本控制、测试等问题，而CD阶段需要解决基础资源创建、部署、配置、监控、安全、规范、优化等问题。根据企业自身情况，每个问题都能细分出更多的小问题。这篇文章将通过以下几个方面来揭示：<strong>如何使用terraform高效、统一地解决以上问题</strong>。</p>
 <h2 id="heading">总结</h2>
