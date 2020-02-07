@@ -17,7 +17,7 @@
       <pubDate>Tue, 15 Oct 2019 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/blog/how-to-use-2cloudlab-services/</guid>
-      <description>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas sit expedita, iusto repellendus cumque, officia architecto consequatur illo fuga eum sed ut autem eos voluptas. Nemo, a, rem! Atque quisquam aperiam eaque tenetur autem, soluta itaque omnis. Minus nesciunt, sint, animi illum quo ab voluptate esse delectus unde maiores iure, quasi a suscipit ipsam aliquid voluptatem. Perspiciatis eveniet, pariatur illum aut cum dolor neque consequatur error aliquid facilis in quasi temporibus assumenda tempore, doloremque autem saepe enim nihil.</description>
+      <description>还在准备中</description>
     </item>
     
     <item>
@@ -53,18 +53,6 @@ Terraform的运行机制 terraform是单文件命令行程序，它基于infrast
 如何理解：Devops、CICD、Infrastructure as code 在软件行业中，Devops, CICD, Infrastructure as code几个词汇经常出现，它们的最终目标是帮助企业提高软件质量同时向市场推出杀手锏产品。以下是来自wiki的定义：
 Devops的定义
  DevOps is a set of practices that combines software development (Dev) and information-technology operations (Ops) which aims to shorten the systems development life cycle and provide continuous delivery with high software quality.</description>
-    </item>
-    
-    <item>
-      <title>How To Setup Timer Hugo</title>
-      <link>https://2cloudlab.com/blog/installation/</link>
-      <pubDate>Sun, 08 Jul 2018 12:22:40 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/blog/installation/</guid>
-      <description>Install this template by following those simple steps: STEP-1 : Hugo installation Check this link below for install hugo on your computer. hugo install documentation
-STEP-2 : Create your project Hugo provides a new command to create a new website.
-hugo new site &amp;lt;new_project&amp;gt; STEP-3 : Install the theme Run this command
-hugo new site timer-hugo and then go to the themes folder inside of timer-hugo folder. You can also use this command cd timer-hugo/themes for going to this folder.</description>
     </item>
     
   </channel>
