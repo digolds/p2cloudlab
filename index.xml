@@ -28,7 +28,7 @@
       <guid>https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/</guid>
       <description>terraform是一个用go语言编写的跨平台、开源、只有单个运行文件的命令行程序。terraform通过解析和执行terraform configuration文件集合，最终会在短时间内生成分布式软件所运行的环境，避免了手动配置环境，减少出错的可能性。在企业里，要想高效地使用terraform来正确且快速地生成分布式软件所运行的环境，不仅需要掌握terraform知识，还需要结合工程方面的实践经验（比如版本控制，模块划分，测试）以及其它工具（比如Packer、Docker、Kubernetes）来共同实现。
 这篇文章将通过以下话题来说明如何在企业中高效使用terraform：
- 企业为何使用Terraform？ Terraform的运行机制 如何解决多人同时使用Terraform的问题 在企业中建立Devops团队以及Terraform规范 总结  企业为何使用Terraform？ Terraform的主要作用在于基于云服务提供商创建资源和准备运行环境。企业内部需要借助不同工具推行DevOps，Terraform就是其中之一。软件产品或服务都需要运行在一个特定的环境上，因此企业需要为软件准备这些运行环境，而这些运行环境的准备就是需要工具：Terraform。除此之外还有其它工具（比如CloudFormation），企业之所以使用Terraform工具的原因在于：
+ 企业为何使用Terraform？ Terraform的运行机制 如何解决多人同时使用Terraform的问题 在企业中建立Devops团队以及Terraform规范 现实世界中DevOps团队一天的工作内容 总结  企业为何使用Terraform？ Terraform的主要作用在于基于云服务提供商创建资源和准备运行环境。企业内部需要借助不同工具推行DevOps，Terraform就是其中之一。软件产品或服务都需要运行在一个特定的环境上，因此企业需要为软件准备这些运行环境，而这些运行环境的准备就是需要工具：Terraform。除此之外还有其它工具（比如CloudFormation），企业之所以使用Terraform工具的原因在于：
  拥有强大而且活跃的社区支持、免费和开源 支持大部分云服务提供者（AWS、Azure、GCP以及其它云服务） 只需要一个terraform运行文件和云服务厂商的账号就能在自己的电脑上使用 terraform是基于描述型语言（declarative language）来定义资源的最终状态 terraform支持一致性部署（immutable infrastructure）,每次更新均是可重现且一致的  随着云计算的普及，企业应该使用云计算带来的好处&amp;ndash;降低成本和应用更加先进的技术&amp;ndash;来使自己处于行业领先位置。使用Terraform可以以Infrastructure as Code的方式使用云服务，DevOps人员只需要编写脚本、安装Terraform可执行文件、一个云服务商账号以及执行脚本的一台电脑就能远程为软件创建资源和准备环境。这些脚本文件由版本控制系统进行管理，这样一来工程方面的经验便可应用在这些脚本文件上。要想高效使用Terraform，除了要学习Terraform知识，还要解决多人使用的情况。在这之前，以一个简单的示例来了解Terraform的运行机制是一个良好的开端。
 Terraform的运行机制 terraform是单文件命令行程序，它基于infrastructure as code方式来运行的，因此需要给terraform提供脚本文件让其运行。脚本文件的后缀是.tf，其中的内容涉及选择云服务提供商、创建何种类型的资源以及定义输入输出变量等等。
 在开始运行terraform之前，需要准备以下条件:
