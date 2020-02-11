@@ -11,7 +11,7 @@
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>如何在企业中高效使用terraform</title>
+  <title>一天之内，部署线上服务--高效使用terraform</title>
   <link rel="icon" href="https://2cloudlab.com/images/favicon.ico">
 
   <!-- Twitter Bootstrs CSS -->
@@ -85,7 +85,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <h2>如何在企业中高效使用terraform</h2>
+                    <h2>一天之内，部署线上服务--高效使用terraform</h2>
                     <div class="portfolio-meta">
                         <span>2019-07-15</span>|
                         <span class="ion-pricetags"></span>
@@ -235,13 +235,18 @@
 <li>任何一名成员只能使用Terraform工具来操作以上3个环境的资源，其中Product环境只能由经验丰富的少数几个人操作</li>
 <li>团队内常用的工具有:Git、VS Code、Jira、Python、Go和Terraform</li>
 <li>依赖的服务有:AWS和Github</li>
-<li>项目的结构和文件命名方式如下(其中package是通用模块，live是不同环境)</li>
-<li>在编写模块的过程中，需要考虑单元测试(Unit Test)、集成测试()和端对端测试，其数量占比情况如下图所示</li>
+<li>项目的结构和文件命名方式如下(其中package-aws-web-cluster是通用模块，live是不同环境)</li>
+<li>在编写模块的过程中，需要考虑单元测试(Unit Test)、集成测试(Integration Test)和端对端测试（End-to-End Test），其数量占比情况如下图所示：</li>
+</ol>
+<p><img src="https://2cloudlab.com/images/blog/number-of-different-test-types.png" alt=""></p>
+<ol start="7">
 <li>为每个模块编写手动示例和说明文档</li>
 <li>遵守Terraform规范，并用代码检测工具来做静态检查</li>
 <li>每次提交都应该进行Code Review</li>
 <li>每名成员都拥有不同的AWS账号，不同环境也需要有不同的AWS账号。AWS账号的分配原则应该根据不同目的来划分，原因在于保持相互独立性</li>
+<li>输出具有可实施的结果（包括文档、图片和代码等）。比如Tony为这次实施细节输出了如下结果：</li>
 </ol>
+<p><img src="https://2cloudlab.com/images/blog/Web-App-Reference-Architecture.png" alt=""></p>
 <p>Tony要确保以上实施细节都能够被大家理解，并且需要不断地优化。接下来就是分工合作，Tony、Jack和Jane的分工如下：</p>
 <ol>
 <li>Tony负责live repositoy的研发</li>
