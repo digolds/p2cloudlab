@@ -235,7 +235,7 @@
 <li>任何一名成员只能使用Terraform工具来操作以上3个环境的资源，其中Product环境只能由经验丰富的少数几个人操作</li>
 <li>团队内常用的工具有:Git、VS Code、Jira、Python、Go和Terraform</li>
 <li>依赖的服务有:AWS和Github</li>
-<li>项目的结构和文件命名方式如下(其中package-aws-web-cluster是通用模块，live是不同环境)</li>
+<li>项目的结构和文件命名方式如下(其中package_aws_web_service是通用模块，live是不同环境)</li>
 <li>在编写模块的过程中，需要考虑单元测试(Unit Test)、集成测试(Integration Test)和端对端测试（End-to-End Test），其数量占比情况如下图所示：</li>
 </ol>
 <p><img src="https://2cloudlab.com/images/blog/number-of-different-test-types.png" alt=""></p>
@@ -246,18 +246,60 @@
 <li>每名成员都拥有不同的AWS账号，不同环境也需要有不同的AWS账号。AWS账号的分配原则应该根据不同目的来划分，原因在于保持相互独立性</li>
 <li>输出具有可实施的结果（包括文档、图片和代码等）。比如Tony为这次实施细节输出了如下结果：</li>
 </ol>
-<p><img src="https://2cloudlab.com/images/blog/Web-App-Reference-Architecture.png" alt=""></p>
+<p><img src="https://2cloudlab.com/images/blog/file-layout-and-github-repository.png" alt=""></p>
 <p>Tony要确保以上实施细节都能够被大家理解，并且需要不断地优化。接下来就是分工合作，Tony、Jack和Jane的分工如下：</p>
 <ol>
 <li>Tony负责live repositoy的研发</li>
-<li>Jack负责web-server-cluser的研发</li>
-<li>Jane负责mysql-database的研发</li>
+<li>Jack负责web_cluser的研发</li>
+<li>Jane负责mysql_database的研发</li>
 </ol>
 <p>Jack</p>
-<p>Jack根据实施细节输出了如下成果：</p>
-<p>Jane</p>
-<p>Jane根据实施细节输出了如下成果：</p>
-<h2 id="heading">总结</h2>
+<p>Jack根据实施细节编写了模块<code>web_cluster</code>，结果如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># main.tf
+</span><span class="c1"></span>
+<span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
+<span class="na">    required_version</span> <span class="o">=</span><span class="na"> &#34;&gt;</span><span class="o">=</span> <span class="m">0</span><span class="p">.</span><span class="m">12</span><span class="p">,</span> <span class="err">&lt;</span> <span class="m">0</span><span class="p">.</span><span class="m">13</span><span class="err">&#34;</span>
+}
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># variables.tf
+</span><span class="c1"></span><span class="c1">
+</span><span class="c1"># ---------------------------------------------------------------------------------------------------------------------
+</span><span class="c1"></span><span class="c1"># REQUIRED PARAMETERS
+</span><span class="c1"></span><span class="c1"># You must provide a value for each of these parameters.
+</span><span class="c1"></span><span class="c1"># ---------------------------------------------------------------------------------------------------------------------
+</span><span class="c1"></span>
+<span class="kr">variable</span> <span class="s">&#34;security_group_id&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The ID of the Security Group to which all the rules should be attached.&#34;</span>
+<span class="na">  type</span>        <span class="o">=</span> <span class="err">s</span><span class="err">t</span><span class="err">r</span><span class="err">i</span><span class="err">n</span><span class="err">g</span>
+}
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># outputs.tf
+</span><span class="c1"></span>
+<span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span> <span class="s2">&#34;http_port&#34;</span> {
+<span class="na">  value</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">h</span><span class="err">t</span><span class="err">t</span><span class="err">p</span><span class="err">_</span><span class="err">p</span><span class="err">o</span><span class="err">r</span><span class="err">t</span>
+}
+</code></pre></div><p>Jane</p>
+<p>Jane根据实施细节编写了模块<code>mysql_database</code>，结果如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># main.tf
+</span><span class="c1"></span>
+<span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
+<span class="na">    required_version</span> <span class="o">=</span><span class="na"> &#34;&gt;</span><span class="o">=</span> <span class="m">0</span><span class="p">.</span><span class="m">12</span><span class="p">,</span> <span class="err">&lt;</span> <span class="m">0</span><span class="p">.</span><span class="m">13</span><span class="err">&#34;</span>
+}
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># variables.tf
+</span><span class="c1"></span><span class="c1">
+</span><span class="c1"># ---------------------------------------------------------------------------------------------------------------------
+</span><span class="c1"></span><span class="c1"># REQUIRED PARAMETERS
+</span><span class="c1"></span><span class="c1"># You must provide a value for each of these parameters.
+</span><span class="c1"></span><span class="c1"># ---------------------------------------------------------------------------------------------------------------------
+</span><span class="c1"></span>
+<span class="kr">variable</span> <span class="s">&#34;security_group_id&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The ID of the Security Group to which all the rules should be attached.&#34;</span>
+<span class="na">  type</span>        <span class="o">=</span> <span class="err">s</span><span class="err">t</span><span class="err">r</span><span class="err">i</span><span class="err">n</span><span class="err">g</span>
+}
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># outputs.tf
+</span><span class="c1"></span>
+<span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span> <span class="s2">&#34;http_port&#34;</span> {
+<span class="na">  value</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">h</span><span class="err">t</span><span class="err">t</span><span class="err">p</span><span class="err">_</span><span class="err">p</span><span class="err">o</span><span class="err">r</span><span class="err">t</span>
+}
+</code></pre></div><h2 id="heading">总结</h2>
 <p>Terraform主要解决了创建资源和管理资源的问题，随着云计算的普及，Terraform的优势更加明显！</p>
 <p><em><strong><a href="https://2cloudlab.com/">2cloudlab.com</a>为企业准备产品的运行环境，只需要1天！</strong></em></p>
 
