@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   
-  <meta name="description" content="terraform是一个用go语言编写的跨平台、开源、只有单个运行文件的命令行程序。terraform通过解析和执行terraform configuration文件集合，最终会在短时间内生成分布式软件所运行的环境，避免了手动配置环境，减少出错的可能性。在企业里，要想高效地使用terraform来正确且快速地生成分布式软件所运行的环境，不仅需要掌握terraform知识，还需要结合工程方面的实践经验以及其它工具来共同实现。">
+  <meta name="description" content="terraform是一个用go语言编写的跨平台、开源、只有单个运行文件的命令行程序。terraform通过解析和执行terraform configuration文件集合，最终会在短时间内生成分布式软件所运行的环境，避免了手动配置环境，减少出错的可能性。在企业里，要想高效地使用terraform来正确且快速地生成分布式软件所运行的环境，不仅需要掌握terraform知识，还需要结合软件工程方面的实践经验和借助多种工具。">
   <meta name="author" content="2cloudlab">
   <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>一天之内，部署线上服务--高效使用terraform</title>
+  <title>企业如何在一天之内部署线上服务--高效使用terraform</title>
   <link rel="icon" href="https://2cloudlab.com/images/favicon.ico">
 
   <!-- Twitter Bootstrs CSS -->
@@ -85,7 +85,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <h2>一天之内，部署线上服务--高效使用terraform</h2>
+                    <h2>企业如何在一天之内部署线上服务--高效使用terraform</h2>
                     <div class="portfolio-meta">
                         <span>2019-07-15</span>|
                         <span class="ion-pricetags"></span>
@@ -130,7 +130,7 @@
 <li>Terraform的运行机制</li>
 <li>如何解决多人同时使用Terraform的问题</li>
 <li>在企业中建立Devops团队以及Terraform规范</li>
-<li>现实世界中DevOps团队一天的工作内容</li>
+<li>现实世界中DevOps团队的工作内容</li>
 <li>总结</li>
 </ol>
 <h2 id="terraform">企业为何使用Terraform？</h2>
@@ -142,7 +142,7 @@
 <li>terraform是基于描述型语言（declarative language）来定义资源的最终状态</li>
 <li>terraform支持一致性部署（immutable infrastructure）,每次更新均是可重现且一致的</li>
 </ol>
-<p>随着云计算的普及，企业应该使用云计算带来的好处&ndash;降低成本和应用更加先进的技术&ndash;来使自己处于行业领先位置。使用Terraform可以以Infrastructure as Code的方式使用云服务，DevOps人员只需要编写脚本、安装Terraform可执行文件、一个云服务商账号以及执行脚本的一台电脑就能远程为软件创建资源和准备环境。这些脚本文件由版本控制系统进行管理，这样一来工程方面的经验便可应用在这些脚本文件上。要想高效使用Terraform，除了要学习Terraform知识，还要解决多人使用的情况。在这之前，以一个简单的示例来了解Terraform的运行机制是一个良好的开端。</p>
+<p>随着云计算的普及，企业应该使用云计算带来的好处&ndash;降低成本和应用更加先进的技术&ndash;来使自己处于行业领先位置。使用Terraform可以以Infrastructure as Code的方式使用云服务，DevOps人员只需要编写脚本、安装Terraform可执行文件、一个云服务商账号以及执行脚本的一台电脑就能远程为软件创建资源和准备环境。这些脚本文件由版本控制系统进行管理，这样一来软件工程方面的经验便可应用在这些脚本文件上。要想高效使用Terraform，除了要学习Terraform知识，还要解决多人使用的情况。在这之前，以一个简单的示例来了解Terraform的运行机制是一个良好的开端。</p>
 <h2 id="terraform-1">Terraform的运行机制</h2>
 <p>terraform是单文件命令行程序，它基于infrastructure as code方式来运行的，因此需要给terraform提供脚本文件让其运行。脚本文件的后缀是<code>.tf</code>，其中的内容涉及选择云服务提供商、创建何种类型的资源以及定义输入输出变量等等。</p>
 <p>在开始运行terraform之前，需要准备以下条件:</p>
@@ -174,8 +174,9 @@
 <span class="na">    Name</span> <span class="o">=</span> <span class="s2">&#34;2cloudlab-example&#34;</span>
   }
 }
-</code></pre></div><p>以上例子表明:它期望在AWS上创建一个EC2实例，因此使用terraform运行该脚本文件的最终结果是AWS EC2 Dashboard中启动了一个EC2实例。</p>
-<p>这个简单的例子解释了terraform运行过程中所涉及的步骤。企业里也是基于以上过程来使用terraform，但是区别在于:企业内部是由多人同时编写并执行terraform文件。这就引发另外一个问题：如何协调不同人员使用terraform所完成的工作成果以及如何避免文件冲突？解决这个问题最好办法是引入工程管理方面的经验。</p>
+</code></pre></div><p>以上例子表明:它期望在AWS上创建一个EC2实例，因此使用terraform运行该脚本文件的最终结果是AWS EC2 Dashboard中启动了一个EC2实例,如下图所示：</p>
+<p><img src="https://2cloudlab.com/images/blog/ec2-dashboard.png" alt=""></p>
+<p>这个简单的例子解释了terraform运行过程中所涉及的步骤。企业里也是基于以上过程来使用terraform，但是区别在于:企业内部是由多人同时编写并执行terraform文件。这就引发另外一个问题：如何协调不同人员使用terraform所完成的工作成果以及如何避免文件冲突？解决这个问题最好办法是引入软件工程管理方面的经验。</p>
 <h2 id="terraform-2">如何解决多人同时使用Terraform的问题</h2>
 <p><strong>CICD</strong>的搭建需要多方团队共同参与，这就意味着Terraform工具需要多人来使用。通过以上简单的示例可知，Terraform是按照以下步骤工作的：</p>
 <ol>
@@ -185,13 +186,13 @@
 </ol>
 <p>如果一切顺利，那么软件所依赖的环境会顺利生成出来，但是现实世界中，有诸多不确定的因素导致无法顺利生成环境。这些因素大部分是人为的，因此需要一套工具和规则来杜绝人为因素所引发的问题。以下清单列举了多人同时使用terraform的最佳实践:</p>
 <ol>
-<li>需要准备版本控制工具(git)和源码托管仓库(github)</li>
+<li>需要准备版本控制工具(Git)和源码托管仓库(GitHub)</li>
 <li>为每一名员工提供云服务商的账号，这些账号的权限随着员工角色的改变而改变</li>
-<li>共享terraform状态</li>
+<li>使用S3和DynamoDB服务存储与共享Terraform状态</li>
 </ol>
-<p>接下来解释企业为何需要具备以上经验。</p>
+<p>使用Git和GitHub是为了引入版本控制、Code Review等经验；为每名工程师配置独立的账号是为了工作过程不会影响到其他工程师；使用S3和DynamoDB可以为Terraform状态文件引入加密、版本和互斥等功能，Terraform状态文件可以被安全共享的同时保留以前的版本。</p>
 <h2 id="devopsterraform">在企业中建立Devops团队以及Terraform规范</h2>
-<p><strong>企业需要组建一支DevOps团队来打造CICD</strong>。在企业内部，一般是由devops工程师来使用terraform工具，编写terraform脚本，除此之外devops工程师还需要使用其它工具比如Python、Go、Bash、Packer、Git、Docker、Kubernetes来配合。除了掌握这些工具之外，还需要具备工程学方面的经验和devops方面的经验。拥有这些经验和工具是打造一条<strong>高效CICD流水线</strong>的基本条件。<strong>CICD</strong>分为2个阶段：<strong>持续集成（CI）和持续发布（CD）</strong>，每个阶段都有相对应的任务清单，比如：CI阶段需要解决研发、版本控制、测试等问题，而CD阶段需要解决基础资源创建、部署、配置、监控、安全、规范、优化等问题。根据企业自身情况，每个任务都能细分出更多的小任务。</p>
+<p><strong>企业需要组建一支DevOps团队来打造CICD</strong>。在企业内部，一般是由devops工程师来使用terraform工具，编写terraform脚本，除此之外devops工程师还需要使用其它工具比如Python、Go、Bash、Packer、Git、Docker、Kubernetes来配合。除了掌握这些工具之外，还需要具备软件工程方面的经验和devops方面的经验。拥有这些经验和工具是打造一条<strong>高效CICD流水线</strong>的基本条件。<strong>CICD</strong>分为2个阶段：<strong>持续集成（CI）和持续发布（CD）</strong>，每个阶段都有相对应的任务清单，比如：CI阶段需要解决研发、版本控制、测试等问题，而CD阶段需要解决基础资源创建、部署、配置、监控、安全、规范、优化等问题。根据企业自身情况，每个任务都能细分出更多的小任务。</p>
 <p>面对如此多的任务，企业需要组建一个DevOps团队来专门处理这些任务。团队成员由DevOps工程师组成，每位工程师处理不同的任务，有的处理CI部分，有的处理CD部分。DevOps经常需要服务于企业内部(比如根据法规部门的要求引入隐私条款，以便符合当地法律要求)、各部门以及企业外部的客户(比如对外界发布产品)。结合之前多人同时使用terraform的经验，devops工程师便可以通过git来贡献自己的成果，但是如何确保每一次输出的成果是高质量的，那就需要通过规范来约束。这些规范的建立一般是由经验丰富的系统管理员来负责，这个管理员其实就是管理devops团队的leader。接下让我们把注意力集中在如何建立规范，以便devops的输出成果能够方便地应用于各个团队。</p>
 <p><strong>建立适用于企业的DevOps规范是打造高效CICD的基础</strong>。有了规范，DevOps团队的输出得到了保障，其他团队也可以顺利地使用DevOps团队的输出，最终确保了DevOps运动中各工作事项都得以顺利展开。规范分为2个部分：对外的规范和对内的规范。</p>
 <p>对外的规范主要针对公司内部其他团队，其约定了外部团队如何使用DevOps团队的成果、如何向DevOps团队提出需求以及如何及时向DevOps团队反馈结果。内部团队主要分为2类:使用DevOps团队的输出成果以及间接使用DevOps团队的输出成果。前者包含的团队有:研发团队、测试团队、安全团队、网络团队等，这些团队的特征是拥有某项技术能力;后者包含的团队有:法务团队、市场团队、销售团队等，这些团队一般脱离了技术。以上所有团队都会向DevOps团队提出需求，并由DevOps团队实现，而拥有技术特征的团队会亲自使用DevOps团队的输出成果，其它团队则需要DevOps团队协助。因此需要建立一套高效的沟通机制、任务管理体系以及详细的使用说明，其中详细的使用说明格式需要统一，以便全公司都能达成共识。</p>
@@ -209,7 +210,7 @@
 <li>使用任务管理系统</li>
 </ol>
 <p>接下来让我们以一个具体的例子来展开以上规范。</p>
-<h2 id="devops">现实世界中DevOps团队一天的工作内容</h2>
+<h2 id="devops">现实世界中DevOps团队的工作内容</h2>
 <p>假设公司成立了一个DevOps团队，由三名成员组成，他们分别是：Tony（Team Leader），Jack（DevOps Engineer）和Jane（DevOps Engineer）。他们的工作任务是为公司搭建高效的CICD，以下是他们使用Terraform的规划。</p>
 <p>Tony作为DevOps的TeamLeader，他的主要任务是定义规范。首先，针对所有团队成员约定一套规则，并形成文档，分享给每个成员。每个成员按照这套规则进行每日的工作。下面定义了一套规则，这套规则适用大部分公司，另外公司也可以根据自己的情况来更改。</p>
 <ol>
@@ -253,9 +254,9 @@
 <li>Jack负责web_cluser的研发</li>
 <li>Jane负责mysql_database的研发</li>
 </ol>
-<p>当任务分配到每位成员之后，Tony要做的是准备2个repository，分别为:live和package_aws_web_service，它们托管在github上目录结构按照以上方式排布。除此之外，live中的文件会调用package_aws_web_service中的模块，这种可复用的方式不仅适合内部团队，也适用于其它团队，比如测试和研发团队。</p>
+<p>当任务分配到每位成员之后，Tony要做的是准备2个repository，分别为:live和package_aws_web_service，它们托管在github上，目录结构按照以上方式排布。除此之外，<a href="https://github.com/2cloudlab/live">live</a>中的文件会调用package_aws_web_service中的模块，这种可复用的方式不仅适合内部团队，也适用于其它团队，比如测试和研发团队。</p>
 <p>Jack</p>
-<p>Jack根据实施细节编写了模块<code>web_cluster</code>，结果如下：</p>
+<p>Jack根据实施细节编写了模块<code>web_cluster</code>(<a href="https://github.com/2cloudlab/package_aws_web_service">源码</a>)，结果如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># main.tf
 </span><span class="c1"></span>
 <span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
@@ -278,7 +279,7 @@
 <span class="na">  value</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">h</span><span class="err">t</span><span class="err">t</span><span class="err">p</span><span class="err">_</span><span class="err">p</span><span class="err">o</span><span class="err">r</span><span class="err">t</span>
 }
 </code></pre></div><p>Jane</p>
-<p>Jane根据实施细节编写了模块<code>mysql_database</code>，结果如下：</p>
+<p>Jane根据实施细节编写了模块<code>mysql_database</code>(<a href="https://github.com/2cloudlab/package_aws_web_service">源码</a>)，结果如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># main.tf
 </span><span class="c1"></span>
 <span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
