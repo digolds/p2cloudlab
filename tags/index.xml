@@ -6,7 +6,7 @@
     <description>Recent content in Tags on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 15 Oct 2019 12:21:58 +0600</lastBuildDate>
+    <lastBuildDate>Fri, 15 Nov 2019 12:21:58 +0600</lastBuildDate>
     
 	<atom:link href="https://2cloudlab.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,23 +14,50 @@
     <item>
       <title>2cloudlab.com</title>
       <link>https://2cloudlab.com/tags/2cloudlab.com/</link>
-      <pubDate>Tue, 15 Oct 2019 12:21:58 +0600</pubDate>
+      <pubDate>Fri, 15 Nov 2019 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/2cloudlab.com/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>devops</title>
+      <title>DevOps</title>
       <link>https://2cloudlab.com/tags/devops/</link>
-      <pubDate>Tue, 15 Oct 2019 12:21:58 +0600</pubDate>
+      <pubDate>Fri, 15 Nov 2019 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/devops/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>cicd</title>
+      <title>terraform</title>
+      <link>https://2cloudlab.com/tags/terraform/</link>
+      <pubDate>Fri, 15 Nov 2019 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/terraform/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>云计算</title>
+      <link>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</link>
+      <pubDate>Fri, 15 Nov 2019 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>自动化测试</title>
+      <link>https://2cloudlab.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/</link>
+      <pubDate>Fri, 15 Nov 2019 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CICD</title>
       <link>https://2cloudlab.com/tags/cicd/</link>
       <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
       
@@ -53,15 +80,6 @@
       <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/terraform%E5%B7%A5%E5%85%B7/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>云计算</title>
-      <link>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</link>
-      <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</guid>
       <description></description>
     </item>
     

@@ -4,22 +4,42 @@
   
   <url>
     <loc>https://2cloudlab.com/</loc>
-    <lastmod>2019-10-15T12:21:58+06:00</lastmod>
+    <lastmod>2019-11-15T12:21:58+06:00</lastmod>
   </url>
   
   <url>
     <loc>https://2cloudlab.com/tags/2cloudlab.com/</loc>
-    <lastmod>2019-10-15T12:21:58+06:00</lastmod>
+    <lastmod>2019-11-15T12:21:58+06:00</lastmod>
   </url>
   
   <url>
     <loc>https://2cloudlab.com/tags/devops/</loc>
-    <lastmod>2019-10-15T12:21:58+06:00</lastmod>
+    <lastmod>2019-11-15T12:21:58+06:00</lastmod>
   </url>
   
   <url>
     <loc>https://2cloudlab.com/tags/</loc>
-    <lastmod>2019-10-15T12:21:58+06:00</lastmod>
+    <lastmod>2019-11-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/terraform/</loc>
+    <lastmod>2019-11-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <lastmod>2019-11-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2019-11-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/blog/how-to-test-terraform-code/</loc>
+    <lastmod>2019-11-15T12:21:58+06:00</lastmod>
   </url>
   
   <url>
@@ -44,11 +64,6 @@
   
   <url>
     <loc>https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/</loc>
-    <lastmod>2019-07-15T12:29:40+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
     <lastmod>2019-07-15T12:29:40+06:00</lastmod>
   </url>
   
