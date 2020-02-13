@@ -256,11 +256,33 @@
 </ol>
 <p>当任务分配到每位成员之后，Tony要做的是准备2个repository，分别为:live和package_aws_web_service，它们托管在github上，目录结构按照以上方式排布。除此之外，<a href="https://github.com/2cloudlab/live">live</a>中的文件会调用package_aws_web_service中的模块，这种可复用的方式不仅适合内部团队，也适用于其它团队，比如测试和研发团队。</p>
 <p>Jack</p>
-<p>Jack根据实施细节编写了模块<code>web_cluster</code>(<a href="https://github.com/2cloudlab/package_aws_web_service">源码</a>)，结果如下：</p>
+<p>Jack根据实施细节编写了模块<code>web_cluster</code>(<a href="https://github.com/2cloudlab/package_aws_web_service">完整源码</a>)，结果如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># main.tf
 </span><span class="c1"></span>
-<span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
-<span class="na">    required_version</span> <span class="o">=</span><span class="na"> &#34;&gt;</span><span class="o">=</span> <span class="m">0</span><span class="p">.</span><span class="m">12</span><span class="p">,</span> <span class="err">&lt;</span> <span class="m">0</span><span class="p">.</span><span class="m">13</span><span class="err">&#34;</span>
+<span class="kr">module</span> <span class="s">&#34;asg&#34;</span> {
+<span class="na">  source</span> <span class="o">=</span> <span class="s2">&#34;../../cluster/asg-rolling-deploy&#34;</span>
+
+<span class="na">  cluster_name</span>  <span class="o">=</span> <span class="s2">&#34;hello-world-${var.environment}&#34;</span>
+<span class="na">  ami</span>           <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">a</span><span class="err">m</span><span class="err">i</span>
+<span class="na">  user_data</span>     <span class="o">=</span> <span class="err">d</span><span class="err">a</span><span class="err">t</span><span class="err">a</span><span class="p">.</span><span class="err">t</span><span class="err">e</span><span class="err">m</span><span class="err">p</span><span class="err">l</span><span class="err">a</span><span class="err">t</span><span class="err">e</span><span class="err">_</span><span class="err">f</span><span class="err">i</span><span class="err">l</span><span class="err">e</span><span class="p">.</span><span class="err">u</span><span class="err">s</span><span class="err">e</span><span class="err">r</span><span class="err">_</span><span class="err">d</span><span class="err">a</span><span class="err">t</span><span class="err">a</span><span class="p">.</span><span class="err">r</span><span class="err">e</span><span class="err">n</span><span class="err">d</span><span class="err">e</span><span class="err">r</span><span class="err">e</span><span class="err">d</span>
+<span class="na">  instance_type</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">i</span><span class="err">n</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">n</span><span class="err">c</span><span class="err">e</span><span class="err">_</span><span class="err">t</span><span class="err">y</span><span class="err">p</span><span class="err">e</span>
+
+<span class="na">  min_size</span>           <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">m</span><span class="err">i</span><span class="err">n</span><span class="err">_</span><span class="err">s</span><span class="err">i</span><span class="err">z</span><span class="err">e</span>
+<span class="na">  max_size</span>           <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">m</span><span class="err">a</span><span class="err">x</span><span class="err">_</span><span class="err">s</span><span class="err">i</span><span class="err">z</span><span class="err">e</span>
+<span class="na">  enable_autoscaling</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">e</span><span class="err">n</span><span class="err">a</span><span class="err">b</span><span class="err">l</span><span class="err">e</span><span class="err">_</span><span class="err">a</span><span class="err">u</span><span class="err">t</span><span class="err">o</span><span class="err">s</span><span class="err">c</span><span class="err">a</span><span class="err">l</span><span class="err">i</span><span class="err">n</span><span class="err">g</span>
+
+<span class="na">  subnet_ids</span>        <span class="o">=</span> <span class="err">l</span><span class="err">o</span><span class="err">c</span><span class="err">a</span><span class="err">l</span><span class="p">.</span><span class="err">s</span><span class="err">u</span><span class="err">b</span><span class="err">n</span><span class="err">e</span><span class="err">t</span><span class="err">_</span><span class="err">i</span><span class="err">d</span><span class="err">s</span>
+<span class="na">  target_group_arns</span> <span class="o">=</span> <span class="p">[</span><span class="err">a</span><span class="err">w</span><span class="err">s</span><span class="err">_</span><span class="err">l</span><span class="err">b</span><span class="err">_</span><span class="err">t</span><span class="err">a</span><span class="err">r</span><span class="err">g</span><span class="err">e</span><span class="err">t</span><span class="err">_</span><span class="err">g</span><span class="err">r</span><span class="err">o</span><span class="err">u</span><span class="err">p</span><span class="p">.</span><span class="err">a</span><span class="err">s</span><span class="err">g</span><span class="p">.</span><span class="err">a</span><span class="err">r</span><span class="err">n</span><span class="p">]</span>
+<span class="na">  health_check_type</span> <span class="o">=</span> <span class="s2">&#34;ELB&#34;</span>
+  
+  <span class="na">custom_tags</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">c</span><span class="err">u</span><span class="err">s</span><span class="err">t</span><span class="err">o</span><span class="err">m</span><span class="err">_</span><span class="err">t</span><span class="err">a</span><span class="err">g</span><span class="err">s</span>
+}
+
+<span class="kr">module</span> <span class="s">&#34;alb&#34;</span> {
+<span class="na">  source</span> <span class="o">=</span> <span class="s2">&#34;../../networking/alb&#34;</span>
+
+<span class="na">  alb_name</span>   <span class="o">=</span> <span class="s2">&#34;hello-world-${var.environment}&#34;</span>
+<span class="na">  subnet_ids</span> <span class="o">=</span> <span class="err">l</span><span class="err">o</span><span class="err">c</span><span class="err">a</span><span class="err">l</span><span class="p">.</span><span class="err">s</span><span class="err">u</span><span class="err">b</span><span class="err">n</span><span class="err">e</span><span class="err">t</span><span class="err">_</span><span class="err">i</span><span class="err">d</span><span class="err">s</span>
 }
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># variables.tf
 </span><span class="c1"></span><span class="c1">
@@ -269,21 +291,52 @@
 </span><span class="c1"></span><span class="c1"># You must provide a value for each of these parameters.
 </span><span class="c1"></span><span class="c1"># ---------------------------------------------------------------------------------------------------------------------
 </span><span class="c1"></span>
-<span class="kr">variable</span> <span class="s">&#34;security_group_id&#34;</span> {
-<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The ID of the Security Group to which all the rules should be attached.&#34;</span>
+<span class="kr">variable</span> <span class="s">&#34;environment&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The name of the environment we&#39;re deploying to&#34;</span>
 <span class="na">  type</span>        <span class="o">=</span> <span class="err">s</span><span class="err">t</span><span class="err">r</span><span class="err">i</span><span class="err">n</span><span class="err">g</span>
+}
+
+<span class="kr">variable</span> <span class="s">&#34;min_size&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The minimum number of EC2 Instances in the ASG&#34;</span>
+<span class="na">  type</span>        <span class="o">=</span> <span class="err">n</span><span class="err">u</span><span class="err">m</span><span class="err">b</span><span class="err">e</span><span class="err">r</span>
+}
+
+<span class="kr">variable</span> <span class="s">&#34;max_size&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The maximum number of EC2 Instances in the ASG&#34;</span>
+<span class="na">  type</span>        <span class="o">=</span> <span class="err">n</span><span class="err">u</span><span class="err">m</span><span class="err">b</span><span class="err">e</span><span class="err">r</span>
+}<span class="c1">
+</span><span class="c1">
+</span><span class="c1"># ---------------------------------------------------------------------------------------------------------------------
+</span><span class="c1"></span><span class="c1"># OPTIONAL PARAMETERS
+</span><span class="c1"></span><span class="c1"># These parameters have reasonable defaults.
+</span><span class="c1"></span><span class="c1"># ---------------------------------------------------------------------------------------------------------------------
+</span><span class="c1"></span>
+<span class="kr">variable</span> <span class="s">&#34;ami&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The AMI to run in the cluster&#34;</span>
+<span class="na">  type</span>        <span class="o">=</span> <span class="err">s</span><span class="err">t</span><span class="err">r</span><span class="err">i</span><span class="err">n</span><span class="err">g</span>
+<span class="na">  default</span>     <span class="o">=</span> <span class="s2">&#34;ami-0c55b159cbfafe1f0&#34;</span>
 }
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># outputs.tf
 </span><span class="c1"></span>
-<span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span> <span class="s2">&#34;http_port&#34;</span> {
-<span class="na">  value</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">h</span><span class="err">t</span><span class="err">t</span><span class="err">p</span><span class="err">_</span><span class="err">p</span><span class="err">o</span><span class="err">r</span><span class="err">t</span>
+<span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span> <span class="s2">&#34;alb_dns_name&#34;</span> {
+<span class="na">  value</span>       <span class="o">=</span> <span class="kr">module</span><span class="p">.</span><span class="err">a</span><span class="err">l</span><span class="err">b</span><span class="p">.</span><span class="err">a</span><span class="err">l</span><span class="err">b</span><span class="err">_</span><span class="err">d</span><span class="err">n</span><span class="err">s</span><span class="err">_</span><span class="err">n</span><span class="err">a</span><span class="err">m</span><span class="err">e</span>
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The domain name of the load balancer&#34;</span>
 }
-</code></pre></div><p>Jane</p>
-<p>Jane根据实施细节编写了模块<code>mysql_database</code>(<a href="https://github.com/2cloudlab/package_aws_web_service">源码</a>)，结果如下：</p>
+</code></pre></div><p>jack编写了一个通用模块：<code>web_cluster</code>（为了阅读方便省去了细节部分），其他团队可以调用这一模块。这个模块的作用是生成Load Balance和一族EC2实例（如下图所示）。这个模块像一个函数一样有输入参数和输出参数。<code>variables.tf</code>文件中定义了该模块的输入参数，它们分别是：<code>environment</code>、<code>min_size</code>和<code>max_size</code>。<code>outputs.tf</code>文件中定义了该模块的输出参数：<code>alb_dns_name</code>。<code>main.tf</code>文件中定义了具体的逻辑部分：<code>alb</code>和<code>asg</code>。也就是说使用模块<code>web_cluster</code>之后，会生成一个域名地址，用户可以通过该域名地址，访问网站服务。</p>
+<p><img src="https://2cloudlab.com/images/blog/only-web-cluster.png" alt=""></p>
+<p>Jane</p>
+<p>Jane根据实施细节编写了模块<code>mysql_database</code>(<a href="https://github.com/2cloudlab/package_aws_web_service">完整源码</a>)，结果如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># main.tf
 </span><span class="c1"></span>
-<span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
-<span class="na">    required_version</span> <span class="o">=</span><span class="na"> &#34;&gt;</span><span class="o">=</span> <span class="m">0</span><span class="p">.</span><span class="m">12</span><span class="p">,</span> <span class="err">&lt;</span> <span class="m">0</span><span class="p">.</span><span class="m">13</span><span class="err">&#34;</span>
+<span class="kr">resource</span> <span class="s">&#34;aws_db_instance&#34; &#34;example&#34;</span> {
+<span class="na">  identifier_prefix</span>   <span class="o">=</span> <span class="s2">&#34;terraform-up-and-running&#34;</span>
+<span class="na">  engine</span>              <span class="o">=</span> <span class="s2">&#34;mysql&#34;</span>
+<span class="na">  allocated_storage</span>   <span class="o">=</span> <span class="m">10</span>
+<span class="na">  instance_class</span>      <span class="o">=</span> <span class="s2">&#34;db.t2.micro&#34;</span>
+<span class="na">  name</span>                <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">d</span><span class="err">b</span><span class="err">_</span><span class="err">n</span><span class="err">a</span><span class="err">m</span><span class="err">e</span>
+<span class="na">  username</span>            <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">d</span><span class="err">b</span><span class="err">_</span><span class="err">u</span><span class="err">s</span><span class="err">e</span><span class="err">r</span><span class="err">n</span><span class="err">a</span><span class="err">m</span><span class="err">e</span>
+<span class="na">  password</span>            <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">d</span><span class="err">b</span><span class="err">_</span><span class="err">p</span><span class="err">a</span><span class="err">s</span><span class="err">s</span><span class="err">w</span><span class="err">o</span><span class="err">r</span><span class="err">d</span>
+<span class="na">  skip_final_snapshot</span> <span class="o">=</span> <span class="kt">true</span>
 }
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># variables.tf
 </span><span class="c1"></span><span class="c1">
@@ -292,18 +345,36 @@
 </span><span class="c1"></span><span class="c1"># You must provide a value for each of these parameters.
 </span><span class="c1"></span><span class="c1"># ---------------------------------------------------------------------------------------------------------------------
 </span><span class="c1"></span>
-<span class="kr">variable</span> <span class="s">&#34;security_group_id&#34;</span> {
-<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The ID of the Security Group to which all the rules should be attached.&#34;</span>
+<span class="kr">variable</span> <span class="s">&#34;db_name&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The name to use for the database&#34;</span>
+<span class="na">  type</span>        <span class="o">=</span> <span class="err">s</span><span class="err">t</span><span class="err">r</span><span class="err">i</span><span class="err">n</span><span class="err">g</span>
+}
+
+<span class="kr">variable</span> <span class="s">&#34;db_username&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The username for the database&#34;</span>
+<span class="na">  type</span>        <span class="o">=</span> <span class="err">s</span><span class="err">t</span><span class="err">r</span><span class="err">i</span><span class="err">n</span><span class="err">g</span>
+}
+
+<span class="kr">variable</span> <span class="s">&#34;db_password&#34;</span> {
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The password for the database&#34;</span>
 <span class="na">  type</span>        <span class="o">=</span> <span class="err">s</span><span class="err">t</span><span class="err">r</span><span class="err">i</span><span class="err">n</span><span class="err">g</span>
 }
 </code></pre></div><div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># outputs.tf
 </span><span class="c1"></span>
-<span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span> <span class="s2">&#34;http_port&#34;</span> {
-<span class="na">  value</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">h</span><span class="err">t</span><span class="err">t</span><span class="err">p</span><span class="err">_</span><span class="err">p</span><span class="err">o</span><span class="err">r</span><span class="err">t</span>
+<span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span> <span class="s2">&#34;address&#34;</span> {
+<span class="na">  value</span>       <span class="o">=</span> <span class="err">a</span><span class="err">w</span><span class="err">s</span><span class="err">_</span><span class="err">d</span><span class="err">b</span><span class="err">_</span><span class="err">i</span><span class="err">n</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">n</span><span class="err">c</span><span class="err">e</span><span class="p">.</span><span class="err">e</span><span class="err">x</span><span class="err">a</span><span class="err">m</span><span class="err">p</span><span class="err">l</span><span class="err">e</span><span class="p">.</span><span class="err">a</span><span class="err">d</span><span class="err">d</span><span class="err">r</span><span class="err">e</span><span class="err">s</span><span class="err">s</span>
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;Connect to the database at this endpoint&#34;</span>
 }
-</code></pre></div><h2 id="heading">总结</h2>
+
+<span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span> <span class="s2">&#34;port&#34;</span> {
+<span class="na">  value</span>       <span class="o">=</span> <span class="err">a</span><span class="err">w</span><span class="err">s</span><span class="err">_</span><span class="err">d</span><span class="err">b</span><span class="err">_</span><span class="err">i</span><span class="err">n</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">n</span><span class="err">c</span><span class="err">e</span><span class="p">.</span><span class="err">e</span><span class="err">x</span><span class="err">a</span><span class="err">m</span><span class="err">p</span><span class="err">l</span><span class="err">e</span><span class="p">.</span><span class="err">p</span><span class="err">o</span><span class="err">r</span><span class="err">t</span>
+<span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The port the database is listening on&#34;</span>
+}
+</code></pre></div><p>像Jack一样，Jane编写了一个通用模块：<code>mysql_database</code>（为了阅读方便省去了细节部分），其他团队可以调用这一模块。Jane和Jack根据规范，编写了统一格式的模块。格式统一的模块能够减少团队之间的障碍，促进工作顺利进行下去。调用Jane编写的模块会生成一个由AWS完全托管的MySQL数据库服务（如下图所示）。DevOps中的团队成员各司其职，都输出了相对独立的模块，因此，需要Tony将Jane和Jack的成果集成在一起才能部署网站应用并对外发布。</p>
+<p><img src="https://2cloudlab.com/images/blog/only-mysql-database.png" alt=""></p>
+<h2 id="heading">总结</h2>
 <p>Terraform主要解决了创建资源和管理资源的问题，随着云计算的普及，Terraform的优势更加明显！Terraform支持大多数云服务商，包括AWS、GCP、Azure Cloud和阿里云等，DevOps工程师只需要编写脚本文件并使用Terraform执行它们，就可以创建和管理基础资源，这些资源构成了产品或服务所需的运行环境。将资源代码化(也就是Infrastructure as code)的好处是可以引入软件工程管理实践经验来更好地发布软件。这些经验包括版本控制、自动化测试、模块复用、Code Review和编写文档等。为了帮助企业打造世界级CICD，除了需要熟练掌握Terraform知识以外，还需要结合软件工程实践经验。因此，企业需要专门成立一个DevOps团队来服务于企业内部不同团队以及对外发布产品。当引入一个团队的时候，就需要考虑多人协作和规范的问题。使用Terraform工具所生成的真实环境有各种各样的依赖关系，任何一次局部修改，都有可能导致整个运行环境瘫痪，因此要严格隔离不同环境，比如test、stage和prod环境。除此之外DevOps要定义一些规范，这些规范不仅能够使团队内部达成共识，而且能够更加有效地使外部团队消化DevOps的输出成果，最终使得DevOps运动能够在企业内部顺利运转起来。</p>
-<p>在企业中实施DevOps是一个漫长的过程，这个过程涉及到了多方面的内容。为了能够更好地在企业中实施DevOps，让我们从这篇文章:<a href="https://2cloudlab.com/blog/how-to-test-terraform-code/">&lt;让产品7*24小时持续服务用户&ndash;如何测试Terraform&gt;</a>开始。</p>
+<p>在企业中实施DevOps是一个漫长的过程，这个过程涉及了多方面的内容。为了能够更好地在企业中实施DevOps，让我们从这篇文章:<a href="https://2cloudlab.com/blog/how-to-test-terraform-code/">&lt;让产品7*24小时持续服务用户&ndash;如何测试Terraform&gt;</a>开始。</p>
 <p><em><strong><a href="https://2cloudlab.com/">2cloudlab.com</a>为企业准备产品的运行环境，只需要1天！</strong></em></p>
 
                 </div>
