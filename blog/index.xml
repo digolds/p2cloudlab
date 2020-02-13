@@ -18,7 +18,14 @@
       
       <guid>https://2cloudlab.com/blog/how-to-test-terraform-code/</guid>
       <description>软件产品研发完成并不能说明可以对外发布。在企业中，经常发生这种情况：软件产品研发完了却没法部署到线上环境，或者，研发团队、测试团队和DevOps团队花了无数个夜晚最终勉强上线了容易奔溃的软件产品。这类问题导致软件产品无法7*24小时全天候为用户服务，最终给企业造成了巨大损失，因此企业需要寻找解决这类问题的方案。
-对外发布软件产品的理想情况是这样的：**产品经理的一个想法可以一周甚至是一天之内变成线上功能，以便用户及时享用！**实现这种情况的基本要素是：自动化测试和增量发布。自动化测试包括软件产品的测试，也包括基础设施代码的测试。当软件产品功能正常时，如何保证其所依赖的运行环境也是正常的？对于这个问题，需要从以下几个方面来解决。</description>
+对外发布软件产品的理想情况是这样的：产品经理的一个想法可以一周甚至是一天之内变成线上功能，以便用户及时享用！实现这种情况的基本要素是：自动化测试和增量发布。自动化测试包括软件产品的测试，也包括基础设施代码的测试。当软件产品功能正常时，如何保证其所依赖的运行环境也是正常的？对于这个问题，需要从以下几个方面来解决。
+ 编写Terraform测试用例 针对Terraform编写单元测试（Unit Test） 针对Terraform编写集成测试（Integration Test） 针对Terraform编写端到端的测试（End-to-End Test） 静态检测Terraform的编码 为测试环境中的资源定制清除策略 总结  编写Terraform测试用例 敬请期待&amp;hellip;
+针对Terraform编写单元测试（Unit Test） 敬请期待&amp;hellip;
+针对Terraform编写集成测试（Integration Test） 敬请期待&amp;hellip;
+针对Terraform编写端到端的测试（End-to-End Test） 敬请期待&amp;hellip;
+静态检测Terraform的编码 敬请期待&amp;hellip;
+为测试环境中的资源定制清除策略 敬请期待&amp;hellip;
+总结 敬请期待&amp;hellip;</description>
     </item>
     
     <item>
