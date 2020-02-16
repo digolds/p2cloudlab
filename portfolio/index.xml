@@ -21,7 +21,7 @@
  为何构建企业级AWS账号体系 构建企业级AWS账号体系的基本思想  为何构建企业级AWS账号体系 使用AWS服务前，我们需要到AWS官网注册一个账号。通过这个账号就可以使用AWS提供的各种服务，比如：EC2、S3、CloudWatch等。由于一个研发团队由多人组成，因此需要为每一个团队成员准备一个AWS账号。为了能够有效地管理这些账号，此时需要构建一个账号体系，这个账号体系的作用如下：
  隔离  使用不同的AWS账号能够将不同的环境（dev、stage、prod）独立开来，以免研发人员操作失误而导致prod环境奔溃。除此之外，隔离不同的环境能够杜绝这类事情的发生：外来攻击者登陆到了stage环境，而prod环境依然得到了保护。
 安全  构建有效的账户体系能够统一管理 If you configure your AWS account structure correctly, you’ll be able to manage all user accounts in one place, making it easier to enforce password policies, multi-factor authentication, key rotation, and other security requirements. Using multiple AWS accounts also makes it easier to have fine-grained control over what permissions each developer gets in each environment.
-Auditing and reporting A properly configured AWS account structure will allow you to maintain an audit trail of all the changes happening in all your environments, check if you’re adhering to compliance requirements, and detect anomalies.</description>
+Auditing and reporting  A properly configured AWS account structure will allow you to maintain an audit trail of all the changes happening in all your environments, check if you’re adhering to compliance requirements, and detect anomalies.</description>
     </item>
     
     <item>
