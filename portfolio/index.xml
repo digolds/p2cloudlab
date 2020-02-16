@@ -6,10 +6,23 @@
     <description>Recent content in Portfolios on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 12 Jul 2018 16:59:54 +0600</lastBuildDate>
+    <lastBuildDate>Fri, 12 Jul 2019 16:58:55 +0600</lastBuildDate>
     
 	<atom:link href="https://2cloudlab.com/portfolio/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>如何构建企业级AWS账号体系</title>
+      <link>https://2cloudlab.com/portfolio/how-to-construct-enterprise-accounts/</link>
+      <pubDate>Fri, 12 Jul 2019 16:58:55 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/portfolio/how-to-construct-enterprise-accounts/</guid>
+      <description>当使用AWS作为基础服务为分布式软件产品提供资源时，需要做的事情太多了。有时需要查看使用AWS服务的费用、有时需要在dev环境中测试研发的功能、有时需要在stage环境中模拟prod环境的运行情况、有时需要在prod环境中上线新功能。如果研发团队里有100人都能对AWS进行各种个样的操作，那么后果是非常混乱不堪的：比如，有些成员的操作导致prod环境奔溃了、有些成员完成测试时忘记销毁资源最终导致费用变高、甚至没有察觉外来攻击者使用了企业的AWS资源等。为了杜绝这些情况发生，企业在使用AWS服务之前，需要为研发团队构建一套有效的AWS账号体系。本文将围绕如何构建企业级AWS账号体系展开，最终提供一套可实施的方案。
+ 为何构建企业级AWS账号体系 构建企业级AWS账号体系的基本思想  为何构建企业级AWS账号体系 使用AWS服务前，我们需要到AWS官网注册一个账号。通过这个账号就可以使用AWS提供的各种服务，比如：EC2、S3、CloudWatch等。由于一个研发团队由多人组成，因此需要为每一个团队成员准备一个AWS账号。为了能够有效地管理这些账号，此时需要构建一个账号体系，这个账号体系的作用如下：
+ 隔离  使用不同的AWS账号能够将不同的环境（dev、stage、prod）独立开来，以免研发人员操作失误而导致prod环境奔溃。除此之外，隔离不同的环境能够杜绝这类事情的发生：外来攻击者登陆到了stage环境，而prod环境依然得到了保护。
+安全  构建有效的账户体系能够统一管理 If you configure your AWS account structure correctly, you’ll be able to manage all user accounts in one place, making it easier to enforce password policies, multi-factor authentication, key rotation, and other security requirements. Using multiple AWS accounts also makes it easier to have fine-grained control over what permissions each developer gets in each environment.
+Auditing and reporting A properly configured AWS account structure will allow you to maintain an audit trail of all the changes happening in all your environments, check if you’re adhering to compliance requirements, and detect anomalies.</description>
+    </item>
     
     <item>
       <title>如何使用Infrastructure as Code可复用库</title>
@@ -17,15 +30,6 @@
       <pubDate>Thu, 12 Jul 2018 16:59:54 +0600</pubDate>
       
       <guid>https://2cloudlab.com/portfolio/caramel-bottle/</guid>
-      <description>Consectur in Bibendum Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</description>
-    </item>
-    
-    <item>
-      <title>如何构建企业级账号体系</title>
-      <link>https://2cloudlab.com/portfolio/how-to-construct-enterprise-accounts/</link>
-      <pubDate>Thu, 12 Jul 2018 16:58:55 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/portfolio/how-to-construct-enterprise-accounts/</guid>
       <description>Consectur in Bibendum Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</description>
     </item>
     
