@@ -109,7 +109,7 @@
                 
                 <div class="work-single-image">
                     
-                    <img class="img-fluid w-100" src="https://2cloudlab.com/images/portfolio/multi-aws-accounts.jpg" alt="work-single-image">
+                    <img class="img-fluid w-100" src="https://2cloudlab.com/images/portfolio/multi-aws-accounts.png" alt="work-single-image">
                 </div>
                 
             </div>
@@ -129,16 +129,16 @@
 <ol>
 <li>隔离</li>
 </ol>
-<p>使用不同的AWS账号能够将不同的环境（dev、stage、prod）独立开来，以免研发人员操作失误而导致prod环境奔溃。除此之外，隔离不同的环境能够杜绝这类事情的发生：外来攻击者登陆到了stage环境，而prod环境依然得到了保护。</p>
+<p>使用不同的AWS账号能够将不同的环境（dev、stage、prod）独立开来，以免任何一个环境出问题了不会影响其它环境。隔离不同的环境能够带来这些好处：外来攻击者登陆到了stage环境，而prod环境依然得到了保护；研发人员修改stage环境，prod环境的依然正常工作。</p>
 <ol start="2">
 <li>安全</li>
 </ol>
-<p>构建有效的账户体系能够统一管理
-If you configure your AWS account structure correctly, you’ll be able to manage all user accounts in one place, making it easier to enforce password policies, multi-factor authentication, key rotation, and other security requirements. Using multiple AWS accounts also makes it easier to have fine-grained control over what permissions each developer gets in each environment.</p>
+<p>构建有效的账户体系能够统一管理用户。管理员能够轻松地在一个集中的地方为所有用户启动密码策略（比如密码的长度、密码组成的字符类型等）、MFA认证（比如短信或邮箱校验码通知）、定期修改密码等。除此之外，研发人员的权限控制粒度更细了。比如管理员可以方便地为研发人员赋予某个环境下某些具体的权限。</p>
 <ol start="3">
-<li>Auditing and reporting</li>
+<li>记录与报告</li>
 </ol>
-<p>A properly configured AWS account structure will allow you to maintain an audit trail of all the changes happening in all your environments, check if you’re adhering to compliance requirements, and detect anomalies. Moreover, you’ll be able to have consolidated billing, with all the charges for all of your AWS accounts in one place, including cost breakdowns by account, service, tag, etc.</p>
+<p>一个有效的账户体系能够记录所有人员的操作历史。在一个有效的账户体系下，任何用户的任何操作都会留下记录，并统一存储在一个集中的地方。除此之外，如果有外来者入侵，那么他们的操作和行踪也会被记录下来，以便查明漏洞。使用AWS服务会产生费用，那么一个有效的账户体系能够集中生成各个环境的费用情况，包括每个环境的各个资源的细节，避免了漏算的情况。</p>
+<p>以上提到的好处是建立在一个有效的账号体系下的。要想更加顺利地研发产品的前提是：建立一个有效的账号体系。接下来，让我们看看一个企业级AWS账号体系应该是怎样的。</p>
 <h2 id="aws-1">构建企业级AWS账号体系的基本思想</h2>
 <p>构建AWS账号体系能够带来诸多好处，那么接下来为企业构建一个有效的AWS账号体系，如下图所示：</p>
 <p>上图的账号体系是一步一步构建的，让我们看看每一个过程中的具体内容。</p>
