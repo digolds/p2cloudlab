@@ -101,9 +101,23 @@
     </div>
 </section>
 
+<style type="text/css">
+    @media (min-width: 1200px) {
+    .post-container{
+        max-width: 800px;
+    }
+  }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
+}
+</style>
+
 <!-- work details part start -->
 <section class="work-single">
-    <div class="container">
+    <div class="container post-container">
         <div class="row">
             <div class="col-lg-12">
                 
@@ -112,10 +126,6 @@
                     <img class="img-fluid w-100" src="https://2cloudlab.com/images/portfolio/multi-aws-accounts.png" alt="work-single-image">
                 </div>
                 
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-8">
                 
                 
                 <div class="work-single-content">
@@ -140,7 +150,8 @@
 <p>一个有效的账户体系能够记录所有人员的操作历史。在一个有效的账户体系下，任何用户的任何操作都会留下记录，并统一存储在一个集中的地方。除此之外，如果有外来者入侵，那么他们的操作和行踪也会被记录下来，以便查明漏洞。使用AWS服务会产生费用，那么一个有效的账户体系能够集中生成各个环境的费用情况，包括每个环境的各个资源的细节，避免了漏算的情况。</p>
 <p>以上提到的好处是建立在一个有效的账号体系下的。要想更加顺利地研发产品的前提是：建立一个有效的账号体系。接下来，让我们看看一个企业级AWS账号体系应该是怎样的。</p>
 <h2 id="aws-1">构建企业级AWS账号体系的基本思想</h2>
-<p>构建AWS账号体系能够带来诸多好处，那么接下来为企业构建一个有效的AWS账号体系，如下图所示：</p>
+<p>构建AWS账号体系能够带来诸多好处，因此企业在研发初期就应该构建这种账号体系。构建一个有效的AWS账号体系的方案有很多，接下来本文将提出一个可实施并且简单的企业级AWS账号体系解决方案，其设计思路如下图所示：</p>
+<p><img src="https://gruntwork.io/assets/img/guides/aws-account/aws-account-structure.png" alt=""></p>
 <p>上图的账号体系是一步一步构建的，让我们看看每一个过程中的具体内容。</p>
 <ol>
 <li>创建root账号，并用root用户登陆</li>
@@ -180,25 +191,6 @@ Policy指定了Role可操作的资源</p>
 
                 </div>
                 
-            </div>
-            <div class="col-lg-4">
-                
-                <div class="work-single-sidebar">
-                    
-                    <h5>Clients</h5>
-                    <h6>Julia Robertson</h6>
-                    
-                    
-                    <h5>date</h5>
-                    <h6>November 20, 2017</h6>
-                    
-                    <h5>category</h5>
-                    <h6>Investment, Business</h6>
-                    
-                    <h5>locations</h5>
-                    <h6>1201 park street, Avenue, Dhaka</h6>
-                    
-                </div>
             </div>
         </div>
     </div>
