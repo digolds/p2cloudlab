@@ -199,17 +199,17 @@
 </ol>
 <p>运行Terraform之后，将会生成一个state文件，这个文件记录了现实世界云服务资源的最终状态。没有这个state文件，那么terraform将认为云服务资源没有创建出来。因此如果这个state文件生成在本地，那么将引发一个问题：2名DevOps工程师执行同一个<code>.tf</code>脚本。工程师A生成了云计算资源R，紧接着工程师B再次运行该脚本，Terraform提示工程师B资源R将被创建。这个问题引发的原因在于工程师B没法获取工程师A的state文件，从而导致Terraform误认为资源R没有被创建出来（实际已经被工程师A创建了）。因此需要通过将state文件共享才能解决这个问题。</p>
 <p>共享的方法有很多种，其中一种是利用AWS S3和DynamoDb服务来实现共享。这种方法的好处是容易实现而且方便加密。使用AWS服务来实现state文件共享的第一步是：在AWS上创建S3对象存储和DynamoDb Key-Value存储（它们的名称分别是：terraform-remote-state-storage-s3和terraform-state-lock-dynamo）。接下来只要在<code>.tf</code>文件中配置以下信息就能实现state文件共享。</p>
-<pre><code># main.tf
-terraform {
- backend “s3” {
- encrypt = true
- bucket = &quot;terraform-remote-state-storage-s3&quot;
- dynamodb_table = &quot;terraform-state-lock-dynamo&quot;
- region = us-west-2
- key = path/to/state/file
+<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># main.tf
+</span><span class="c1"></span><span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
+ <span class="err">b</span><span class="err">a</span><span class="err">c</span><span class="err">k</span><span class="err">e</span><span class="err">n</span><span class="err">d</span> <span class="err">“</span><span class="err">s</span><span class="m">3</span><span class="err">”</span> {
+<span class="na"> encrypt</span> <span class="o">=</span> <span class="kt">true</span>
+<span class="na"> bucket</span> <span class="o">=</span> <span class="s2">&#34;terraform-remote-state-storage-s3&#34;</span>
+<span class="na"> dynamodb_table</span> <span class="o">=</span> <span class="s2">&#34;terraform-state-lock-dynamo&#34;</span>
+<span class="na"> region</span> <span class="o">=</span> <span class="err">u</span><span class="err">s</span><span class="err">-</span><span class="err">w</span><span class="err">e</span><span class="err">s</span><span class="err">t</span><span class="err">-</span><span class="m">2</span>
+<span class="na"> key</span> <span class="o">=</span> <span class="err">p</span><span class="err">a</span><span class="err">t</span><span class="err">h</span><span class="err">/</span><span class="err">t</span><span class="err">o</span><span class="err">/</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">t</span><span class="err">e</span><span class="err">/</span><span class="err">f</span><span class="err">i</span><span class="err">l</span><span class="err">e</span>
  }
 }
-</code></pre><p>通过以上配置，每次运行<code>terraform apply</code>都会先执行加锁操作（作用到terraform-state-lock-dynamo）；接着生成state文件，并将其存储到指定的S3对象存储（由terraform-remote-state-storage-s3指定），S3自动对state文件加密；最后再执行解锁操作（作用到terraform-state-lock-dynamo）。解锁和加锁的作用在于保证存储state文件时只有一个人在操作。</p>
+</code></pre></div><p>通过以上配置，每次运行<code>terraform apply</code>都会先执行加锁操作（作用到terraform-state-lock-dynamo）；接着生成state文件，并将其存储到指定的S3对象存储（由terraform-remote-state-storage-s3指定），S3自动对state文件加密；最后再执行解锁操作（作用到terraform-state-lock-dynamo）。解锁和加锁的作用在于保证存储state文件时只有一个人在操作。</p>
 <h2 id="devopsterraform">在企业中建立Devops团队以及Terraform规范</h2>
 <p><strong>企业需要组建一支DevOps团队来打造CICD</strong>。在企业内部，一般是由devops工程师来使用terraform工具，编写terraform脚本，除此之外devops工程师还需要使用其它工具比如Python、Go、Bash、Packer、Git、Docker、Kubernetes来配合。除了掌握这些工具之外，还需要具备软件工程方面的经验和devops方面的经验。拥有这些经验和工具是打造一条<strong>高效CICD流水线</strong>的基本条件。<strong>CICD</strong>分为2个阶段：<strong>持续集成（CI）和持续发布（CD）</strong>，每个阶段都有相对应的任务清单，比如：CI阶段需要解决研发、版本控制、测试等问题，而CD阶段需要解决基础资源创建、部署、配置、监控、安全、规范、优化等问题。根据企业自身情况，每个任务都能细分出更多的小任务。</p>
 <p>面对如此多的任务，企业需要组建一个DevOps团队来专门处理这些任务。团队成员由DevOps工程师组成，每位工程师处理不同的任务，有的处理CI部分，有的处理CD部分。DevOps经常需要服务于企业内部(比如根据法规部门的要求引入隐私条款，以便符合当地法律要求)、各部门以及企业外部的客户(比如对外界发布产品)。结合之前多人同时使用terraform的经验，devops工程师便可以通过git来贡献自己的成果，但是如何确保每一次输出的成果是高质量的，那就需要通过规范来约束。这些规范的建立一般是由经验丰富的系统管理员来负责，这个管理员其实就是管理devops团队的leader。接下让我们把注意力集中在如何建立规范，以便devops的输出成果能够方便地应用于各个团队。</p>
