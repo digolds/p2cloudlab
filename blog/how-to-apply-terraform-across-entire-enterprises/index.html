@@ -178,19 +178,38 @@
 <p><img src="https://2cloudlab.com/images/blog/ec2-dashboard.png" alt=""></p>
 <p>这个简单的例子解释了terraform运行过程中所涉及的步骤。企业里也是基于以上过程来使用terraform，但是区别在于:企业内部是由多人同时编写并执行terraform文件。这就引发另外一个问题：如何协调不同人员使用terraform所完成的工作成果以及如何避免文件冲突？解决这个问题最好办法是引入软件工程管理方面的经验。</p>
 <h2 id="terraform-2">如何解决多人同时使用Terraform的问题</h2>
-<p><strong>CICD</strong>的搭建需要多方团队共同参与，这就意味着Terraform工具需要多人来使用。通过以上简单的示例可知，Terraform是按照以下步骤工作的：</p>
+<p>通过以上简单的示例可知，Terraform的使用过程如下：</p>
 <ol>
-<li>DevOps工程师编写<code>.tf</code>脚本</li>
-<li>为Terraform配置云服务账号</li>
-<li>使用Terraform执行<code>.tf</code>脚本生成基础资源</li>
+<li>为每名研发人员配置一个云服务账号，该账号的权限应该根据这名研发人员的角色而设置</li>
+<li>DevOps工程师编写<code>.tf</code>脚本，并在本地运行和测试，通过测试之后，为这些<code>.tf</code>脚本打上版本号，最终上传到版本控制系统(比如git)</li>
+<li>使用Terraform执行<code>.tf</code>脚本并在生产环境中生成基础资源</li>
+<li>Terraform会生成state文件，该文件记录了生产环境中资源的最终状态。也就是说这些<code>.tf</code>脚本在现实世界中生成的资源状态与state文件中记录的状态是一一对应的</li>
 </ol>
-<p>如果一切顺利，那么软件所依赖的环境会顺利生成出来，但是现实世界中，有诸多不确定的因素导致无法顺利生成环境。这些因素大部分是人为的，因此需要一套工具和规则来杜绝人为因素所引发的问题。以下清单列举了多人同时使用terraform的最佳实践:</p>
+<p>如果只有一名DevOps工程师使用Terraform工具，那么就不会存在分享<code>.tf</code>文件和state文件的问题，但是如果有多名DevOps工程师共同编写<code>.tf</code>脚本并且这些脚本是需要组合使用的，那么就需要引入一套多人协作的机制。这套机制需要解决的问题有：1.分配不同的云服务账号；2.如何对<code>.tf</code>文件进行版本管理；3.共享state文件。</p>
 <ol>
-<li>需要准备版本控制工具(Git)和源码托管仓库(GitHub)</li>
-<li>为每一名员工提供云服务商的账号，这些账号的权限随着员工角色的改变而改变</li>
+<li>分配不同的云服务账号</li>
+</ol>
+<p>为不同研发人员分配不同云服务账号的原因在于：同一管理所有研发人员，减少研发人员因权限的问题破坏生产环境或者其它重要的环境。在云计算的世界里，有太多的因素需要考虑，其中安全因素尤其重要。如果没有合理地分配云服务账号，那么就无法有效地追踪每一名研发人员的操作记录。如果外来入侵者登录了你的云服务账号，那么这些混乱的操作记录将难以提供入侵者的行踪，从而管理人员将无法及时修复安全漏洞。因此在使用云服务之前，需要建立起多账号方案，<a href="https://2cloudlab.com/portfolio/how-to-construct-enterprise-accounts/">这篇文章</a>介绍了一种企业级多账号管理方案，通过实践这个方案将方便企业管理多人同时使用云服务进行研发的问题。</p>
+<ol start="2">
+<li>如何对<code>.tf</code>文件进行版本管理</li>
+</ol>
+<p>软件产品在每一个阶段都有其对应的功能，这些功能是通过每一次的迭代而添加的。要想在旧功能的基础上添加新的功能就需要引入版本控制系统。DevOps工程师会划分模块来编写<code>.tf</code>脚本，这些脚本每隔一段时间会引入新的功能或者修复漏洞，那么就需要类似于git一样的工具来记录每一次改动。除此之外，为了不影响外部使用这些模块，那么需要为这些模块打上版本号，使用者根据版本号来使用这些模块，编写这些模块的工程师则可以大胆更新模块。有了记录和版本的模块，接下来就是要发布给外部使用者，通过源码托管服务（比如github），这些模块能够方便地被其他人使用。引入源码托管服务也能够方便Code Review。</p>
+<ol start="3">
 <li>使用S3和DynamoDB服务存储与共享Terraform状态</li>
 </ol>
-<p>使用Git和GitHub是为了引入版本控制、Code Review等经验；为每名工程师配置独立的账号是为了工作过程不会影响到其他工程师；使用S3和DynamoDB可以为Terraform状态文件引入加密、版本和互斥等功能，Terraform状态文件可以被安全共享的同时保留以前的版本。</p>
+<p>运行Terraform之后，将会生成一个state文件，这个文件记录了现实世界云服务资源的最终状态。没有这个state文件，那么terraform将认为云服务资源没有创建出来。因此如果这个state文件生成在本地，那么将引发一个问题：2名DevOps工程师执行同一个<code>.tf</code>脚本。工程师A生成了云计算资源R，紧接着工程师B再次运行该脚本，Terraform提示工程师B资源R将被创建。这个问题引发的原因在于工程师B没法获取工程师A的state文件，从而导致Terraform误认为资源R没有被创建出来（实际已经被工程师A创建了）。因此需要通过将state文件共享才能解决这个问题。</p>
+<p>共享的方法有很多种，其中一种是利用AWS S3和DynamoDb服务来实现共享。这种方法的好处是容易实现而且方便加密。使用AWS服务来实现state文件共享的第一步是：在AWS上创建S3对象存储和DynamoDb Key-Value存储（它们的名称分别是：terraform-remote-state-storage-s3和terraform-state-lock-dynamo）。接下来只要在<code>.tf</code>文件中配置以下信息就能实现state文件共享。</p>
+<pre><code># main.tf
+terraform {
+ backend “s3” {
+ encrypt = true
+ bucket = &quot;terraform-remote-state-storage-s3&quot;
+ dynamodb_table = &quot;terraform-state-lock-dynamo&quot;
+ region = us-west-2
+ key = path/to/state/file
+ }
+}
+</code></pre><p>通过以上配置，每次运行<code>terraform apply</code>都会先执行加锁操作（作用到terraform-state-lock-dynamo）；接着生成state文件，并将其存储到指定的S3对象存储（由terraform-remote-state-storage-s3指定），S3自动对state文件加密；最后再执行解锁操作（作用到terraform-state-lock-dynamo）。解锁和加锁的作用在于保证存储state文件时只有一个人在操作。</p>
 <h2 id="devopsterraform">在企业中建立Devops团队以及Terraform规范</h2>
 <p><strong>企业需要组建一支DevOps团队来打造CICD</strong>。在企业内部，一般是由devops工程师来使用terraform工具，编写terraform脚本，除此之外devops工程师还需要使用其它工具比如Python、Go、Bash、Packer、Git、Docker、Kubernetes来配合。除了掌握这些工具之外，还需要具备软件工程方面的经验和devops方面的经验。拥有这些经验和工具是打造一条<strong>高效CICD流水线</strong>的基本条件。<strong>CICD</strong>分为2个阶段：<strong>持续集成（CI）和持续发布（CD）</strong>，每个阶段都有相对应的任务清单，比如：CI阶段需要解决研发、版本控制、测试等问题，而CD阶段需要解决基础资源创建、部署、配置、监控、安全、规范、优化等问题。根据企业自身情况，每个任务都能细分出更多的小任务。</p>
 <p>面对如此多的任务，企业需要组建一个DevOps团队来专门处理这些任务。团队成员由DevOps工程师组成，每位工程师处理不同的任务，有的处理CI部分，有的处理CD部分。DevOps经常需要服务于企业内部(比如根据法规部门的要求引入隐私条款，以便符合当地法律要求)、各部门以及企业外部的客户(比如对外界发布产品)。结合之前多人同时使用terraform的经验，devops工程师便可以通过git来贡献自己的成果，但是如何确保每一次输出的成果是高质量的，那就需要通过规范来约束。这些规范的建立一般是由经验丰富的系统管理员来负责，这个管理员其实就是管理devops团队的leader。接下让我们把注意力集中在如何建立规范，以便devops的输出成果能够方便地应用于各个团队。</p>
