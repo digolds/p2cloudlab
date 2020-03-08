@@ -153,7 +153,7 @@
 <h2 id="aws-1">构建企业级AWS账号体系的基本思想</h2>
 <p>构建AWS账号体系能够带来诸多好处，因此企业在研发初期就应该构建这种账号体系。构建一个有效的AWS账号体系的方案有很多，接下来本文将提出一个可实施并且简单的企业级AWS账号体系解决方案，其设计思路如下图所示：</p>
 <p><img src="https://2cloudlab.com/images/blog/aws-account-structure.png" alt=""></p>
-<p>上图的账号体系是分步构建的，每一步基本上围绕Users、Groups、Role以及Policy展开。这些组件（Users、Groups、Role以及Policy）是由AWS的IAM（Identity and Access Management）服务提供的，用户可以基于IAM服务来构建安全的用户访问机制。通过手动方式来创建企业级AWS账号体系无疑是具有挑战的，这种方式不仅容易出错，而且时间漫长，因此需要一种自动化的方式来解决这些挑战。2cloudlab所提供的<strong>across_account_assistant</strong>模块能够帮助企业快速且正确地构建企业级AWS账号体系。接下来让我们看看每一步所涉及的具体内容。</p>
+<p>上图的账号体系是分步构建的，每一步基本上围绕Users、Groups、Role以及Policy展开。这些组件（Users、Groups、Role以及Policy）是由AWS的IAM（Identity and Access Management）服务提供的，用户可以基于IAM服务来构建安全的用户访问机制。通过手动方式来创建企业级AWS账号体系无疑是具有挑战的，这种方式不仅容易出错，而且时间漫长，因此需要一种自动化的方式来解决这些挑战。2cloudlab所提供的<a href="https://github.com/2cloudlab/module_security/tree/master/modules/iam_across_account_assistant">across_account_assistant</a>模块能够帮助企业快速且正确地构建企业级AWS账号体系。接下来让我们看看每一步所涉及的具体内容。</p>
 <ol>
 <li>创建root账号，并用root用户登陆</li>
 </ol>
@@ -162,7 +162,7 @@
 <li>创建其它子账号，这些子账号里的Users能够创建和使用云资源；创建组以及每组成员（full_access和billing）</li>
 <li>统一管理所有子账号使用云服务而产生的费用。</li>
 </ul>
-<p>因此root用户需要创建2组人员：一组是管理人员（组名为full_access），他们负责创建和管理子账号；另外一组是财务人员(组名为billing)，他们负责管理费用。创建组的同时，需要指定哪些用户属于哪个组，这些操作步骤可以通过点击AWS的UI页面完成，但是这种手动方式容易出错而且十分耗时，因此推荐使用2cloudlab所提供的<a href="">across_account_assistant</a>模块来创建（最多需要一天就能建立完整的企业级AWS账号体系）。为了使billing组的用户能够访问账单相关的页面，需要root用户主动启动IAM访问账单的设置，具体设置如下（点击用户名，选择&quot;My Account&rdquo;，滑动到以下内容，将“Activate IAM Access”勾选并点击“Update”）：</p>
+<p>因此root用户需要创建2组人员：一组是管理人员（组名为full_access），他们负责创建和管理子账号；另外一组是财务人员(组名为billing)，他们负责管理费用。创建组的同时，需要指定哪些用户属于哪个组，这些操作步骤可以通过点击AWS的UI页面完成，但是这种手动方式容易出错而且十分耗时，因此推荐使用2cloudlab所提供的<a href="https://github.com/2cloudlab/module_security/tree/master/modules/iam_across_account_assistant">across_account_assistant</a>模块来创建（最多需要一天就能建立完整的企业级AWS账号体系）。为了使billing组的用户能够访问账单相关的页面，需要root用户主动启动IAM访问账单的设置，具体设置如下（点击用户名，选择&quot;My Account&rdquo;，滑动到以下内容，将“Activate IAM Access”勾选并点击“Update”）：</p>
 <p><img src="https://2cloudlab.com/images/blog/iam-user-access-to-billing.png" alt=""></p>
 <p>在创建组full_access和billing以及对应的成员之后，需要降低入侵root账号的风险。具体的操作方式为：为root用户开启MFA验证，其不能用于研发并需要安全放置，只允许少部分人知道，删除所有root用户相关的命令行方式登陆凭证，定期更换密码。从此之后退出root账号，转而用full_access的成员登陆并用于后续操作。</p>
 <p>使用full_access的成员登陆AWS之后，首先要做的事情是：创建cloud trail服务（推荐使用2cloudlab所提供的模块来创建），该服务是为了跟踪所有用户使用资源的情况，以便出问题的时候可以根据这些跟踪的信息定位问题发生的原因。其次需要创建organization服务，并使用organization服务创建security、dev、stage、prod和shared-service子账号。每一个子账号都有对应的邮箱，这个邮箱所对应的用户就是该子账号下的root用户。为了登陆这些子账号，需要重制每个子账号下root用户的密码。重制完成之后，需要登陆到各个子账号完成后续的构建。</p>
@@ -182,7 +182,7 @@
 <li>为该role指定permission policy，该policy的作用是限制这个role能够在stage账号中使用哪类资源以及对其所执行的操作</li>
 </ul>
 <p>为了在其它子账号中使用stage子账号中创建的role，则需要在其它账号中授予用户权限（比如在security子账号中为across_account_dev_developers_access赋予访问allow_dev_access_from_other_account的权限，这一步通过为across_account_dev_developers_access指定inline policy完成）。</p>
-<p>在stage账号中创建其它role的过程类似，为了一次性完成stage账号中所有role的创建，推荐使用2cloudlab所提供的<a href="">across_account_assistant</a>模块来辅助。dev、prod、shared-service等账号也需要按照类似的方式创建对应的role。</p>
+<p>在stage账号中创建其它role的过程类似，为了一次性完成stage账号中所有role的创建，推荐使用2cloudlab所提供的<a href="https://github.com/2cloudlab/module_security/tree/master/modules/iam_across_account_assistant">across_account_assistant</a>模块来辅助。dev、prod、shared-service等账号也需要按照类似的方式创建对应的role。</p>
 <p>当完成对所有子账号的构建之后，需要将root用户的登陆方式限制，只允许其通过网站的方式登陆子账号，并且将所有命令行登陆的凭证删除。</p>
 <ol start="4">
 <li>在security账号中，使用admin用户创建cloudtrail服务</li>
