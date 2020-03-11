@@ -17,12 +17,12 @@
       <pubDate>Tue, 10 Mar 2020 12:29:40 +0600</pubDate>
       
       <guid>https://2cloudlab.com/blog/how-to-authority-aws-through-command-line/</guid>
-      <description>在DevOps的世界里有太多工具需要掌握，命令行工具就是其中之一。企业在打造DevOps的过程中会经常使用命令行工具访问AWS服务。一名研发人员每天可能要在命令行里反复（平均50次）输入登录AWS的凭证才能创建资源，如果为每一名账号引入安全机制，那么这个登录流程耗时更长！为了减轻这种重复登录所带来的痛苦，则需要一个更加友好的命令行工具来辅助，这个工具就是：aws-vault。
+      <description>在DevOps的世界里有太多工具需要掌握，命令行工具就是其中之一。企业在打造DevOps的过程中会经常使用命令行工具访问AWS服务。一名研发人员每天可能要在命令行里反复（平均50~60次）输入登录AWS的凭证才能创建资源，如果为每一名账号引入安全机制，那么这个登录流程耗时更长！为了减轻这种重复登录所带来的痛苦，则需要一个更加友好的命令行工具来辅助，这个工具就是：aws-vault。
  什么是aws-vault工具 aws-vault工具的使用指南 总结  什么是aws-vault工具 aws-vault是一个命令行工具，这个工具的主要作用在于帮助研发人员以命令行的方式快速访问AWS服务，最终减轻了每一名研发人员因反复登录而带来的负担，从而提高企业整体的研发效率。
 aws-vault是一款用go语言编写且开源的命令行工具，其项目地址在这里。aws-vault主要解决安全和自动设置凭证的问题。
 初次运行aws-vault时，只需要在命令行里输入如下指令：
 aws-vault add slz 根据提示输入AWS_ACCESS_KEY_ID和AWS_SECRET_ACCESS_KEY信息。如果这个凭证具有操作AWS资源的权限，那么研发人员就能通过aws-vault工具高效访问AWS服务。此外，这2个登录信息是以密文的形式存储的，因此aws-vault进一步保护了登录凭证。如果该用户需要使用MFA，那么只需要在文件~/.aws/config加入以下内容：
-# config文件 [profile slz] mfa_serial = arn:aws:iam::120699691161:mfa/Tony aws-vault工具会自动到这个文件中读取该MFA地址，并提示研发人员键入6位安全码。如果研发人员需要用到AWs所提供的role，那么也可以按照类似的方式在该文件中添加以下内容：
+# config文件 [profile slz] mfa_serial = arn:aws:iam::120699691161:mfa/Tony aws-vault工具会自动到这个文件中读取该MFA地址，并提示研发人员键入6位安全码。如果研发人员需要用到AWS所提供的role，那么也可以按照类似的方式在该文件中添加以下内容：
 # config文件 [profile slz] role_arn = arn:aws:iam::120699691161:role/update_role aws-vault工具会自动读取这个role，并自动获取该role所拥有的权限来访问AWS服务。
 设置好以上登录凭证之后，研发人员只需要执行以下命令就能自动访问AWS资源:
 aws-vault exec slz -- aws iam list-users 以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
@@ -112,9 +112,8 @@ security账号下的所有用户都不会在该账号下创建资源，反而会
  为role选择一个名字，并创建role 为该role指定trusted policy，该policy的作用是指定能够使用该role的其它账号（比如security账号，通过12位的ID来识别） 为该role指定permission policy，该policy的作用是限制这个role能够在stage账号中使用哪类资源以及对其所执行的操作  为了在其它子账号中使用stage子账号中创建的role，则需要在其它账号中授予用户权限（比如在security子账号中为across_account_dev_developers_access赋予访问allow_dev_access_from_other_account的权限，这一步通过为across_account_dev_developers_access指定inline policy完成）。
 在stage账号中创建其它role的过程类似，为了一次性完成stage账号中所有role的创建，推荐使用2cloudlab所提供的across_account_assistant模块来辅助。dev、prod、shared-service等账号也需要按照类似的方式创建对应的role。
 当完成对所有子账号的构建之后，需要将root用户的登陆方式限制，只允许其通过网站的方式登陆子账号，并且将所有命令行登陆的凭证删除。
-在security账号中，使用admin用户创建cloudtrail服务  敬请期待
-在security账号中，a)使用admin用户，b)通过role获取子账号中的登陆凭证，c)提供MFA Token，最终拿到子账号的登陆凭证创建cloudtrail服务  敬请期待
-一天之内构建企业级AWS账号体系的操作指南 </description>
+在root账号中创建CloudTrail服务  到目前为止，你已经在root、security、dev、stage、prod、shared-service和test账号中创建了对应的IAM user、IAM group、IAM role和IAM policy。研发人员便可以使用自己的账号登陆AWS服务，并根据自己拥有的权限创建对应的资源。为了能记录每一位用户使用AWS服务的情况，则需要创建CloudTrail服务。该服务可以记录每一名用户使用AWS服务的踪迹，并将这些信息归档到AWS的S3服务。开启cloudtrail的好处是：可以及时通过归档的记录来调查外来入侵者的踪迹，从而修复安全漏洞。
+ 在security账号中创建CloudTrail服务</description>
     </item>
     
     <item>

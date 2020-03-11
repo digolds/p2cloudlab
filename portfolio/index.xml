@@ -36,9 +36,8 @@ security账号下的所有用户都不会在该账号下创建资源，反而会
  为role选择一个名字，并创建role 为该role指定trusted policy，该policy的作用是指定能够使用该role的其它账号（比如security账号，通过12位的ID来识别） 为该role指定permission policy，该policy的作用是限制这个role能够在stage账号中使用哪类资源以及对其所执行的操作  为了在其它子账号中使用stage子账号中创建的role，则需要在其它账号中授予用户权限（比如在security子账号中为across_account_dev_developers_access赋予访问allow_dev_access_from_other_account的权限，这一步通过为across_account_dev_developers_access指定inline policy完成）。
 在stage账号中创建其它role的过程类似，为了一次性完成stage账号中所有role的创建，推荐使用2cloudlab所提供的across_account_assistant模块来辅助。dev、prod、shared-service等账号也需要按照类似的方式创建对应的role。
 当完成对所有子账号的构建之后，需要将root用户的登陆方式限制，只允许其通过网站的方式登陆子账号，并且将所有命令行登陆的凭证删除。
-在security账号中，使用admin用户创建cloudtrail服务  敬请期待
-在security账号中，a)使用admin用户，b)通过role获取子账号中的登陆凭证，c)提供MFA Token，最终拿到子账号的登陆凭证创建cloudtrail服务  敬请期待
-一天之内构建企业级AWS账号体系的操作指南 </description>
+在root账号中创建CloudTrail服务  到目前为止，你已经在root、security、dev、stage、prod、shared-service和test账号中创建了对应的IAM user、IAM group、IAM role和IAM policy。研发人员便可以使用自己的账号登陆AWS服务，并根据自己拥有的权限创建对应的资源。为了能记录每一位用户使用AWS服务的情况，则需要创建CloudTrail服务。该服务可以记录每一名用户使用AWS服务的踪迹，并将这些信息归档到AWS的S3服务。开启cloudtrail的好处是：可以及时通过归档的记录来调查外来入侵者的踪迹，从而修复安全漏洞。
+ 在security账号中创建CloudTrail服务</description>
     </item>
     
     <item>
