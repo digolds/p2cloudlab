@@ -119,7 +119,7 @@
             <div class="col-md-12">
                 
                 <div class="post-img">
-                    <img class="img-fluid" alt="" src="https://2cloudlab.com/images/blog/how-to-test-terraform-code.jpg">
+                    <img class="img-fluid" alt="" src="https://2cloudlab.com/images/blog/provide-stable-running-environment-for-products.jpg">
                 </div>
                 
                 <div class="post-content">
@@ -128,21 +128,25 @@
 <ol>
 <li>2cloudlab模块的自动化测试</li>
 <li>静态检测Terraform的编码</li>
-<li>针对Terraform编写单元测试（Unit Test）</li>
-<li>针对Terraform编写集成测试（Integration Test）</li>
-<li>针对Terraform编写端到端的测试（End-to-End Test）</li>
+<li>针对Terraform模块编写单元测试（Unit Test）</li>
+<li>针对Terraform模块编写集成测试（Integration Test）</li>
+<li>针对Terraform模块编写端到端的测试（End-to-End Test）</li>
 <li>为测试环境中的资源定制清除策略</li>
 <li>总结</li>
 </ol>
+<p>其中单元测试、集成测试和End-to-End测试需要使用<code>Go</code>语言来编写大量测试代码，产品运行环境的质量主要由它们来保证。这些测试的难易程度、数量占比和运行时间由下图所示：</p>
+<p><img src="https://2cloudlab.com/images/blog/number-of-different-test-types.png" alt=""></p>
 <h2 id="2cloudlab">2cloudlab模块的自动化测试</h2>
 <p>2cloudlab的模块都会包含一些自动化测试用例。这些自动化测试用例全部放在一个叫<code>test</code>的目录下，每一个自动化测试用例是测试不同的场景。由于这些自动化测试用例都是用<code>Go</code>语言来编写的，因此需要使用<code>Go</code>语言的运行时环境来运行。除此之外，为了能够高效地编写自动化测试用例，需要引入第三方工具<a href="https://github.com/gruntwork-io/terratest">Terratest</a>，该工具像一把瑞士军刀，提供了大量通用的操作基础设施的功能。</p>
 <h2 id="terraform">静态检测Terraform的编码</h2>
+<p>静态检测的主要作用在于分析Terraform模块是否遵守了Terraform的语法规则。为Terraform实施静态检测是非常有必要的，这种检测能够捕获常见的错误（比如<code>{}</code>没有成对出现，拼写错误）。实施静态检测只需要花费几分钟就能做到，因此在提高Terraform模块的质量的过程中，企业应该将静态检测实施起来。</p>
+<p>Terraform自身提供了实施静态检测的命令：<code>terraform validate</code>。这个命令会在验证当前目录下所有后缀为<code>.tf</code>的文件，如果某些文件包含了一些编码错误，那么这些错误会被Terraform暴露出来。除了Terraform自身提供的检测机制，还有一些工具（<a href="https://github.com/terraform-linters/tflint">tflint</a>和<a href="https://www.hashicorp.com/sentinel/">HashiCorp Sentinel</a>）也能提供静态检测的功能。</p>
+<p>静态检测虽然能够捕获语法上的错误，但是它无法捕获运行时环境上的错误。运行时环境是现实世界中真实的环境，这些环境中的资源都是动态运行的。语法上的错误是比较容易发现并解决的，而运行时环境中的错误是难以察觉且不好解决，因此需要编写Unit Test、Integration Test和End-to-End Test来捕捉运行时环境中的缺陷。如果你已经花了几分钟实施静态检测，那么下一步就需要考虑如何实施单元测试。</p>
+<h2 id="terraformunit-test">针对Terraform模块编写单元测试（Unit Test）</h2>
+<p>编写单元测试的主要作用是：验证独立模块的可靠性。2cloudlab使用Terraform编写了大量的独立模块，这些模块相互独立，部署每一个模块所需的时间大约在1～5分钟。</p>
+<h2 id="terraformintegration-test">针对Terraform模块编写集成测试（Integration Test）</h2>
 <p>敬请期待&hellip;</p>
-<h2 id="terraformunit-test">针对Terraform编写单元测试（Unit Test）</h2>
-<p>敬请期待&hellip;</p>
-<h2 id="terraformintegration-test">针对Terraform编写集成测试（Integration Test）</h2>
-<p>敬请期待&hellip;</p>
-<h2 id="terraformend-to-end-test">针对Terraform编写端到端的测试（End-to-End Test）</h2>
+<h2 id="terraformend-to-end-test">针对Terraform模块编写端到端的测试（End-to-End Test）</h2>
 <p>敬请期待&hellip;</p>
 <h2 id="heading">为测试环境中的资源定制清除策略</h2>
 <p>敬请期待&hellip;</p>
