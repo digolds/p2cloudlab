@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on 2cloudlab | 企业数字化转型的催化剂</title>
+    <link>https://2cloudlab.com/tags/go/</link>
+    <description>Recent content in Go on 2cloudlab | 企业数字化转型的催化剂</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 15 Dec 2019 12:21:58 +0600</lastBuildDate>
+    
+	<atom:link href="https://2cloudlab.com/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go编程的奇幻之旅（一）基础知识</title>
+      <link>https://2cloudlab.com/blog/how-to-use-go-to-develop-part1/</link>
+      <pubDate>Sun, 15 Dec 2019 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/blog/how-to-use-go-to-develop-part1/</guid>
+      <description>本文将指导你如何准备Go研发环境以及介绍一些基础语法知识。这些内容能够帮助你快速地在企业中应用Go语言所带来的好处。这些好处有：跨平台、丰富的三方库、并发和内置自动化测试功能。本文将按照以下几个方面来介绍Go：
+ 下载和安装Go 选择IDE Go常用的命令 Go的内置类型 流程控制 并发 错误处理 结构化数据的转化 总结  下载和安装Go 在使用Go编程时，首先需要下载和安装Go研发环境。读者可以到其官方网站下载。下载完成之后是安装Go研发环境，假设安装路径为/path/to/go。
+安装完成之后需要配置环境变量GOROOT，根据不同的平台设置环境变量的命令是不一样的，如下所示：
+ Linux和macOS平台  export GOROOT=/path/to/go  Window平台  setx GOROOT &amp;#34;\path\to\go&amp;#34; 环境变量GOROOT的作用是告诉系统Go语言的安装路径，以便当执行go命令时能够找到可执行性文件。除了要设置GOROOT，还需要设置环境变量GOPATH。Go所提供的工具集依赖于GOPATH，所有源码、三方库以及编译好的程序都会在GOPATH所指定的目录下。假设在macOS运行以下指令：
+export GOPATH=$HOME/gocode 那么你的所有源码都需要放在src目录下，因此，你需要在目录$HOME/gocode中创建文件夹src。除了使用src目录放置Go源码，在目录$HOME/gocode中还需要创建目录bin和pkg。此时的目录结构是：
+gocode ├─bin ├─pkg └─src bin放置所有可执行性文件；pkg放置Go程序所依赖的3方库；src放置了你即将编写的Go程序。
+以上步骤操作完成之后，需要执行以下命令来进一步确保Go运行环境安装正确！
+$ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序之前，需要根据自身的情况来选择IDE。以下是一些常用的IDE，使用这些IDE能够提高编程效率！
+ Vim Editor GitHub Atom Microsoft Visual Studio Code  Go常用的命令  go run  这个命令的作用在于编译并运行main package，比如以下文件(注意这个文件需要在目录$GOPATH/src/中创建):
+// $GOPATH/src/test_go_run/main.go package main import ( &amp;#34;fmt&amp;#34; ) func main() { fmt.</description>
+    </item>
+    
+  </channel>
+</rss>
