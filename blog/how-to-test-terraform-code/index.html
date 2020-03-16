@@ -154,7 +154,6 @@
 <span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">R</span><span class="err">E</span><span class="err">A</span><span class="err">D</span><span class="err">M</span><span class="err">E</span><span class="p">.</span><span class="err">m</span><span class="err">d</span>
 <span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="err">i</span><span class="err">a</span><span class="err">b</span><span class="err">l</span><span class="err">e</span><span class="err">s</span><span class="p">.</span><span class="err">t</span><span class="err">f</span>
 <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">t</span><span class="err">e</span><span class="err">s</span><span class="err">t</span>
-<span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">d</span><span class="err">e</span><span class="err">p</span><span class="err">-</span><span class="err">i</span><span class="err">n</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">l</span><span class="err">l</span><span class="p">.</span><span class="err">s</span><span class="err">h</span>
 <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">i</span><span class="err">a</span><span class="err">m</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">r</span><span class="err">o</span><span class="err">s</span><span class="err">s</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">o</span><span class="err">u</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">a</span><span class="err">s</span><span class="err">s</span><span class="err">i</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">t</span><span class="err">e</span><span class="err">s</span><span class="err">t</span><span class="p">.</span><span class="err">g</span><span class="err">o</span>
 <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">R</span><span class="err">E</span><span class="err">A</span><span class="err">D</span><span class="err">M</span><span class="err">E</span><span class="p">.</span><span class="err">m</span><span class="err">d</span>
 </code></pre></div><p>其中<code>test</code>目录下的测试用例<code>iam_across_account_assistant_test.go</code>会调用<code>examples</code>下的手动测试例子来验证目录<code>modules</code>下的Terraform模块<code>iam_across_account_assistant</code>。</p>
@@ -185,8 +184,78 @@
 <li>执行所有单元测试所需的时间变得更短</li>
 <li>可以执行部分单元测试</li>
 </ul>
-<p>这些好处能够缩短单元测试运行的时间，使得团队能够及时得到测试报告，进而根据测试报告修复检测到的缺陷。</p>
-<h2 id="terraformintegration-test">针对Terraform模块编写集成测试（Integration Test）</h2>
+<p>这些好处能够缩短单元测试运行的时间，使得团队能够及时得到测试报告，进而根据测试报告修复检测到的缺陷。以下例子是使用Go所编写的单元测试：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">test</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+	<span class="s">&#34;path/filepath&#34;</span>
+	<span class="s">&#34;testing&#34;</span>
+
+	<span class="s">&#34;github.com/gruntwork-io/terratest/modules/random&#34;</span>
+	<span class="s">&#34;github.com/gruntwork-io/terratest/modules/terraform&#34;</span>
+	<span class="s">&#34;github.com/gruntwork-io/terratest/modules/test-structure&#34;</span>
+	<span class="s">&#34;github.com/gruntwork-io/terratest/modules/aws&#34;</span>
+	<span class="s">&#34;github.com/aws/aws-sdk-go/service/iam&#34;</span>
+
+	<span class="s">&#34;github.com/stretchr/testify/assert&#34;</span>
+<span class="p">)</span>
+
+<span class="c1">//Create full_access group with admin permissions and config with MFA option
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">TestIntegrationIAM2Groups</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+	<span class="c1">//Make this test case parallel which means it will not block other test cases
+</span><span class="c1"></span>	<span class="nx">t</span><span class="p">.</span><span class="nf">Parallel</span><span class="p">(</span><span class="p">)</span>
+	<span class="c1">//Copy folder &#34;../&#34; to a tmp folder and return the tmp path of &#34;examples&#34;
+</span><span class="c1"></span>	<span class="nx">examplesFolder</span> <span class="o">:=</span> <span class="nx">test_structure</span><span class="p">.</span><span class="nf">CopyTerraformFolderToTemp</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="s">&#34;../&#34;</span><span class="p">,</span> <span class="s">&#34;examples&#34;</span><span class="p">)</span>
+	<span class="nx">iam_across_account_assistantFolder</span> <span class="o">:=</span> <span class="nx">filepath</span><span class="p">.</span><span class="nf">Join</span><span class="p">(</span><span class="nx">examplesFolder</span><span class="p">,</span> <span class="s">&#34;iam_across_account_assistant&#34;</span><span class="p">)</span>
+
+	<span class="c1">//Create terraform options which is passed to terraform module
+</span><span class="c1"></span>	<span class="nx">expected_group_name</span> <span class="o">:=</span> <span class="s">&#34;full_access&#34;</span>
+	<span class="nx">expected_user_name</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;username-%s&#34;</span><span class="p">,</span> <span class="nx">random</span><span class="p">.</span><span class="nf">UniqueId</span><span class="p">(</span><span class="p">)</span><span class="p">)</span>
+	<span class="nx">user_groups</span> <span class="o">:=</span> <span class="p">[</span><span class="p">]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">{</span>
+		<span class="p">{</span>
+			<span class="s">&#34;group_name&#34;</span><span class="p">:</span> <span class="nx">expected_group_name</span><span class="p">,</span>
+			<span class="s">&#34;user_profiles&#34;</span><span class="p">:</span> <span class="p">[</span><span class="p">]</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">{</span>
+				<span class="p">{</span>
+					<span class="c1">//Use random.UniqueId() to make input value uniqued!
+</span><span class="c1"></span>					<span class="s">&#34;pgp_key&#34;</span><span class="p">:</span>   <span class="s">&#34;keybase:freshairfreshliv&#34;</span><span class="p">,</span>
+					<span class="s">&#34;user_name&#34;</span><span class="p">:</span> <span class="nx">expected_user_name</span><span class="p">,</span>
+				<span class="p">}</span><span class="p">,</span>
+			<span class="p">}</span><span class="p">,</span>
+		<span class="p">}</span><span class="p">,</span>
+	<span class="p">}</span>
+	<span class="nx">terraformOptions</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">terraform</span><span class="p">.</span><span class="nx">Options</span><span class="p">{</span>
+		<span class="nx">TerraformDir</span><span class="p">:</span> <span class="nx">iam_across_account_assistantFolder</span><span class="p">,</span>
+		<span class="nx">Vars</span><span class="p">:</span> <span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">{</span>
+			<span class="s">&#34;should_require_mfa&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+			<span class="s">&#34;user_groups&#34;</span><span class="p">:</span>        <span class="nx">user_groups</span><span class="p">,</span>
+		<span class="p">}</span><span class="p">,</span>
+	<span class="p">}</span>
+
+	<span class="c1">//Something like finally in try...catch
+</span><span class="c1"></span>	<span class="k">defer</span> <span class="nx">terraform</span><span class="p">.</span><span class="nf">Destroy</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">terraformOptions</span><span class="p">)</span>
+
+	<span class="c1">//Something like terraform init and terraform apply
+</span><span class="c1"></span>	<span class="nx">terraform</span><span class="p">.</span><span class="nf">InitAndApply</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">terraformOptions</span><span class="p">)</span>
+
+	<span class="c1">//Validate the created group
+</span><span class="c1"></span>	<span class="nx">iamClient</span> <span class="o">:=</span> <span class="nx">aws</span><span class="p">.</span><span class="nf">NewIamClient</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="s">&#34;us-east-2&#34;</span><span class="p">)</span>
+
+	<span class="nx">resp</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">iamClient</span><span class="p">.</span><span class="nf">GetGroup</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">iam</span><span class="p">.</span><span class="nx">GetGroupInput</span> <span class="p">{</span>
+		<span class="nx">GroupName</span> <span class="p">:</span> <span class="o">&amp;</span><span class="nx">expected_group_name</span><span class="p">,</span>
+	<span class="p">}</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+	<span class="nx">actual_group_name</span> <span class="o">:=</span> <span class="o">*</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Group</span><span class="p">.</span><span class="nx">GroupName</span>
+	<span class="nx">assert</span><span class="p">.</span><span class="nf">Equal</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">expected_group_name</span><span class="p">,</span> <span class="nx">actual_group_name</span><span class="p">,</span> <span class="s">&#34;These 2 groups should be the same.&#34;</span><span class="p">)</span>
+	<span class="nx">actual_user_name</span> <span class="o">:=</span> <span class="o">*</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Users</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">.</span><span class="nx">UserName</span>
+	<span class="nx">assert</span><span class="p">.</span><span class="nf">Equal</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">expected_user_name</span><span class="p">,</span> <span class="nx">actual_user_name</span><span class="p">,</span> <span class="s">&#34;These 2 user names should be the same.&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">--- PASS: TestIntegrationIAM2Groups <span class="o">(</span>204.00s<span class="o">)</span>
+PASS
+ok      module_security/test    204.031s
+</code></pre></div><h2 id="terraformintegration-test">针对Terraform模块编写集成测试（Integration Test）</h2>
 <p>敬请期待&hellip;</p>
 <h2 id="terraformend-to-end-test">针对Terraform模块编写端到端的测试（End-to-End Test）</h2>
 <p>敬请期待&hellip;</p>
