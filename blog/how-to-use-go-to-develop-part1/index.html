@@ -231,8 +231,8 @@ go version go1.11.5 linux/amd64
 </code></pre></div><p>你也可以通过指定<code>-o</code>参数来重命名所生成的可执行性文件，比如以下命令将生成<code>2cloudlab</code>可执行性文件</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go build -o 2cloudlab main.go
 </code></pre></div><p>以上生成的可执行性文件将包含调试信息和一些符号信息，这些信息会导致所生成的文件变大，因此需要在生成可执行性文件时去掉这些信息。通过添加以下参数来去掉这些信息：</p>
-<pre><code>go build -ldflags &quot;-w -s&quot; -o 2cloudlab main.go
-</code></pre><p>这个时候生成的<code>2cloudlab</code>文件将比原来的少30%。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go build -ldflags <span class="s2">&#34;-w -s&#34;</span> -o 2cloudlab main.go
+</code></pre></div><p>这个时候生成的<code>2cloudlab</code>文件将比原来的少30%。</p>
 <ul>
 <li><code>GOOS</code>和<code>GOARCH</code></li>
 </ul>
