@@ -281,8 +281,8 @@ func Println<span class="o">(</span>a ...interface<span class="o">{</span><span 
 <span class="o">*</span><span class="nx">ptr</span> <span class="p">=</span> <span class="mi">200</span>
 <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">count</span><span class="p">)</span>
 </code></pre></div><p>以上代码运行的结果如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">100
-200
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">100</span>
+<span class="m">200</span>
 </code></pre></div><p><strong>struct</strong>是结构体，通过结构体可以定义更加复杂的数据类型。比如下面的例子定义了一个<code>Person</code>结构体，这个结构体有2个属性<code>Name</code>和<code>Age</code>以及一个方法<code>SayHi()</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
     <span class="nx">Name</span> <span class="kt">string</span>
@@ -406,10 +406,10 @@ func Println<span class="o">(</span>a ...interface<span class="o">{</span><span 
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Gopkg.lock</span>
 <span class="o">[</span>solve-meta<span class="o">]</span>
   analyzer-name <span class="o">=</span> <span class="s2">&#34;dep&#34;</span>
-  analyzer-version <span class="o">=</span> 1
+  analyzer-version <span class="o">=</span> <span class="m">1</span>
   input-imports <span class="o">=</span> <span class="o">[</span><span class="s2">&#34;github.com/stretchr/testify/assert&#34;</span><span class="o">]</span>
   solver-name <span class="o">=</span> <span class="s2">&#34;gps-cdcl&#34;</span>
-  solver-version <span class="o">=</span> 1
+  solver-version <span class="o">=</span> <span class="m">1</span>
 </code></pre></div><ul>
 <li><code>dep ensure</code></li>
 </ul>

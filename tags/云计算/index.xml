@@ -21,15 +21,15 @@
  什么是aws-vault工具 aws-vault工具的使用指南 总结  什么是aws-vault工具 aws-vault是一个命令行工具，这个工具的主要作用在于帮助研发人员以命令行的方式快速访问AWS服务，最终减轻了每一名研发人员因反复登录而带来的负担，从而提高企业整体的研发效率。
 aws-vault是一款用go语言编写且开源的命令行工具，其项目地址在这里。aws-vault主要解决安全和自动设置凭证的问题。
 初次运行aws-vault时，只需要在命令行里输入如下指令：
-aws-vault add slz根据提示输入AWS_ACCESS_KEY_ID和AWS_SECRET_ACCESS_KEY信息。如果这个凭证具有操作AWS资源的权限，那么研发人员就能通过aws-vault工具高效访问AWS服务。此外，这2个登录信息是以密文的形式存储的，因此aws-vault进一步保护了登录凭证。如果该用户需要使用MFA，那么只需要在文件~/.aws/config加入以下内容：
-# config文件[profile slz]mfa_serial = arn:aws:iam::120699691161:mfa/Tonyaws-vault工具会自动到这个文件中读取该MFA地址，并提示研发人员键入6位安全码。如果研发人员需要用到AWS所提供的role，那么也可以按照类似的方式在该文件中添加以下内容：
-# config文件[profile slz]role_arn = arn:aws:iam::120699691161:role/update_roleaws-vault工具会自动读取这个role，并自动获取该role所拥有的权限来访问AWS服务。
+aws-vault add slz 根据提示输入AWS_ACCESS_KEY_ID和AWS_SECRET_ACCESS_KEY信息。如果这个凭证具有操作AWS资源的权限，那么研发人员就能通过aws-vault工具高效访问AWS服务。此外，这2个登录信息是以密文的形式存储的，因此aws-vault进一步保护了登录凭证。如果该用户需要使用MFA，那么只需要在文件~/.aws/config加入以下内容：
+# config文件 [profile slz] mfa_serial = arn:aws:iam::120699691161:mfa/Tony aws-vault工具会自动到这个文件中读取该MFA地址，并提示研发人员键入6位安全码。如果研发人员需要用到AWS所提供的role，那么也可以按照类似的方式在该文件中添加以下内容：
+# config文件 [profile slz] role_arn = arn:aws:iam::120699691161:role/update_role aws-vault工具会自动读取这个role，并自动获取该role所拥有的权限来访问AWS服务。
 设置好以上登录凭证之后，研发人员只需要执行以下命令就能自动访问AWS资源:
-aws-vault exec slz -- aws iam list-users以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
-aws-vault exec slz -- terraform applyaws-vault工具的使用指南 完成以上配置之后，接下来看看aws-vault工具如何结合terraform工具使用的。
+aws-vault exec slz -- aws iam list-users 以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
+aws-vault exec slz -- terraform apply aws-vault工具的使用指南 完成以上配置之后，接下来看看aws-vault工具如何结合terraform工具使用的。
 假设我们使用aws-vault添加了以下具有相同登录凭证，但是不同登录方式的登录选择：
  slz：直接通过登录凭证操作AWS服务 slz_mfa：除了需要登录凭证，还需要输入6位安全码才能操作AWS服务 slz_mfa_role：获取临时登录凭证，并以role的方式访问AWS服务  以下命令说明了如何使用aws-vault工具和terraform plan命令生成资源创建的详细信息:
- 以下命令直接通过登录凭证使terraform能够访问AWS服务  aws-vault exec slz -- terraform plan以下命令与第一种类似，但是在执行访问AWS服务之前需要输入6位安全码  aws-vault exec slz_mfa -- terraform plan以下命令的登录凭证是临时生成的，所拥有的权限由role来确定，这个role有可能是其它账号的。  aws-vault exec slz_mfa_role -- terraform plan通过以上命令，研发人员可以快速切换登录场景，并且只需要一行命令就能操作AWS服务。因此对于拥有上百人的研发团队而言，这种便捷能够以100x的系数来提高团队的工作效率！</description>
+ 以下命令直接通过登录凭证使terraform能够访问AWS服务  aws-vault exec slz -- terraform plan 以下命令与第一种类似，但是在执行访问AWS服务之前需要输入6位安全码  aws-vault exec slz_mfa -- terraform plan 以下命令的登录凭证是临时生成的，所拥有的权限由role来确定，这个role有可能是其它账号的。  aws-vault exec slz_mfa_role -- terraform plan 通过以上命令，研发人员可以快速切换登录场景，并且只需要一行命令就能操作AWS服务。因此对于拥有上百人的研发团队而言，这种便捷能够以100x的系数来提高团队的工作效率！</description>
     </item>
     
     <item>
@@ -55,7 +55,7 @@ aws-vault exec slz -- terraform applyaws-vault工具的使用指南 完成以�
 自动化测试在产品的研发过程中无处不在。研发团队在研发产品时需要为其编写单元测试；测试团队在测试产品时要为其编写手动测试、集成测试和UI测试；DevOps团队需要为产品的运行环境编写自动化测试用例，确保生成的环境是稳定且支持产品的。为产品研发实施自动化测试的目的在于短时间内发现和解决更多的缺陷，从而增强产品对外发布的信心！本文将通过以下方面来介绍如何对产品的运行环境进行自动化测试，企业可以根据自身情况，引入本文所提到的自动化测试经验来确保产品的运行环境是可信的。
  2cloudlab模块的自动化测试 静态检测Terraform的编码 针对Terraform模块编写单元测试（Unit Test） 针对Terraform模块编写集成测试（Integration Test） 针对Terraform模块编写端到端的测试（End-to-End Test） 为测试环境中的资源定制清除策略 总结  其中单元测试、集成测试和End-to-End测试需要使用Go语言来编写大量测试代码，产品运行环境的质量主要由它们来保证。这些测试的难易程度、数量占比和运行时间由下图所示：
 2cloudlab模块的自动化测试 2cloudlab的模块都会包含一些自动化测试用例。每一个Terraform模块都会有对应的测试用例，这些测试用例会放在一个test目录下（目录结构如下所示），每一个测试用例所验证的场景是不同的。由于这些自动化测试用例都是用Go语言来编写的，因此需要使用Go语言的运行时环境来运行。除此之外，为了能够高效地编写自动化测试用例，需要引入第三方工具Terratest，该工具也是基于Go语言来编写的（这篇文章介绍了Go语言的基础知识），它像一把瑞士军刀，提供了大量通用的基础操作。
-.|____examples| |____iam_across_account_assistant| | |____main.tf| | |____outputs.tf| | |____README.md| | |____terraform.tfstate| | |____terraform.tfstate.backup| | |____variables.tf|____modules| |____iam_across_account_assistant| | |____main.tf| | |____outputs.tf| | |____README.md| | |____variables.tf|____test| |____iam_across_account_assistant_test.go| |____README.md其中test目录下的测试用例iam_across_account_assistant_test.go会调用examples下的手动测试例子来验证目录modules下的Terraform模块iam_across_account_assistant。
+. |____examples | |____iam_across_account_assistant | | |____main.tf | | |____outputs.tf | | |____README.md | | |____terraform.tfstate | | |____terraform.tfstate.backup | | |____variables.tf |____modules | |____iam_across_account_assistant | | |____main.tf | | |____outputs.tf | | |____README.md | | |____variables.tf |____test | |____iam_across_account_assistant_test.go | |____README.md 其中test目录下的测试用例iam_across_account_assistant_test.go会调用examples下的手动测试例子来验证目录modules下的Terraform模块iam_across_account_assistant。
 2cloudlab根据以上目录结构编写了大量的单元测试以及少量的集成测试。这些测试是遵守了以下原则来编写的:
  每一个测试用例都会基于真实环境来执行 每一个测试用例执行结束后都会销毁已创建的资源 为每一个资源指定一个独立的命名空间，以免发生名称冲突 每一个测试用例都会在独立的临时目录下下运行 为每一个集成测试添加可配置stage步骤 测试用例之间是相互独立且可并发执行  在编写测试用例之前，有一步关键的验证：静态检测。为Terraform模块实施静态检测只需要花费几分钟，但是确能够避免一些常见的错误，接下来让我们从静态检测开始来一步一步提高产品运行环境的稳定性！</description>
     </item>
@@ -73,7 +73,7 @@ aws-vault exec slz -- terraform applyaws-vault工具的使用指南 完成以�
 Terraform的运行机制 terraform是单文件命令行程序，它基于infrastructure as code方式来运行的，因此需要给terraform提供脚本文件让其运行。脚本文件的后缀是.tf，其中的内容涉及选择云服务提供商、创建何种类型的资源以及定义输入输出变量等等。
 在开始运行terraform之前，需要准备以下条件:
  一台笔记本电脑 根据操作系统下载对应的terraform可执行性文件，并把该文件所在位置添加到系统的环境变量中 到AWS注册一个根账号，并用根账号创建一个子账号，这个子账号会被terraform使用 将子账号生成的ID和Key提供给terraform  以上步骤准备好之后，接下来编写以下terraform脚本文件:
-# main.tfterraform {required_version =&amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34;}provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS providerversion = &amp;#34;~&amp;gt; 2.0&amp;#34;}resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34;instance_type = &amp;#34;t2.</description>
+# main.tf  terraform { required_version =&amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34; } provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS provider version = &amp;#34;~&amp;gt; 2.0&amp;#34; } resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34; instance_type = &amp;#34;t2.</description>
     </item>
     
   </channel>
