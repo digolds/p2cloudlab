@@ -297,28 +297,7 @@ ok      module_security/test    204.031s
 	<span class="nx">test_structure</span><span class="p">.</span><span class="nf">RunTestStage</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="s">&#34;deploy_web_app&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span> <span class="nf">deployWebApp</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">webAppExampleDir</span><span class="p">)</span> <span class="p">}</span><span class="p">)</span>
 
 	<span class="c1">//4. Validate
-</span><span class="c1"></span>	<span class="nx">webAppOpts</span> <span class="o">:=</span> <span class="nx">test_structure</span><span class="p">.</span><span class="nf">LoadTerraformOptions</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">webAppExampleDir</span><span class="p">)</span>
-
-	<span class="nx">public_ip</span> <span class="o">:=</span> <span class="nx">terraform</span><span class="p">.</span><span class="nf">OutputRequired</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">webAppOpts</span><span class="p">,</span> <span class="s">&#34;public_ip&#34;</span><span class="p">)</span>
-	<span class="nx">listening_port</span> <span class="o">:=</span> <span class="nx">terraform</span><span class="p">.</span><span class="nf">OutputRequired</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">webAppOpts</span><span class="p">,</span> <span class="s">&#34;listening_port&#34;</span><span class="p">)</span>
-	<span class="nx">url</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;http://%s:%s&#34;</span><span class="p">,</span> <span class="nx">public_ip</span><span class="p">,</span> <span class="nx">listening_port</span><span class="p">)</span>
-
-	<span class="nx">maxRetries</span> <span class="o">:=</span> <span class="mi">10</span>
-	<span class="nx">timeBetweenRetries</span> <span class="o">:=</span> <span class="mi">10</span> <span class="o">*</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Second</span>
-
-	<span class="nx">config</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="nx">tls</span><span class="p">.</span><span class="nx">Config</span><span class="p">{</span><span class="p">}</span>
-	<span class="nx">http_helper</span><span class="p">.</span><span class="nf">HttpGetWithRetryWithCustomValidation</span><span class="p">(</span>
-		<span class="nx">t</span><span class="p">,</span>
-		<span class="nx">url</span><span class="p">,</span>
-		<span class="nx">config</span><span class="p">,</span>
-		<span class="nx">maxRetries</span><span class="p">,</span>
-		<span class="nx">timeBetweenRetries</span><span class="p">,</span>
-		<span class="kd">func</span><span class="p">(</span><span class="nx">status</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">body</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span> <span class="o">&amp;&amp;</span>
-				<span class="nx">strings</span><span class="p">.</span><span class="nf">Contains</span><span class="p">(</span><span class="nx">body</span><span class="p">,</span>
-					<span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;(%s,%s) with (%s,%s)&#34;</span><span class="p">,</span> <span class="nx">webAppOpts</span><span class="p">.</span><span class="nx">Vars</span><span class="p">[</span><span class="s">&#34;db_address&#34;</span><span class="p">]</span><span class="p">,</span> <span class="nx">webAppOpts</span><span class="p">.</span><span class="nx">Vars</span><span class="p">[</span><span class="s">&#34;db_port&#34;</span><span class="p">]</span><span class="p">,</span> <span class="nx">webAppOpts</span><span class="p">.</span><span class="nx">Vars</span><span class="p">[</span><span class="s">&#34;db_name&#34;</span><span class="p">]</span><span class="p">,</span> <span class="nx">webAppOpts</span><span class="p">.</span><span class="nx">Vars</span><span class="p">[</span><span class="s">&#34;db_password&#34;</span><span class="p">]</span><span class="p">)</span><span class="p">,</span>
-				<span class="p">)</span>
-		<span class="p">}</span><span class="p">)</span>
+</span><span class="c1"></span>	<span class="nx">test_structure</span><span class="p">.</span><span class="nf">RunTestStage</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="s">&#34;validate_web_app&#34;</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span> <span class="nf">validateWebApp</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">webAppExampleDir</span><span class="p">)</span> <span class="p">}</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>为了方便理解，以上集成测试代码只保留了主体部分，完整的代码可以到<a href="https://github.com/2cloudlab/package_aws_web_service/blob/master/test/web_app_intergration_test.go">这里</a>去查阅。该集成测试主要完成了以下几个步骤：</p>
 <ol>
@@ -349,7 +328,8 @@ ok      package_aws_web_service/test    160.588s
 </code></pre></div><p>如果该研发人员修复了这些bug，那么他/她只需要执行销毁操作，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">SKIP_deploy_db</span><span class="o">=</span><span class="nb">true</span> <span class="se">\
 </span><span class="se"></span><span class="nv">SKIP_deploy_web_app</span><span class="o">=</span><span class="nb">true</span> <span class="se">\
-</span><span class="se"></span>go <span class="nb">test</span> -v -timeout 30m -run <span class="s1">&#39;TestIntegrationWebApp&#39;</span>
+</span><span class="se"></span><span class="nv">SKIP_validate_web_app</span><span class="o">=</span><span class="nb">true</span>
+go <span class="nb">test</span> -v -timeout 30m -run <span class="s1">&#39;TestIntegrationWebApp&#39;</span>
 </code></pre></div><p>通过以上示例可知：集成测试所花费的时间会远远大于每个独立的单元测试所需的时间；通过机器执行集成测试应该从头到尾执行一遍，以便确保每一步都能够覆盖到；研发人员在本地进行集成测试的时候，需要选择哪些阶段可以执行而哪些阶段应该避免重复执行，以便减少集成测试的运行时间，及时得到测试反馈。</p>
 <p>一个研发团队在编写自动化测试的时候，不仅要编写大量的单元测试来验证模块是能够单独正常工作的，而且还需要编写一部分集成测试来验证模块组合在一起也是能正常工作的。每运行一次集成测试都有可能发现新的缺陷，修复这些缺陷能够增强团队对自己的输出成果的信心，但是集成测试通过并不能说明线上的真实环境也能正常工作！为了进一步增强团队的信心，需要做进一步的End-to-End测试。</p>
 <h2 id="terraformend-to-end-test">针对Terraform模块编写端到端的测试（End-to-End Test）</h2>
