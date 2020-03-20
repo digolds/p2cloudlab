@@ -404,6 +404,7 @@ terragrunt apply
 <p>创建一个完整的产品运行环境需要涉及诸多内容，这些事情包括安装软件，准备数据库，准备环境，负载均衡，安全等等。如果这些事情都需要通过手动来完成，那么结果是令人沮丧的！因此2cloudlab试图通过自动化的方式来解决这些问题。<em>infrastructure as code</em>的出现让这件事情成为可能！2cloudlab通过提供大量可复用的Terraform模块，使得企业能够在一天之内创建产品运行环境。</p>
 <p>2cloudlab的模块托管在github上，企业需要注册一个github账号，并将该账号提供给2cloudlab才能访问2cloudlab所提供的模块。使用2cloudlab所提供的模块时，最好的做法是在github上创建2个repository：<code>infrastructure_modules</code>和<code>infrastructure_live</code>，并根据前面内容来构建这2个repository。</p>
 <p><code>infrastructure_modules</code>主要封装了2cloudlab所提供的模块，而<code>infrastructure_live</code>则会引用<code>infrastructure_modules</code>中的模块。为了能够减少复制黏贴所引发的错误，<code>infrastructure_live</code>中的内容主要是由后缀为<code>.hcl</code>的文件组成。这些文件根据现实世界中所需要的资源而划分成不同的模块，并最终由Terragrunt工具执行。一个完整的产品运行环境是分步实现的，首先需要创建云服务账号，在不同的账号下创建不同的资源，这些资源有网络资源、数据库资源、日志资源等等。因此在<code>infrastructure_live</code>需要将不同的资源模块独立在不同的目录中，并按照定义好的依赖关系依次执行每一个模块。</p>
+<p><em><a href="https://2cloudlab.com/">2cloudlab.com</a>为企业准备产品的运行环境，只需要1天！</em></p>
 
                 </div>
             </div>
