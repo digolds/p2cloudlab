@@ -6,10 +6,37 @@
     <description>Recent content in Tags on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Mar 2020 12:29:40 +0600</lastBuildDate>
+    <lastBuildDate>Sun, 15 Mar 2020 12:21:58 +0600</lastBuildDate>
     
 	<atom:link href="https://2cloudlab.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>AWS</title>
+      <link>https://2cloudlab.com/tags/aws/</link>
+      <pubDate>Sun, 15 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/aws/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>命令行</title>
+      <link>https://2cloudlab.com/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/</link>
+      <pubDate>Sun, 15 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>授权访问</title>
+      <link>https://2cloudlab.com/tags/%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE/</link>
+      <pubDate>Sun, 15 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>aws-vault工具</title>
