@@ -18,6 +18,21 @@
   </url>
   
   <url>
+    <loc>https://2cloudlab.com/tags/terraform/</loc>
+    <lastmod>2020-03-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/blog/techniques-for-terraform/</loc>
+    <lastmod>2020-03-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
+    <lastmod>2020-03-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://2cloudlab.com/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/</loc>
     <lastmod>2020-03-15T12:21:58+06:00</lastmod>
   </url>
@@ -29,6 +44,11 @@
   
   <url>
     <loc>https://2cloudlab.com/tags/%E6%8E%88%E6%9D%83%E8%AE%BF%E9%97%AE/</loc>
+    <lastmod>2020-03-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/%E7%BB%8F%E9%AA%8C/</loc>
     <lastmod>2020-03-15T12:21:58+06:00</lastmod>
   </url>
   
@@ -53,11 +73,6 @@
   </url>
   
   <url>
-    <loc>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</loc>
-    <lastmod>2020-03-10T12:29:40+06:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://2cloudlab.com/blog/how-to-authority-aws-through-command-line/</loc>
     <lastmod>2020-03-10T12:29:40+06:00</lastmod>
   </url>
@@ -74,11 +89,6 @@
   
   <url>
     <loc>https://2cloudlab.com/tags/rolling-deployment/</loc>
-    <lastmod>2020-02-15T12:21:58+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://2cloudlab.com/tags/terraform/</loc>
     <lastmod>2020-02-15T12:21:58+06:00</lastmod>
   </url>
   
