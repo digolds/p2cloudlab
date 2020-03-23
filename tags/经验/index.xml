@@ -12,15 +12,15 @@
     
     
     <item>
-      <title>Terraform实用技巧指南</title>
+      <title>Terraform、aws-vault和Go实用技巧指南</title>
       <link>https://2cloudlab.com/blog/techniques-for-terraform/</link>
       <pubDate>Sun, 15 Mar 2020 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/blog/techniques-for-terraform/</guid>
-      <description>本文记录了2cloudlab.com在使用Terraform工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。
-aws_launch_configuration资源是无法通过API来修改的 一个aws_launch_configuration实例创建之后，要想修改该实例的属性，则需要重新创建一个新的aws_launch_configuration实例，原因在于aws_launch_configuration类型的实例是无法通过AWS所提供的API来修改的。
-Terraform所提供的所有类别的资源都有一个lifecycle的设置 Terraform工具通过这个设置来决定创建资源的行为。比如以下代码通过设置create_before_destroy = true，最终能够使得Terraform先创建一个aws_launch_configuration新的实例，再将新实例替换掉旧实例，替换成功后再销毁旧实例。lifecycle中的设置只能是常量，因此这种方式：create_before_destroy = var.flag来设置create_before_destroy是不允许的。
-resource &amp;#34;aws_launch_configuration&amp;#34; &amp;#34;launch_configuration_instance&amp;#34; { image_id = &amp;#34;ami-0fc20dd1da406780b&amp;#34;#ubuntu 18.4 instance_type = &amp;#34;t2.micro&amp;#34; security_groups = [aws_security_group.instance.id] user_data = &amp;lt;&amp;lt;-EOF#!/bin/bash  echo &amp;#34;Hello, 2cloudlab.com&amp;#34; &amp;gt; index.html nohup busybox httpd -f -p ${var.server_port} &amp;amp; EOF# Required when using a launch configuration with an auto scaling group. # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html  lifecycle { create_before_destroy = true } } </description>
+      <description> Terraform实用技巧 aws-vault实用技巧 Go实用技巧 组合Terraform、aws-vault和Go工具的实用技巧  本文记录了2cloudlab.com在使用Terraform、aws-vault和Go工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。
+Terraform实用技巧  aws_launch_configuration资源是无法通过API来修改的  一个aws_launch_configuration实例创建之后，要想修改该实例的属性，则需要重新创建一个新的aws_launch_configuration实例，原因在于aws_launch_configuration类型的实例是无法通过AWS所提供的API来修改的。
+Terraform所提供的所有类别的资源都有一个lifecycle的设置  Terraform工具通过这个设置来决定创建资源的行为。比如以下代码通过设置create_before_destroy = true，最终能够使得Terraform先创建一个aws_launch_configuration新的实例，再将新实例替换掉旧实例，替换成功后再销毁旧实例。lifecycle中的设置只能是常量，因此这种方式：create_before_destroy = var.flag来设置create_before_destroy是不允许的。
+resource &amp;#34;aws_launch_configuration&amp;#34; &amp;#34;launch_configuration_instance&amp;#34; { image_id = &amp;#34;ami-0fc20dd1da406780b&amp;#34;#ubuntu 18.4 instance_type = &amp;#34;t2.micro&amp;#34; security_groups = [aws_security_group.instance.id] user_data = &amp;lt;&amp;lt;-EOF#!/bin/bash  echo &amp;#34;Hello, 2cloudlab.com&amp;#34; &amp;gt; index.html nohup busybox httpd -f -p ${var.server_port} &amp;amp; EOF# Required when using a launch configuration with an auto scaling group. # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html  lifecycle { create_before_destroy = true } } Go实用技巧  如何使用Go来运行某一个测试用例（比如定义了一个TestIntegrationOrganization测试用例）？  go test -v -run TestIntegrationOrganization 组合Terraform、aws-vault和Go工具的实用技巧  如何使用aws-vault和Go工具来操作AWS服务？  aws-vault exec fans55 --no-session -- go test -v -run TestIntegrationOrganization </description>
     </item>
     
   </channel>

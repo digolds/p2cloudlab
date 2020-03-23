@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   
-  <meta name="description" content="本文记录了2cloudlab.com在使用Terraform工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。">
+  <meta name="description" content="本文记录了2cloudlab.com在使用Terraform、aws-vault和Go工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。">
   <meta name="author" content="2cloudlab">
   <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Terraform实用技巧指南</title>
+  <title>Terraform、aws-vault和Go实用技巧指南</title>
   <link rel="icon" href="https://2cloudlab.com/images/favicon.ico">
 
   <!-- Twitter Bootstrs CSS -->
@@ -85,7 +85,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <h2>Terraform实用技巧指南</h2>
+                    <h2>Terraform、aws-vault和Go实用技巧指南</h2>
                     <div class="portfolio-meta">
                         <span>2020-03-15</span>|
                         <span class="ion-pricetags"></span>
@@ -123,10 +123,21 @@
                 </div>
                 
                 <div class="post-content">
-                    <p>本文记录了2cloudlab.com在使用Terraform工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。</p>
-<h2 id="aws-launch-configurationapi"><em>aws_launch_configuration</em>资源是无法通过API来修改的</h2>
+                    <ol>
+<li>Terraform实用技巧</li>
+<li>aws-vault实用技巧</li>
+<li>Go实用技巧</li>
+<li>组合Terraform、aws-vault和Go工具的实用技巧</li>
+</ol>
+<p>本文记录了2cloudlab.com在使用Terraform、aws-vault和Go工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。</p>
+<h2 id="terraform">Terraform实用技巧</h2>
+<ol>
+<li><em>aws_launch_configuration</em>资源是无法通过API来修改的</li>
+</ol>
 <p>一个<em>aws_launch_configuration</em>实例创建之后，要想修改该实例的属性，则需要重新创建一个新的<em>aws_launch_configuration</em>实例，原因在于<em>aws_launch_configuration</em>类型的实例是无法通过AWS所提供的API来修改的。</p>
-<h2 id="terraformlifecycle">Terraform所提供的所有类别的资源都有一个<em>lifecycle</em>的设置</h2>
+<ol start="2">
+<li>Terraform所提供的所有类别的资源都有一个<em>lifecycle</em>的设置</li>
+</ol>
 <p>Terraform工具通过这个设置来决定创建资源的行为。比如以下代码通过设置<code>create_before_destroy = true</code>，最终能够使得Terraform先创建一个<em>aws_launch_configuration</em>新的实例，再将新实例替换掉旧实例，替换成功后再销毁旧实例。<em>lifecycle</em>中的设置只能是常量，因此这种方式：<code>create_before_destroy = var.flag</code>来设置<em>create_before_destroy</em>是不允许的。</p>
 <div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="kr">resource</span> <span class="s">&#34;aws_launch_configuration&#34; &#34;launch_configuration_instance&#34;</span> {
 <span class="na">  image_id</span>        <span class="o">=</span> <span class="s2">&#34;ami-0fc20dd1da406780b&#34;</span><span class="c1"> #ubuntu 18.4
@@ -145,6 +156,16 @@
 <span class="na">    create_before_destroy</span> <span class="o">=</span> <span class="kt">true</span>
   }
 }
+</code></pre></div><h2 id="go">Go实用技巧</h2>
+<ol>
+<li>如何使用Go来运行某一个测试用例（比如定义了一个TestIntegrationOrganization测试用例）？</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">go</span> <span class="nx">test</span> <span class="o">-</span><span class="nx">v</span> <span class="o">-</span><span class="nx">run</span> <span class="nx">TestIntegrationOrganization</span>
+</code></pre></div><h2 id="terraformaws-vaultgo">组合Terraform、aws-vault和Go工具的实用技巧</h2>
+<ol>
+<li>如何使用aws-vault和Go工具来操作AWS服务？</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">aws</span><span class="o">-</span><span class="nx">vault</span> <span class="nx">exec</span> <span class="nx">fans55</span> <span class="o">--</span><span class="nx">no</span><span class="o">-</span><span class="nx">session</span> <span class="o">--</span> <span class="k">go</span> <span class="nx">test</span> <span class="o">-</span><span class="nx">v</span> <span class="o">-</span><span class="nx">run</span> <span class="nx">TestIntegrationOrganization</span>
 </code></pre></div>
                 </div>
             </div>
