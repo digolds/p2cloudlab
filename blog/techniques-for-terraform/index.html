@@ -90,7 +90,7 @@
                         <span>2020-03-15</span>|
                         <span class="ion-pricetags"></span>
                         <span>
-                            Terraform, 经验, 云计算
+                            Terraform, 自动化经验, 云计算, Go
                         </span>
                     </div>
                 </div>
@@ -161,6 +161,21 @@
 <li>如何使用Go来运行某一个测试用例（比如定义了一个TestIntegrationOrganization测试用例）？</li>
 </ol>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">go</span> <span class="nx">test</span> <span class="o">-</span><span class="nx">v</span> <span class="o">-</span><span class="nx">run</span> <span class="nx">TestIntegrationOrganization</span>
+</code></pre></div><ol start="2">
+<li>如何根据tag(<code>+build integration</code>)来执行一组测试用例？</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// intergration_test.go
+</span><span class="c1"></span><span class="c1">// +build integration
+</span><span class="c1"></span>
+<span class="kd">func</span> <span class="nf">TestCase1</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">TestCase2</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// ...
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>在文件<em>intergration_test.go</em>中指定tag：<code>// +build integration</code>，运行以下命令将执行该文件中的所有自动化测试用例。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go <span class="nb">test</span> -v -run -tags<span class="o">=</span>integration
 </code></pre></div><h2 id="terraformaws-vaultgo">组合Terraform、aws-vault和Go工具的实用技巧</h2>
 <ol>
 <li>如何使用aws-vault和Go工具来操作AWS服务？</li>
