@@ -6,10 +6,91 @@
     <description>Recent content in Tags on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 15 Mar 2020 12:21:58 +0600</lastBuildDate>
+    <lastBuildDate>Tue, 17 Mar 2020 12:21:58 +0600</lastBuildDate>
     
 	<atom:link href="https://2cloudlab.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CI/CD</title>
+      <link>https://2cloudlab.com/tags/ci/cd/</link>
+      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/ci/cd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Infrastructure as Code</title>
+      <link>https://2cloudlab.com/tags/infrastructure-as-code/</link>
+      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/infrastructure-as-code/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>云计算</title>
+      <link>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</link>
+      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>持续部署</title>
+      <link>https://2cloudlab.com/tags/%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/</link>
+      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>持续集成</title>
+      <link>https://2cloudlab.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</link>
+      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>软件研发流程</title>
+      <link>https://2cloudlab.com/tags/%E8%BD%AF%E4%BB%B6%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B/</link>
+      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E8%BD%AF%E4%BB%B6%E7%A0%94%E5%8F%91%E6%B5%81%E7%A8%8B/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>软件自动化</title>
+      <link>https://2cloudlab.com/tags/%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%8A%A8%E5%8C%96/</link>
+      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E8%BD%AF%E4%BB%B6%E8%87%AA%E5%8A%A8%E5%8C%96/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>trunk-based development</title>
+      <link>https://2cloudlab.com/tags/trunk-based-development/</link>
+      <pubDate>Mon, 16 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/trunk-based-development/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>分支管理</title>
+      <link>https://2cloudlab.com/tags/%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/</link>
+      <pubDate>Mon, 16 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>AWS</title>
@@ -35,15 +116,6 @@
       <pubDate>Sun, 15 Mar 2020 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/terraform/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>云计算</title>
-      <link>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</link>
-      <pubDate>Sun, 15 Mar 2020 12:21:58 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</guid>
       <description></description>
     </item>
     
