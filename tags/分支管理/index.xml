@@ -18,7 +18,7 @@
       
       <guid>https://2cloudlab.com/blog/why-organization-should-use-trunk-based-development/</guid>
       <description>企业的研发团队在研发产品功能时通常会选择2种分支管理策略，它们分别是Feature Branches Development和Trunk-based Development。2种分支管理策略都有它们适用的场景，比如在github上研发开源软件时，经常会使用Feature Branches Development模式，而Google，Facebook，LinkedIn，微软常常会使用Trunk-based Development模式。企业在实施CI（持续集成）时通常需要Trunk-based Development方面的实践，原因在于这种模式能够快速输出集成的结果。本文将围绕Trunk-based Development展开，并提供一些可实施该模式的操作步骤。
- 什么是Trunk-based Development？ 团队需要掌握哪些技巧来实践Trunk-based Development？ 为Trunk-Based Development配套CI服务 结论和参考  什么是Trunk-based Development？ Trunk-based Development是指：所有研发人员围绕主分支(也就是我们常常见到的master分支)来共同研发，在研发过程中拒绝创建存活时间较长的分支，并使用Feature Toggles和Branch by Abstraction等技术在主分支上逐步发布需要长时间（通常是1周）才能研发完成的功能。官方对Trunk-based Development的概括如下所示：
+ 什么是Trunk-based Development？ 团队需要掌握哪些技巧来实践Trunk-based Development？ 为Trunk-Based Development配套CI服务 Trunk-Based Development的实施细节 结论和参考  什么是Trunk-based Development？ Trunk-based Development是指：所有研发人员围绕主分支(也就是我们常常见到的master分支)来共同研发，在研发过程中拒绝创建存活时间较长的分支，并使用Feature Toggles和Branch by Abstraction等技术在主分支上逐步发布需要长时间（通常是1周）才能研发完成的功能。官方对Trunk-based Development的概括如下所示：
  A source-control branching model, where developers collaborate on code in a single branch called ‘trunk’ *, resist any pressure to create other long-lived development branches by employing documented techniques. They therefore avoid merge hell, do not break the build, and live happily ever after.</description>
     </item>
     
