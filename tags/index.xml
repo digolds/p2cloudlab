@@ -6,7 +6,7 @@
     <description>Recent content in Tags on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 17 Mar 2020 12:21:58 +0600</lastBuildDate>
+    <lastBuildDate>Wed, 18 Mar 2020 12:21:58 +0600</lastBuildDate>
     
 	<atom:link href="https://2cloudlab.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,45 @@
     <item>
       <title>CI/CD</title>
       <link>https://2cloudlab.com/tags/ci/cd/</link>
-      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      <pubDate>Wed, 18 Mar 2020 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/ci/cd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://2cloudlab.com/tags/docker/</link>
+      <pubDate>Wed, 18 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kubernetes</title>
+      <link>https://2cloudlab.com/tags/kubernetes/</link>
+      <pubDate>Wed, 18 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>云计算</title>
+      <link>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</link>
+      <pubDate>Wed, 18 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>软件研发效率</title>
+      <link>https://2cloudlab.com/tags/%E8%BD%AF%E4%BB%B6%E7%A0%94%E5%8F%91%E6%95%88%E7%8E%87/</link>
+      <pubDate>Wed, 18 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/%E8%BD%AF%E4%BB%B6%E7%A0%94%E5%8F%91%E6%95%88%E7%8E%87/</guid>
       <description></description>
     </item>
     
@@ -26,15 +62,6 @@
       <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/infrastructure-as-code/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>云计算</title>
-      <link>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</link>
-      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/</guid>
       <description></description>
     </item>
     
@@ -156,7 +183,7 @@
     </item>
     
     <item>
-      <title>cicd</title>
+      <title>CICD</title>
       <link>https://2cloudlab.com/tags/cicd/</link>
       <pubDate>Tue, 10 Mar 2020 12:29:40 +0600</pubDate>
       
@@ -174,7 +201,7 @@
     </item>
     
     <item>
-      <title>devops</title>
+      <title>DevOps</title>
       <link>https://2cloudlab.com/tags/devops/</link>
       <pubDate>Tue, 10 Mar 2020 12:29:40 +0600</pubDate>
       

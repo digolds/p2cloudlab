@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>如何提高企业的研发效率--Kubernetes的最佳实践</title>
+      <link>https://2cloudlab.com/blog/how-to-improve-organization-effect-kubernetes/</link>
+      <pubDate>Wed, 18 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/blog/how-to-improve-organization-effect-kubernetes/</guid>
+      <description>参考  Kubernetes Liveness and Readiness Probes: How to Avoid Shooting Yourself in the Foot  2cloudlab.com为企业准备产品的运行环境，只需要1天！</description>
+    </item>
+    
+    <item>
       <title>如何提高企业的研发效率--CI/CD</title>
       <link>https://2cloudlab.com/blog/why-organization-should-practice-cicd/</link>
       <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
