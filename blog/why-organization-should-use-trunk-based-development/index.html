@@ -197,13 +197,14 @@
 <li>在github上创建一个repository，这个repository用于放置产品的源码</li>
 <li>为<code>master</code>和<code>release</code>分支创建对应的CI服务，也就是在<code>.github/workflows</code>目录中创建2个文件：<code>master.yml</code>和<code>release.yml</code>。每个文件定义了一个workflow，每个workflow定义了触发条件和一些执行步骤。<code>master.yml</code>针对<code>master</code>分支定义了build，test步骤，每次提交到该分支都会执行build和test步骤；<code>release.yml</code>针对<code>release</code>分支定义了build，test，archive，每次在<code>release</code>分支上打tag（比如<code>v0.0.1</code>）都会在该分支上执行build，test和archive步骤。将创建的<code>master.yml</code>和<code>release.yml</code>文件推送到该repository上</li>
 <li>将每一个参与研发的人员加入到这个repository中，并授予他们可读写的权限</li>
-<li>研发人员可以直接在<code>master</code>分支上提交，也可以拉出<code>feature</code>分支进行修改，最终合并到<code>master</code>分支，但是这个<code>feature</code>分支的生命周期不能超过1天。当研发人员在<code>master</code>分支上提交代码后，会自动触发<code>master.yml</code>所定义的workflow。该workflow将执行build和test步骤来确保<code>trunk</code>分支是正常的</li>
+<li>研发人员可以直接在<code>master</code>分支上提交，也可以拉出<code>feature</code>分支进行修改，最终合并到<code>master</code>分支，但是这个<code>feature</code>分支的生命周期不能超过1天。当研发人员在<code>master</code>分支上提交代码后，会自动触发<code>master.yml</code>所定义的workflow。该workflow将执行build和test步骤来确保<code>master</code>分支是正常的</li>
 <li>如果使用<code>feature</code>分支，则会用到github的pull request功能。这个功能可以帮助团队成员进行Code Review。当某一名成员发起pull request时，同样也会触发<code>master.yml</code>所定义的workflow。团队的其他成员则可以在pull request的操作面板上提交意见，查看此次发起提交的运行结果</li>
 <li>当需要对外发布的时候，那么可以拉取另外一个分支<code>release</code>，然后对该分支打上tag（比如<code>v0.0.1</code>），此时<code>release.yml</code>所定义的workflow会启动，该workflow除了执行步骤build和test，最终还要执行archive步骤。执行archive的时候会把生成的结果发布到github的release存储。release存储是对外开放的，任何人都可以到release存储获取并使用你发布的产品</li>
 <li>当发布的产品有bug的时（比如功能缺陷，性能差劲等），可以通过cherry-pick从<code>master</code>分支选取对应的commit合并到<code>release</code>分支。当已知的bug都修复了，那么在<code>release</code>分支上打上一个tag（比如<code>v0.0.2</code>），此时会触发<code>release.yml</code>所定义的workflow</li>
 <li>当进入下一次迭代并准备好发布新功能的时候，那么需要把之前的<code>release</code>分支删除，并且再从分支<code>master</code>拉出新的<code>release</code>分支，此时产品的版本号应该变成<code>v0.1.x</code></li>
 </ol>
-<p>通过以上思路便可以在github上创建一个高效的基于Trunk-Based Development的CI流程，而且它是<strong>免费</strong>且适用于<strong>全世界的开发者</strong>的。</p>
+<p>通过以上思路便可以在github上创建一个高效的基于Trunk-Based Development的CI流程（如下图所示），而且它是<strong>免费</strong>且适用于<strong>全世界的开发者</strong>的。</p>
+<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/trunk-based-ci-service.png" alt=""  /></p>
 <p>当以上CI流程搭建完毕之后，研发人员只需要向<code>master</code>分支提交代码，此时Actions服务就会自动执行build和test步骤来验证此次提交是正确的（通过<code>master.yml</code>所定义的workflow来保证）。</p>
 <p>当研发人员在<code>release</code>分支打上tag的时候（比如<code>v0.0.1</code>或者<code>v0.0.2</code>），此时Actions服务会自动执行build、test和archive步骤（通过<code>release.yml</code>所定义的workflow来保证），其中archive步骤会把生成的结果发布到github的release存储中。</p>
 <p>为了能够更好地理解以上过程，我将在这篇文章<a href="https://2cloudlab.com/blog/how-to-setup-ci-service-base-on-github/">&lt;从提出想法到对外发布产品-如何0成本在github上缩短该过程&gt;</a>中，通过一个具体的例子来说明如何基于github搭建CI流程。</p>
