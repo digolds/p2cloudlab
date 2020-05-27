@@ -12,22 +12,58 @@
     
     
     <item>
-      <title>如何提高企业的研发效率--Kubernetes的最佳实践</title>
+      <title>如何规模化企业的数字化服务--Kubernetes的最佳实践</title>
       <link>https://2cloudlab.com/blog/how-to-improve-organization-effect-kubernetes/</link>
       <pubDate>Wed, 18 Mar 2020 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/blog/how-to-improve-organization-effect-kubernetes/</guid>
-      <description>参考  Kubernetes Liveness and Readiness Probes: How to Avoid Shooting Yourself in the Foot  2cloudlab.com为企业准备产品的运行环境，只需要1天！</description>
+      <description>企业的线上产品的发展主要分为3个阶段。第一阶段主要是快速打造产品，然后推向市场并验证想法；第二阶段主要是打磨产品同时发展用户基数，使得用户基数达到千万级别；第三阶段则是维护产品，迭代新功能，保证产品能够为企业带来持续的收入。每一个阶段都会有对应的技术手段来支撑，本文的内容主要解决企业在第二阶段所面临的挑战。这些挑战主要有：企业如何在原来的基础上重构数字化产品？企业如何构建支撑千万级用户的数字化产品？对于后者，企业需要综合多种技术手段来实现，其中Kubernetes（K8S）在容器编排方面为拥有千万级别用户群体的服务提供了支持。接下来，让我们看看K8S是如何规模化数字化产品的。
+ Kubernetes所解决的问题 什么是Kubernetes(K8S) 为什么选择K8S K8S的组成部分 K8S的资源类型 在AWS上搭建K8S服务的选项  Kubernetes所解决的问题 当一款数字化产品的用户基数非常庞大的时候（比如每天的访问量达到几千万人次时），企业需要升级其技术解决方案，以便能够支撑庞大的用户群体。拥有庞大用户群体的数字化服务有很多，比如Google的搜索引擎，淘宝，微博等等。而这类数字化服务有一个共同的特征：其后台运行着成成千上万台服务器，由它们向用户提供服务。通过人工来管理这群服务器显然不是一个可行的办法，因此Google的工程师为了高效管理这种量级的服务器，发明了这个工具：Kubernetes（K8S）。通过这个工具，工程师只需要键入几条命令就可以同时操作多台机器，从而实现轻松管理成千上万台服务器。
+这些数字化产品大多都是微服务化的，而微服务的几大特点就是：服务与服务之间是相互独立的；它们之间是通过行为来交互的；为了高可用性，每一个服务都会被复制到不同的服务器上，当某台服务器坏了或者死机了，那么运行在其它服务器上的服务依然能够提供服务；不同服务互相协作，最终支撑了数字化产品。K8S特别适合微服务场景，比如工程师只需要执行一个命令就能让K8S部署某类服务，并自动替换失败的服务。除此之外，工程师还可以通过一个命令使得K8S自动部署或更新服务，这些服务能够根据负载的多少而自动增加或减少。为了方便K8S部署，其部署单元被抽象出来，而这种单元就是我们常常见到的容器，其中Docker是一款非常流行的容器工具，因此K8S和Docker工具结合很好地支持微服务结构的数字化产品。
+使用K8S能够方便地为数字化产品的负载能力提供横向扩展，那么K8S是如何做到的？接下来我们要了解什么是K8S？它提供了哪些功能？
+什么是Kubernetes(K8S) Kubernetes (K8S)是一套管理容器资源的开源系统，它提供了以下功能:
+ 分配资源  它会根据资源的使用情况(这些资源包括数据中心，服务器，CPU，内存，端口等)，在一族服务器上，以最优的方式，创建和运行容器。
+ 部署  它支持多种在线逐步更新策略，这些策略有rolling deployment， blue-green deployment以及 canary deployment。如果在更新过程中产生错误，它会自动恢复到上一次可用的状态，从而确保服务7*24小时可用。
+ 自带修复功能  它会一直监控资源的运行状态，自动将可用的资源替换不可使用的资源。
+ 弹性伸缩  它支持横向和纵向伸缩。负载增多或减少时，它可以自动增加或减少适度的资源来响应负载。它也可以升级或降级资源的处理能力来支持纵向扩展，比如提高CPU的处理能力或者增加内存。
+ 负载均衡  它能使外部访问内部资源(常见的资源有container)，并将外部请求均匀地分配给不同的资源。
+ 发现服务  它有内置的DNS服务，并提供Service资源，使得容器能够找到彼此来进行通信。
+ 配置和授权  它允许你设置不同的环境变量来区分不同的环境，这些环境有stage、test和prod。也允许你为资源设置不同的访问权限。
+为什么选择K8S K8S作为容器化应用的编排系统，已经广泛应用于大多数企业。它之所以流行的原因有以下几点：
+ 丰富的功能  它为管理容器提供了大量功能，这些功能包括弹性伸缩，自动修复，在线部署，服务发现，秘钥管理，配置管理，bin packing, storage orchestration, batch execution, access controls, log aggregation, SSH access, batch processing, and much more.</description>
     </item>
     
     <item>
       <title>从提出想法-&gt;对外发布产品--如何0成本在github上缩短该过程</title>
+      <link>https://2cloudlab.com/blog/how-to-craft-url-shorten-service-for-one-day/</link>
+      <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/blog/how-to-craft-url-shorten-service-for-one-day/</guid>
+      <description>Craft a shorten URL service base on AWS in 1 day With Cloud Computing becoming popular, uniform and standard software development methodologies are arising, meaning that companies can leverage out-of-the-box infrastructures provided by Cloud providers, such as AWS, to craft complex yet competitive software product in order to domain markets in a short time, sometime, even in a day. Here, I will show you how to combine some sort of services provided by AWS, to build a production-grade shorten URL service with high availability, resiliency and maintainability in just one day!</description>
+    </item>
+    
+    <item>
+      <title>如何0成本在github上构建CI</title>
       <link>https://2cloudlab.com/blog/how-to-setup-ci-service-base-on-github/</link>
       <pubDate>Tue, 17 Mar 2020 12:21:58 +0600</pubDate>
       
       <guid>https://2cloudlab.com/blog/how-to-setup-ci-service-base-on-github/</guid>
-      <description>软件研发不仅涉及到核心业务的研发，还会涉及到周边的基础设施的搭建。这些基础设施的搭建主要是为了提高软件研发的效率，进而使得企业能够快速向市场推出新功能或新服务。企业的软件研发流程是由多个环节，环环相扣而形成的。因此为了提高企业的研发效率，每一个环节都需要相对应的基础设施来支撑。随着技术的发展，现实世界中的需求越来越复杂，进而催生出了更加复杂的软件系统。为了研发这类复杂的软件系统，软件行业的老兵们提出了软件研发的方法和经验，其中，CI/CD是现在比较流行的一种。
-Building a basic CI/CD pipeline for a Golang application using GitHub Actions</description>
+      <description>现代软件的研发流程基本上均会配备一定程度的CI/CD（这篇文章解释了为何需要在企业里实施CI/CD），整个流程主要分为CI和CD部分，这篇文章将围绕CI部分展开，并通过一个具体的例子解释如何0成本在github上构建CI。构建CI的最佳实践离不开Trunk Based Development的分支策略，感兴趣的读者可以通过这篇文章来了解什么是Trunk Based Development。在github上构建CI有2个好处：无需任何费用和有大量可以用于构建CI的模块，借助这2个好处，小规模团队可以快速地搭建还不错的CI流程。接下来，让我们结合一个使用Go编写的Hello World例子以及基于Trunk-Based Development模式来构建这个CI流程。
+这篇文章将分为以下几个部分来讲解：
+ 在github上构建CI的基本思路 在github上构建CI的优势 通过一个Go示例在github上构建CI 总结  在github上构建CI的基本思路 构建CI有2种方式，一种是组建团队从0开始，另外一种是借助第三方服务开始。在github上构建CI属于后者，其优势在于github提供了许多方便开发者研发的服务，其中有3种服务可用于免费构建CI，它们分别是：免费托管源码，免费存储以及免费构建服务（也就是最近推出的Actions服务）。有了这3种服务，任何一个团队均可以根据自身的情况来构建CI。接下来，我将基于Trunk-Based Development模式提出实践CI的一种方法，这种方法提出了2个独立的流程，并定义了触发这2个流程的条件。
+首先，我们需要定义一个流程（master_workflow），这个流程的作用是快速响应master分支上的每一次改动。该分支上每一次改动都会自动启动服务器或虚拟机来执行该流程，并将结果反馈（比如通过邮件通知的方式）给研发团队。这个流程的主要作用在于每天都确保master分支是健康的，比如语法规则是正确的，编译是成功的和单元测试能通过，因此该流程的一大特点是执行周期通常限制在10~30分钟内。这一要求使得构成该流程的步骤尽可能的少，下面是构成该流程的几个步骤：
+ 准备编译环境 安装依赖库 获取源代码 检测代码的合法性 编译源代码 执行自动化测试（仅仅包括单元测试） 生成测试报告  为了缩短这个流程的执行周期，可以考虑这些方法：将准备编译环境和安装依赖库步骤提前合并成一个步骤（通过Docker技术），无需在运行时准备；将检测代码的合法性和编译源代码步骤分布在不同的机器上同时执行；在执行自动化测试的步骤中并发执行单元测试。缩短这个流程的执行周期是为了让整个团队更快地看到每一次修改的结果，如果这个修改阻碍了团队的工作（比如编译失败了），那么提交该修改的研发工作者能够第一时间修复。
+其次，我们还需要定义一个集成流程（integration_workflow），这个流程的作用是将所有组件集成在一个完整的压缩包里，并发布到一个共有的存储空间，以便测试团队和DevOps团队展开后续的测试和部署工作。这个流程不仅包括之前流程所定义的步骤，而且还新增了集成和归档步骤，如下所示：
+ 准备编译环境 安装依赖库 获取源代码 检测代码的合法性 编译源代码 执行自动化测试（包括单元测试和集成测试） 生成测试报告 集成和归档  **注：**此时，执行自动化测试包括了集成测试。因此，从总体而言，这个流程的运行周期会更长一点，通常在30~60分钟。
+以上就是基于Trunk-Based Development模式，在github上构建CI的基本思路。首先，我们需要为master分支定义一个流程，该分支上的每次修改都会触发该流程；其次，我们需要为release分支定义另外一个流程，该分支上的每一次修改都会触发该流程，并将集成包发布到一个共有存储空间。为何需要定义这2个流程，读者可以参考这篇文章。
+在github上构建CI的优势 你可以选择组建一支团队来打造CI/CD，这种方式需要自己搭建服务器，安装软件（比如Jenkins）和配置，因此所需时间会较长。另外，你也可以选择第三方服务来搭建CI/CD（比如在github上构建CI）。在github上搭建CI有2个好处，它们分别是免费和共享其他人的成果。
+github向开发者提供了3种免费的服务来搭建CI，它们分别是源码托管，归档存储和Actions服务。开发者可以免费地将代码发布到github上，世界各地的开发者可以参与进来共同开发；开发者也可以免费地使用github所提供的Actions服务来构建流程；开发者可以将流程输出的集成包发布到github提供的存储服务里，供用户使用。
+这3种服务不仅免费，而且其中Actions服务提供了可复用的模块。这些可复用的模块是由全世界的开发者贡献的，因此可以直接将这些模块组合在一起构成适合自己的CI流程。比如这篇文章的示例使用了Go相关的Actions模块来构建上一节提到的2个流程。
+github平台存储了开发者的代码，提供了搭建CI的Action服务，拥有大量可复用的模块以及支持存储，此时，开发者只需要使用这些可复用的模块来定义流程，便可以将代码，Actions服务和存储服务联系在一起。而流程的定义是通过yaml文件来完成的，比如上一节的2个流程就分别对应着文件master_workflow.yaml和integration_workflow.yaml。
+组建一个团队来搭建CI，需要准备服务器，安装软件，用网线连接服务器等，而借助github，则只需要编写yaml文件就能快速构建出一个稳定的CI，这种转变大大地缩短了搭建CI的时间，让开发者专注于软件的功能研发！
+接下来让我们看一个具体的例子来实践在github上构建CI
+通过一个Go示例在github上构建CI 这个例子是由Go语言来编写的，完整的源码可以到这里获取，其目录结构如下所示：
+. |____.github | |____workflows | | |____integration_workflow.yaml | | |____master_workflow.yaml |____go.mod |____main.go |____main_integration_test.go |____main_test.go |____Makefile |____mylib | |____external_lib.go | |____external_lib_test.</description>
     </item>
     
     <item>
@@ -167,6 +203,15 @@ $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序�
     </item>
     
     <item>
+      <title>企业如何快速推出数字化服务-使用Serverless来验证想法</title>
+      <link>https://2cloudlab.com/portfolio/how-to-promote-with-serverless/</link>
+      <pubDate>Mon, 12 Aug 2019 16:58:55 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/portfolio/how-to-promote-with-serverless/</guid>
+      <description>Introduction AWS Lambda was launched at re:Invent 2014. It was the first implementation of serverless computing where users could upload their code to Lambda. It performs operational and administrative activities on their behalf, including provisioning capacity, monitoring fleet health, applying security patches, deploying their code, and publishing realtime logs and metrics to Amazon CloudWatch.Lambda follows the event-driven architecture. Your code is triggered in response to events and runs in parallel. Every trigger is processed individually.</description>
+    </item>
+    
+    <item>
       <title>企业如何在一天之内部署线上服务--高效使用terraform</title>
       <link>https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/</link>
       <pubDate>Mon, 15 Jul 2019 12:29:40 +0600</pubDate>
@@ -228,15 +273,6 @@ security账号下的所有用户都不会在该账号下创建资源，反而会
 如何理解：Devops、CICD、Infrastructure as code 在软件行业中，Devops, CICD, Infrastructure as code几个词汇经常出现，它们的最终目标是帮助企业提高软件质量同时向市场推出杀手锏产品。以下是来自wiki的定义：
 Devops的定义
  DevOps is a set of practices that combines software development (Dev) and information-technology operations (Ops) which aims to shorten the systems development life cycle and provide continuous delivery with high software quality.</description>
-    </item>
-    
-    <item>
-      <title>如何使用Infrastructure as Code可复用库</title>
-      <link>https://2cloudlab.com/portfolio/caramel-bottle/</link>
-      <pubDate>Thu, 12 Jul 2018 16:59:54 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/portfolio/caramel-bottle/</guid>
-      <description>Consectur in Bibendum Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</description>
     </item>
     
     <item>

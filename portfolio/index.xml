@@ -6,10 +6,19 @@
     <description>Recent content in Portfolios on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 12 Jul 2019 16:58:55 +0600</lastBuildDate>
+    <lastBuildDate>Mon, 12 Aug 2019 16:58:55 +0600</lastBuildDate>
     
 	<atom:link href="https://2cloudlab.com/portfolio/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>企业如何快速推出数字化服务-使用Serverless来验证想法</title>
+      <link>https://2cloudlab.com/portfolio/how-to-promote-with-serverless/</link>
+      <pubDate>Mon, 12 Aug 2019 16:58:55 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/portfolio/how-to-promote-with-serverless/</guid>
+      <description>Introduction AWS Lambda was launched at re:Invent 2014. It was the first implementation of serverless computing where users could upload their code to Lambda. It performs operational and administrative activities on their behalf, including provisioning capacity, monitoring fleet health, applying security patches, deploying their code, and publishing realtime logs and metrics to Amazon CloudWatch.Lambda follows the event-driven architecture. Your code is triggered in response to events and runs in parallel. Every trigger is processed individually.</description>
+    </item>
     
     <item>
       <title>如何构建企业级AWS账号体系</title>
@@ -38,15 +47,6 @@ security账号下的所有用户都不会在该账号下创建资源，反而会
 当完成对所有子账号的构建之后，需要将root用户的登陆方式限制，只允许其通过网站的方式登陆子账号，并且将所有命令行登陆的凭证删除。
 在root账号中创建CloudTrail服务  到目前为止，你已经在root、security、dev、stage、prod、shared-service和test账号中创建了对应的IAM user、IAM group、IAM role和IAM policy。研发人员便可以使用自己的账号登陆AWS服务，并根据自己拥有的权限创建对应的资源。为了能记录每一位用户使用AWS服务的情况，则需要创建CloudTrail服务。该服务可以记录每一名用户使用AWS服务的踪迹，并将这些信息归档到AWS的S3服务。开启cloudtrail的好处是：可以及时通过归档的记录来调查外来入侵者的踪迹，从而修复安全漏洞。
  在security账号中创建CloudTrail服务</description>
-    </item>
-    
-    <item>
-      <title>如何使用Infrastructure as Code可复用库</title>
-      <link>https://2cloudlab.com/portfolio/caramel-bottle/</link>
-      <pubDate>Thu, 12 Jul 2018 16:59:54 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/portfolio/caramel-bottle/</guid>
-      <description>Consectur in Bibendum Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</description>
     </item>
     
     <item>

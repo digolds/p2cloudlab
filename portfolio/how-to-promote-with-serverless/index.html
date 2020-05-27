@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   
-  <meta name="description" content="2cloudlab是云计算解决方案提供商，致力于云计算和DEVOPS。我们渴望通过云计算技术来帮助企业进行数字化转型。提高企业的研发效率、降低企业的研发成本以及加快企业的创新速度是我们成立的初衷！">
+  <meta name="description" content="当使用AWS作为基础服务为分布式软件产品提供资源时，需要做的事情太多了。有时需要查看使用AWS服务的费用、有时需要在dev环境中测试研发的功能、有时需要在stage环境中模拟prod环境的运行情况、有时需要在prod环境中上线新功能。如果研发团队里有100人都能对AWS进行各种个样的操作，那么后果是非常混乱不堪的：比如，有些成员的操作导致prod环境奔溃了、有些成员完成测试时忘记销毁资源最终导致费用变高、甚至没有察觉外来攻击者使用了企业的AWS资源等。为了杜绝这些情况发生，企业在使用AWS服务之前，需要为研发团队构建一套有效的AWS账号体系。本文将围绕如何构建企业级AWS账号体系展开，最终提供一套可实施的方案。">
   <meta name="author" content="2cloudlab">
   <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>cicd</title>
+  <title>企业如何快速推出数字化服务-使用Serverless来验证想法</title>
   <link rel="icon" href="https://2cloudlab.com/images/favicon.ico">
 
   <!-- Twitter Bootstrs CSS -->
@@ -80,28 +80,26 @@
     </div>
 </section>
 
-<!-- Global Page Section Start -->
+<!-- Page Header -->
 <section class="global-page-header">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <h2>cicd</h2>
-                    <ol class="breadcrumb list-inline text-center">
-                        <li class="list-inline-item">
-                            <a href="https://2cloudlab.com/">
-                                <i class="ion-ios-home"></i>
-                                返回首页 &nbsp; &nbsp;/
-                            </a>
-                        </li>
-                        <li class="active list-inline-item">cicd</li>
-                    </ol>
+                    <h2>企业如何快速推出数字化服务-使用Serverless来验证想法</h2>
+                    <div class="portfolio-meta">
+                        <span>2019-08-12</span>|
+                        <span class="ion-pricetags"></span>
+                        <span> AWS, 云计算, NOSQL, Serverless</span>|
+                        <span> 首页:
+                            <a href="https://2cloudlab.com">https://2cloudlab.com</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Global Page Section End -->
 
 <style type="text/css">
     @media (min-width: 1200px) {
@@ -109,110 +107,47 @@
         max-width: 800px;
     }
   }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
+}
 </style>
 
-<section id="blog-full-width">
+<!-- work details part start -->
+<section class="work-single">
     <div class="container post-container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 
-                <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
+                <div class="work-single-image">
                     
-                    <div class="blog-post-image">
-                        <a href="https://2cloudlab.com/blog/how-to-authority-aws-through-command-line/">
-                             <img class="img-fluid lazy" data-src="https://2cloudlab.com/images/blog/command-line.png" alt="post-image"/>
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <h2 class="blogpost-title">
-                            <a href="https://2cloudlab.com/blog/how-to-authority-aws-through-command-line/">提高研发团队使用AWS服务的效率x100--高效使用aws-vault工具</a>
-                        </h2>
-                        <div class="blog-meta">
-                            <span>2020-03-10</span>
-                            <span>作者
-                                郑思龙
-                            </span>
-                            
-                            
-                            <span>
-                                aws-vault工具, 研发效率提升, devops, cicd, 云计算, cloudcomputing
-                            </span>
-                            
-                        </div>
-                        <p>
-                            
-                            在DevOps的世界里有太多工具需要掌握，命令行工具就是其中之一。企业在打造DevOps的过程中会经常使用命令行工具访问AWS服务。一名研发人员每天可能要在命令行里反复（平均50~60次）输入登录AWS的凭证才能创建资源，如果为每一名账号引入安全机制，那么这个登录流程耗时更长！为了减轻这种重复登录所带来的痛苦，则需要一个更加友好的命令行工具来辅助，这个工具就是：aws-vault。
-                        </p>
-                        <a href="https://2cloudlab.com/blog/how-to-authority-aws-through-command-line/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
-                    </div>
-                </article>
+                    <img class="img-fluid w-100 lazy" data-src="https://2cloudlab.com/images/portfolio/multi-aws-accounts.png" alt="work-single-image">
+                </div>
                 
-                <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
-                    
-                    <div class="blog-post-image">
-                        <a href="https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/">
-                             <img class="img-fluid lazy" data-src="https://2cloudlab.com/images/blog/terraform-hashicorp.png" alt="post-image"/>
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <h2 class="blogpost-title">
-                            <a href="https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/">企业如何在一天之内部署线上服务--高效使用terraform</a>
-                        </h2>
-                        <div class="blog-meta">
-                            <span>2019-07-15</span>
-                            <span>作者
-                                郑思龙
-                            </span>
-                            
-                            
-                            <span>
-                                terraform工具, 企业的数字化转型, devops, cicd, 云计算, cloudcomputing
-                            </span>
-                            
-                        </div>
-                        <p>
-                            
-                            terraform是一个用go语言编写的跨平台、开源、只有单个运行文件的命令行程序。terraform通过解析和执行terraform configuration文件集合，最终会在短时间内生成分布式软件所运行的环境，避免了手动配置环境，减少出错的可能性。在企业里，要想高效地使用terraform来正确且快速地生成分布式软件所运行的环境，不仅需要掌握terraform知识，还需要结合工程方面的实践经验（比如版本控制，模块划分，测试）以及其它工具（比如Packer、Docker、Kubernetes）来共同实现。
-                        </p>
-                        <a href="https://2cloudlab.com/blog/how-to-apply-terraform-across-entire-enterprises/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
-                    </div>
-                </article>
                 
-                <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
-                    
-                    <div class="blog-post-image">
-                        <a href="https://2cloudlab.com/blog/devops-cicd-infrastructure-as-code/">
-                             <img class="img-fluid lazy" data-src="https://2cloudlab.com/images/blog/digital-transform.jpg" alt="post-image"/>
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <h2 class="blogpost-title">
-                            <a href="https://2cloudlab.com/blog/devops-cicd-infrastructure-as-code/">企业为何需要在内部推广Devops</a>
-                        </h2>
-                        <div class="blog-meta">
-                            <span>2019-02-21</span>
-                            <span>作者
-                                郑思龙
-                            </span>
-                            
-                            
-                            <span>
-                                DevOps, CICD, InfrastructureAsCode
-                            </span>
-                            
-                        </div>
-                        <p>
-                            
-                            企业对外发布产品之前其在内部需要做好各种准备：研发工程师完成产品研发，测试工程师完成产品测试，DevOps工程师部署产品。在这个过程中遇到任何问题，都会影响产品的发布，因此企业在数字化转型的过程中都需要优化这一流程。在软件行业中，优化这个流程的方法论是：DevOps。
-                        </p>
-                        <a href="https://2cloudlab.com/blog/devops-cicd-infrastructure-as-code/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
-                    </div>
-                </article>
+                
+                <div class="work-single-content">
+                    <h2 id="introduction">Introduction</h2>
+<p>AWS Lambda was launched at re:Invent 2014. It was the first implementation of serverless computing where users could upload their code to Lambda. It performs operational and administrative activities on their behalf, including provisioning capacity, monitoring fleet health, applying security patches, deploying their code, and publishing realtime logs and metrics to Amazon CloudWatch.Lambda follows the event-driven architecture. Your code is triggered in response to events and runs in parallel. Every trigger is processed individually. Moreover, you are charged only per execution, while with EC2 you are billed by the hour. Therefore, you benefit from autoscaling and fault-tolerance for your application with low cost and zero upfront infrastructure investment.</p>
+<p><img class="lazy" data-src="http://localhost:1313/images/blog/source-events-of-lambda.png" alt=""  /></p>
+<h2 id="lambda-for-web-application">Lambda for Web application</h2>
+<p><strong>Web applications</strong>: Instead of a maintaining a dedicated instance with a web server to host your static website, you can combine S3 and Lambda to benefit from scalability at a cheaper cost. An example of a serverless website is described in the following diagram:</p>
+<p><img class="lazy" data-src="http://localhost:1313/images/blog/web-application-for-lambda.png" alt=""  /></p>
+<p>An alias record in Route 53 points to a CloudFront distribution. The CloudFront distribution is built on top of an S3 Bucket where a static website is hosted. CloudFront reduces the response time to static assets (JavaScripts, CSS, fonts, and images), improves webpage load times, and mitigates distributed denial of service (DDoS) attacks. HTTP requests coming from the website then go through API Gateway HTTP endpoints that trigger the right Lambda Function to handle the application logic and persist data to a fully managed database service, such as DynamoDB.</p>
+<h2 id="developing-a-serverless-function-with-lambda">Developing a Serverless Function with Lambda</h2>
+<p>In this chapter, we will finally learn how to write our very first Python-based Lambda function from scratch, followed by how to configure, deploy, and test a Lambda function manually from the AWS Lambda Console. Along the way, you will be given a set of tips on how to grant access to your function so that it can interact with other AWS services in a secure way.</p>
+<p>You can run Python code in AWS Lambda. Lambda provides runtimes for Python that execute your code to process events. Your code runs in an environment that includes the SDK for Python (Boto 3), with credentials from an AWS Identity and Access Management (IAM) role that you manage.</p>
+<p>Lambda functions use an execution role to get permission to write logs to Amazon CloudWatch Logs, and to access other services and resources. If you don't already have an execution role for function development, create one.</p>
+
+                </div>
                 
             </div>
         </div>
     </div>
 </section>
+<!-- work details part end -->
 
 
 <!-- Call To Action Section Start -->
