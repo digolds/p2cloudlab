@@ -183,7 +183,7 @@
     </item>
     
     <item>
-      <title>cicd</title>
+      <title>CICD</title>
       <link>https://2cloudlab.com/tags/cicd/</link>
       <pubDate>Tue, 10 Mar 2020 12:29:40 +0600</pubDate>
       
@@ -201,7 +201,7 @@
     </item>
     
     <item>
-      <title>devops</title>
+      <title>DevOps</title>
       <link>https://2cloudlab.com/tags/devops/</link>
       <pubDate>Tue, 10 Mar 2020 12:29:40 +0600</pubDate>
       
@@ -282,11 +282,38 @@
     </item>
     
     <item>
+      <title>Data-Intensive</title>
+      <link>https://2cloudlab.com/tags/data-intensive/</link>
+      <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/data-intensive/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>DynamoDB</title>
+      <link>https://2cloudlab.com/tags/dynamodb/</link>
+      <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/dynamodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>InfrastructureAsCode</title>
       <link>https://2cloudlab.com/tags/infrastructureascode/</link>
       <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/infrastructureascode/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NoSQL</title>
+      <link>https://2cloudlab.com/tags/nosql/</link>
+      <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/nosql/</guid>
       <description></description>
     </item>
     
