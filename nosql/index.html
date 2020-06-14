@@ -123,6 +123,37 @@
                 <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
                     
                     <div class="blog-post-image">
+                        <a href="https://2cloudlab.com/nosql/anatomy-of-an-item/">
+                             <img class="img-fluid lazy" data-src="https://2cloudlab.com/images/blog/key-concepts.png" alt="post-image"/>
+                        </a>
+                    </div>
+                    <div class="blog-content">
+                        <h2 class="blogpost-title">
+                            <a href="https://2cloudlab.com/nosql/anatomy-of-an-item/">DynamoDB中，每项数据（item）的构成单元</a>
+                        </h2>
+                        <div class="blog-meta">
+                            <span>2019-02-22</span>
+                            <span>作者
+                                Alex
+                            </span>
+                            
+                            
+                            <span>
+                                NoSQL, DynamoDB, Data-Intensive
+                            </span>
+                            
+                        </div>
+                        <p>
+                            
+                            DynamoDB中的每条数据是构成整个数据集的基础，它对应着关系型数据库中的某一张表中的某一行数据或者对应MongoDB中一个文档，又或者是编程当中的一个对象（比如一个用户对象）。每条数据由主键唯一标识，而主键是在创建表的时候指定的。除了主键之外，每条数据也可以包含其它属性，这些属性与主键组成了一条完整的数据单元（比如：一个用户数据由user_id, name, phone组成，其中user_id是主键）。每个属性（包括主键）都有对应类型，比如string，numbers，lists，sets等，当写入或查询数据的时候，这些类型都需要提供。在这篇文章中，我们将通过以下几个方面来讨论构成每项数据的基础单元：
+                        </p>
+                        <a href="https://2cloudlab.com/nosql/anatomy-of-an-item/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
+                    </div>
+                </article>
+                
+                <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
+                    
+                    <div class="blog-post-image">
                         <a href="https://2cloudlab.com/nosql/additional-reading/">
                              <img class="img-fluid lazy" data-src="https://2cloudlab.com/images/blog/additional-reading.png" alt="post-image"/>
                         </a>
@@ -272,30 +303,6 @@
                             DynamoDB是一个由AWS提供的NoSQL数据库服务。它完全托管于AWS，开发者只需要定义数据访问模式以及一些关键信息，就能通过HTTP API来使用它。它具有以下特点：
                         </p>
                         <a href="https://2cloudlab.com/nosql/what-is-dynamo-db/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
-                    </div>
-                </article>
-                
-                <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
-                    
-                    <div class="blog-post-image">
-                        <a href="https://2cloudlab.com/nosql/anatomy-of-an-item/">
-                             
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <h2 class="blogpost-title">
-                            <a href="https://2cloudlab.com/nosql/anatomy-of-an-item/"></a>
-                        </h2>
-                        <div class="blog-meta">
-                            <span>0001-01-01</span>
-                            
-                            
-                        </div>
-                        <p>
-                            
-                            Anatomy of an Item 
-                        </p>
-                        <a href="https://2cloudlab.com/nosql/anatomy-of-an-item/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
                     </div>
                 </article>
                 

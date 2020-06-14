@@ -138,7 +138,7 @@
     </item>
     
     <item>
-      <title>terraform</title>
+      <title>Terraform</title>
       <link>https://2cloudlab.com/tags/terraform/</link>
       <pubDate>Sun, 15 Mar 2020 12:21:58 +0600</pubDate>
       
@@ -284,7 +284,7 @@
     <item>
       <title>Data-Intensive</title>
       <link>https://2cloudlab.com/tags/data-intensive/</link>
-      <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
+      <pubDate>Fri, 22 Feb 2019 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/data-intensive/</guid>
       <description></description>
@@ -293,9 +293,18 @@
     <item>
       <title>DynamoDB</title>
       <link>https://2cloudlab.com/tags/dynamodb/</link>
-      <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
+      <pubDate>Fri, 22 Feb 2019 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/dynamodb/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>NoSQL</title>
+      <link>https://2cloudlab.com/tags/nosql/</link>
+      <pubDate>Fri, 22 Feb 2019 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/nosql/</guid>
       <description></description>
     </item>
     
@@ -305,15 +314,6 @@
       <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/infrastructureascode/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>NoSQL</title>
-      <link>https://2cloudlab.com/tags/nosql/</link>
-      <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
-      
-      <guid>https://2cloudlab.com/tags/nosql/</guid>
       <description></description>
     </item>
     
