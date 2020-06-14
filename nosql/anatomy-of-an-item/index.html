@@ -172,9 +172,78 @@
 <p>对以上属性类型有一些基本了解之后，让我们来看看不同的属性类型。每种属性类型都会以类型标识（比如&quot;S&quot;代表string，而&quot;N&quot;代表number）和用例开始介绍。</p>
 <p><strong>String类型</strong></p>
 <p><strong>Identifier: &ldquo;S&rdquo;</strong></p>
-<p><strong>用例：</strong>:</p>
+<p><strong>用例：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;Name&#34;</span>: <span class="o">{</span> <span class="s2">&#34;S&#34;</span>: <span class="s2">&#34;Alex DeBrie&#34;</span> <span class="o">}</span>
 </code></pre></div><p>string类型是基础的数据类型，字符集为Unicode，对应的编码方式为UTF-8。DynamoDB允许该类型的属性排序，这种排序十分有用，比如根据姓氏（按照字母次序）或者ISO的时间戳（比如：将&quot;2017-07-01&quot;和&quot;2018-01-01&quot;之间的数据项按照日期来排序）来对多个数据项进行排序。</p>
+<p><strong>Number类型</strong></p>
+<p><strong>Identifier: &ldquo;N&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;Age&#34;</span>: <span class="o">{</span> <span class="s2">&#34;N&#34;</span>: <span class="s2">&#34;29&#34;</span> <span class="o">}</span>
+</code></pre></div><p>The number type represents positive and negative numbers, or zero. It can be used for precision up to 38 digits.</p>
+<p>Note that you will send your number up as a string value. However, you may do numerical operations on your number attributes when working with condition expressions.</p>
+<p><strong>Binary类型</strong></p>
+<p><strong>Identifier: &ldquo;B&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;SecretMessage&#34;</span>: <span class="o">{</span> <span class="s2">&#34;B&#34;</span>: <span class="s2">&#34;bXkgc3VwZXIgc2VjcmV0IHRleHQh&#34;</span> <span class="o">}</span>
+</code></pre></div><p>You can use DynamoDB to store Binary data directly, such as an image or compressed data. Generally, larger binary blobs should be stored in something like Amazon S3 rather than DynamoDB to enable greater throughput, but you may use DynamoDB if you like.</p>
+<p>When using Binary data types, you must base64 encode your data before sending to DynamoDB.</p>
+<p><strong>Boolean类型</strong></p>
+<p><strong>Identifier: &ldquo;BOOL&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;IsActive&#34;</span>: <span class="o">{</span> <span class="s2">&#34;BOOL&#34;</span>: <span class="s2">&#34;false&#34;</span> <span class="o">}</span>
+</code></pre></div><p>The Boolean type stores either &ldquo;true&rdquo; or &ldquo;false&rdquo;.</p>
+<p><strong>Null类型</strong></p>
+<p><strong>Identifier: &ldquo;NULL&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;OrderId&#34;</span>: <span class="o">{</span> <span class="s2">&#34;NULL&#34;</span>: <span class="s2">&#34;true&#34;</span> <span class="o">}</span>
+</code></pre></div><p>The Null type stores a boolean value of either &ldquo;true&rdquo; or &ldquo;false&rdquo;. I would generally recommend against using it.</p>
+<p><strong>List类型</strong></p>
+<p><strong>Identifier: &ldquo;L&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;Roles&#34;</span>: <span class="o">{</span> <span class="s2">&#34;L&#34;</span>: <span class="o">[</span> <span class="s2">&#34;Admin&#34;</span>, <span class="s2">&#34;User&#34;</span> <span class="o">]</span> <span class="o">}</span>
+</code></pre></div><p>The List type allows you to store a collection of values in a single attribute. The values are ordered and do not have to be of the same type (e.g. string or number).</p>
+<p>You can operate directly on list elements using expressions.</p>
+<p><strong>Map类型</strong></p>
+<p><strong>Identifier: &ldquo;M&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;FamilyMembers&#34;</span>: <span class="o">{</span>
+    <span class="s2">&#34;M&#34;</span>: <span class="o">{</span>
+        <span class="s2">&#34;Bill Murray&#34;</span>: <span class="o">{</span>
+            <span class="s2">&#34;Relationship&#34;</span>: <span class="s2">&#34;Spouse&#34;</span>,
+            <span class="s2">&#34;Age&#34;</span>: <span class="m">65</span>
+        <span class="o">}</span>,
+        <span class="s2">&#34;Tina Turner&#34;</span>: <span class="o">{</span>
+            <span class="s2">&#34;Relationship&#34;</span>: <span class="s2">&#34;Daughter&#34;</span>,
+            <span class="s2">&#34;Age&#34;</span>: 78,
+            <span class="s2">&#34;Occupation&#34;</span>: <span class="s2">&#34;Singer&#34;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div><p>Like the List type, the Map type allows you to store a collection of values in a single attribute. For a Map attribute, these values are stored in key-value pairs, similar to the map or dictionary objects in most programming languages.</p>
+<p>Also like the List type, you can operate directly on map elements using expressions.</p>
+<p><strong>String Set类型</strong></p>
+<p><strong>Identifier: &ldquo;SS&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;Roles&#34;</span>: <span class="o">{</span> <span class="s2">&#34;SS&#34;</span>: <span class="o">[</span> <span class="s2">&#34;Admin&#34;</span>, <span class="s2">&#34;User&#34;</span> <span class="o">]</span> <span class="o">}</span>
+</code></pre></div><p>DynamoDB includes three different Set types which allow you to maintain a collection of unique items of the same type. The String Set is used to hold a set of strings.</p>
+<p>Sets can be particularly useful with expressions. You can run update commands to add &amp; remove elements to a set without fetching &amp; inserting the whole object. You may also check for the existence of an element within a set when updating or retrieving items.</p>
+<p><strong>Number Set类型</strong></p>
+<p><strong>Identifier: &ldquo;NS&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;RelatedUsers&#34;</span>: <span class="o">{</span> <span class="s2">&#34;NS&#34;</span>: <span class="o">[</span> <span class="s2">&#34;123&#34;</span>, <span class="s2">&#34;456&#34;</span>, <span class="s2">&#34;789&#34;</span> <span class="o">]</span> <span class="o">}</span>
+</code></pre></div><p>DynamoDB includes three different Set types which allow you to maintain a collection of unique items of the same type. The Number Set is used to hold a set of numbers.</p>
+<p>Sets can be particularly useful with expressions. You can run update commands to add &amp; remove elements to a set without fetching &amp; inserting the whole object. You may also check for the existence of an element within a set when updating or retrieving items.</p>
+<p><strong>Binary Set类型</strong></p>
+<p><strong>Identifier: &ldquo;BS&rdquo;</strong></p>
+<p><strong>用例：</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;SecretCodes&#34;</span>: <span class="o">{</span> <span class="s2">&#34;BS&#34;</span>: <span class="o">[</span> 
+	<span class="s2">&#34;c2VjcmV0IG1lc3NhZ2UgMQ==&#34;</span>, 
+	<span class="s2">&#34;YW5vdGhlciBzZWNyZXQ=&#34;</span>, 
+	<span class="s2">&#34;dGhpcmQgc2VjcmV0&#34;</span> 
+<span class="o">]</span> <span class="o">}</span>
+</code></pre></div><p>DynamoDB includes three different Set types which allow you to maintain a collection of unique items of the same type. The Binary Set is used to hold a set of binary values.</p>
+<p>Sets can be particularly useful with expressions. You can run update commands to add &amp; remove elements to a set without fetching &amp; inserting the whole object. You may also check for the existence of an element within a set when updating or retrieving items.</p>
+<p>With the basics of Items in mind, let's insert and retrieve our first items.</p>
 <ul>
 <li><a href="https://www.dynamodbguide.com/anatomy-of-an-item#primary-keys">原文链接</a></li>
 </ul>
