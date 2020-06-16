@@ -12,6 +12,44 @@
     
     
     <item>
+      <title>DynamoDB的学习指南</title>
+      <link>https://2cloudlab.com/nosql/nosql-index/</link>
+      <pubDate>Sun, 15 Mar 2020 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/nosql-index/</guid>
+      <description>如果你在软件行业（尤其是后端服务的研发）里从业几年，你肯定会听说过与存储和处理数据相关的几个时髦的技术词：NoSQL，大数据，云计算，ServerLess，ACID，CAP，分布式等等。驱动这些技术发展的原因是多样的，主要有以下几点：
+ 互联网巨头（比如Google，Microsoft，Amazon，Facebook，LinkedIn，Netflix以及Twitter）需要面对体量庞大的数据和流量，这迫使它们创造新的工具来高效处理海量数据 需要更短的研发周期和更灵活的数据模型支撑更加敏捷，更加容易测试和及时响应市场的业务场景 开源软件的发展变得更加成熟，而且与商业软件相比，提供了更好的功能 CPU的时钟频率很难提高，多核CPU已经逐渐成为标准，网络变得更快了（从原来的2G转变成为4G，到现在的5G）。这意味着并行计算的能力将会增强 得益于云计算服务的出现，即使你在一个小团队，也能打造一个分布式系统，甚至在不同的地理位置的不同机器上运行这套系统 许多数字化服务会一直处于7*24小时可用的状态，短暂的停机是无法接受的（比如Amazon短暂地停机会导致其商品买卖交易活动停滞，并引起经济损失）  因此，过去10年，为了应对大规模数据所带来的挑战，相应的工具和技术相继被提出。其中新型数据库系统（&amp;quot;NoSQL&amp;quot;）受到了很多关注，但是消息队列（message queues），缓存（caches），搜索引擎，数据流处理框架（Kafka和Samza）和其它分布式技术也相当重要！一个成熟的分布式系统一般会同时应用这些技术和工具。
+以上提到的技术和工具都有对应的书籍介绍，而这个系列的文章（其列表如下）将聚焦在NoSQL数据库上，特别是AWS提供的DynamoDB。对于想要从事数据服务研发的工程师们，掌握NoSQL技能是必备的，因为它能够存储大规模数据（超过100TBs）的同时提供稳定的性能（数据操作的时间低于1ms），而要想在SQL数据库中拥有同样的能力，则需要付出巨大的代价，有时甚至无法实现！
+NoSQL类型的数据库有很多，包括MongoDB，CouchDB和DynamoDB等。之所以使用DynamoDB的原因之一是它完全托管于AWS，开发者无需准备运行它的机器就能直接创建表。除此之外，DynamoDB还提供了永久的免费套餐。基于DynamoDB的这些优势，你准备好了吗？
+介绍  1.1 什么是DynamoDB？ 1.2 DynamoDB的关键概念 1.3 关于Dynamo的论文 1.4 DynamoDB的环境搭建  单项数据操作  2.1 DynamoDB中，每项数据（item）的构成单元 2.2 在DynamoDB中插入和读取数据项 2.3 基础表达式 2.4 更新和删除数据项  多项数据操作  3.1 同时处理多项数据 3.2 查询 3.3 遍历 3.4 过滤  高级功能  4.1 附加索引 4.2 本地附加索引 4.3 全局附加索引 4.4 DynamoDB流  运维相关  5.1 Provisioning tables 5.2 安全 5.3 备份和恢复 5.4 自动伸缩 5.5 Global Tables  数据建模案例  6.</description>
+    </item>
+    
+    <item>
+      <title>DynamoDB的基础表达式</title>
+      <link>https://2cloudlab.com/nosql/expression-basics/</link>
+      <pubDate>Mon, 24 Feb 2020 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/expression-basics/</guid>
+      <description>本文是关于DynamoDB的表达式。表达式是DynamoDB的内置功能，它又细分为以下几类表达式：
+ 条件表达式用于 are used when manipulating individual items to only change an item when certain conditions are true. Projection expressions are used to specify a subset of attributes you want to receive when reading Items. We used these in our GetItem calls in the previous lesson. Update expressions are used to update a particular attribute in an existing Item. Key condition expressions are used when querying a table with a composite primary key to limit the items selected.</description>
+    </item>
+    
+    <item>
+      <title>在DynamoDB中插入和读取数据项</title>
+      <link>https://2cloudlab.com/nosql/inserting-retrieving-items/</link>
+      <pubDate>Sat, 23 Feb 2019 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/inserting-retrieving-items/</guid>
+      <description>数据项是DynamoDB的基础单元，每一张表都会包含多项数据。接下来，在本文中，我们将向DynamoDB中插入和读取数据项。我们将创建Users表，并为该表指定一个简单键：Username。接着，我们将操作2个基本的接口：PutItem和GetItem。下一篇文章，我们将在这篇文章的基础上应用表达式来实现更加复杂的查询功能。在这之后，我们将另起一篇文章来讲解如何更新和删除数据项。
+ 为了能顺利操作本文所列举的示例，请确保DynamoDB的环境已经准备好。注意：如果你使用的是本地版本的DynamoDB，那么请确保$LOCAL变量配置正确，如果使用的是AWS上的DynamoDB，那么在每一个命令后面无需追加这个参数。
+ 创建表 在演练本文列举的用例之前，首先需要创建一张表。我们将创建一张表&amp;quot;Users&amp;rdquo;，并为该表定义了一个简单主键：&amp;ldquo;Username&amp;rdquo;，它的类型是string。
+当创建表时，你需要为主键或索引提供属性定义。这些属性定义包含了属性名和属性类型。在Users这张表中，我们使用&amp;quot;Username&amp;quot;作为主键，其类型是string（&amp;ldquo;S&amp;rdquo;）。除此之外，你还需要为该表定义KeySchema，其中指定了哪些属性构成主键以及这些属性是HASH键还是RANGE键。在以下示例中，属性&amp;quot;Username&amp;quot;构成了该表的简单主键。最后，你需要指定表名和表的吞吐单元，其中吞吐单元由读和写单元构成。在以下示例中，&amp;ldquo;Users&amp;quot;表的读写单元都是1，简单来说，越多的读写单元，单位时间内读写数据的速度越快和越多，反之亦然！
+有了以上概念, 让我们运行以下指令来创建表&amp;quot;Users&amp;rdquo;:
+$ aws dynamodb create-table \  --table-name Users \  --attribute-definitions &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; } ]&amp;#39; \  --key-schema &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; } ]&amp;#39; \  --provisioned-throughput &amp;#39;{ &amp;#34;ReadCapacityUnits&amp;#34;: 1, &amp;#34;WriteCapacityUnits&amp;#34;: 1 }&amp;#39; \  $LOCAL 如果创建表的操作成功了，你将看到以下返回结果：
+{ &amp;#34;TableDescription&amp;#34;: { &amp;#34;TableArn&amp;#34;: &amp;#34;arn:aws:dynamodb:ddblocal:000000000000:table/Users&amp;#34;, &amp;#34;AttributeDefinitions&amp;#34;: [ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; } ], &amp;#34;ProvisionedThroughput&amp;#34;: { &amp;#34;NumberOfDecreasesToday&amp;#34;: 0, &amp;#34;WriteCapacityUnits&amp;#34;: 1, &amp;#34;LastIncreaseDateTime&amp;#34;: 0.</description>
+    </item>
+    
+    <item>
       <title>DynamoDB中，每项数据（item）的构成单元</title>
       <link>https://2cloudlab.com/nosql/anatomy-of-an-item/</link>
       <pubDate>Fri, 22 Feb 2019 12:27:38 +0600</pubDate>
@@ -151,6 +189,15 @@ AWS Serverless服务。AWS Lambda服务提供了能自动弹性伸缩，无状�
       
       <guid>https://2cloudlab.com/nosql/secondary-indexes/</guid>
       <description>Secondary Indexes </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://2cloudlab.com/nosql/updating-deleting-items/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/updating-deleting-items/</guid>
+      <description></description>
     </item>
     
     <item>

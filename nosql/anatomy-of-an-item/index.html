@@ -123,7 +123,7 @@
             <div class="col-md-12">
                 
                 <div class="post-img">
-                    <img class="img-fluid lazy" alt="" data-src="https://2cloudlab.com/images/blog/key-concepts.png">
+                    <img class="img-fluid lazy" alt="" data-src="https://2cloudlab.com/images/blog/anatomy-of-an-item.png">
                 </div>
                 
                 <div class="post-content">
@@ -179,30 +179,27 @@
 <p><strong>Identifier: &ldquo;N&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;Age&#34;</span>: <span class="o">{</span> <span class="s2">&#34;N&#34;</span>: <span class="s2">&#34;29&#34;</span> <span class="o">}</span>
-</code></pre></div><p>The number type represents positive and negative numbers, or zero. It can be used for precision up to 38 digits.</p>
-<p>Note that you will send your number up as a string value. However, you may do numerical operations on your number attributes when working with condition expressions.</p>
+</code></pre></div><p>数值类型的取值是实数，包括正数（+9.80），负数（-7）和0。它的精度最多是38位（比如9.9999999999999999999999999999999999999E+125）。需要注意的是，你必须以字符串的形式提供数值类型，比如<code>&quot;29&quot;</code>而不是<code>29</code>，然而，当使用条件表达式时，你却能使用数值操作作用于数值属性。</p>
 <p><strong>Binary类型</strong></p>
 <p><strong>Identifier: &ldquo;B&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;SecretMessage&#34;</span>: <span class="o">{</span> <span class="s2">&#34;B&#34;</span>: <span class="s2">&#34;bXkgc3VwZXIgc2VjcmV0IHRleHQh&#34;</span> <span class="o">}</span>
-</code></pre></div><p>You can use DynamoDB to store Binary data directly, such as an image or compressed data. Generally, larger binary blobs should be stored in something like Amazon S3 rather than DynamoDB to enable greater throughput, but you may use DynamoDB if you like.</p>
-<p>When using Binary data types, you must base64 encode your data before sending to DynamoDB.</p>
+</code></pre></div><p>你可以在DynamoDB中存储二进制数据，比如一张图片或压缩过的信息。对于数据量过大的二进制信息，一般会存储在AWS的S3服务上，而不会存储在DynamoDB上，这么做的好处是保持DynamoDB的吞吐量。在使用这种类型的属性时，需要先将二进制信息进行base64编码，然后再设置到该类属性并上传到DynamoDB。</p>
 <p><strong>Boolean类型</strong></p>
 <p><strong>Identifier: &ldquo;BOOL&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;IsActive&#34;</span>: <span class="o">{</span> <span class="s2">&#34;BOOL&#34;</span>: <span class="s2">&#34;false&#34;</span> <span class="o">}</span>
-</code></pre></div><p>The Boolean type stores either &ldquo;true&rdquo; or &ldquo;false&rdquo;.</p>
+</code></pre></div><p>布尔类型的值有2个：&ldquo;true&quot;或&quot;false&rdquo;.</p>
 <p><strong>Null类型</strong></p>
 <p><strong>Identifier: &ldquo;NULL&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;OrderId&#34;</span>: <span class="o">{</span> <span class="s2">&#34;NULL&#34;</span>: <span class="s2">&#34;true&#34;</span> <span class="o">}</span>
-</code></pre></div><p>The Null type stores a boolean value of either &ldquo;true&rdquo; or &ldquo;false&rdquo;. I would generally recommend against using it.</p>
+</code></pre></div><p>Null类型的值有2个：&ldquo;true&quot;或&quot;false&rdquo;。一般情况下，不建议使用这种类型。</p>
 <p><strong>List类型</strong></p>
 <p><strong>Identifier: &ldquo;L&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;Roles&#34;</span>: <span class="o">{</span> <span class="s2">&#34;L&#34;</span>: <span class="o">[</span> <span class="s2">&#34;Admin&#34;</span>, <span class="s2">&#34;User&#34;</span> <span class="o">]</span> <span class="o">}</span>
-</code></pre></div><p>The List type allows you to store a collection of values in a single attribute. The values are ordered and do not have to be of the same type (e.g. string or number).</p>
-<p>You can operate directly on list elements using expressions.</p>
+</code></pre></div><p>列表类型允许在单个属性中存储多个值。列表中每一项数据其类型可以不同，比如同一个列表里包含一个string元素和一个number元素。你可以通过<a href="https://2cloudlab.com/nosql/expression-basics/">表达式</a>来操作列表里的元素。</p>
 <p><strong>Map类型</strong></p>
 <p><strong>Identifier: &ldquo;M&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
@@ -219,20 +216,17 @@
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div><p>Like the List type, the Map type allows you to store a collection of values in a single attribute. For a Map attribute, these values are stored in key-value pairs, similar to the map or dictionary objects in most programming languages.</p>
-<p>Also like the List type, you can operate directly on map elements using expressions.</p>
+</code></pre></div><p>Map和列表一样，允许在单个属性上存储多个元素，与列表不同的是，每个元素都会有一个关联的key，有点类似于大多数编程语言中的字典类型。与列表类型一样，你可以通过表达式来操作Map里的元素。</p>
 <p><strong>String Set类型</strong></p>
 <p><strong>Identifier: &ldquo;SS&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;Roles&#34;</span>: <span class="o">{</span> <span class="s2">&#34;SS&#34;</span>: <span class="o">[</span> <span class="s2">&#34;Admin&#34;</span>, <span class="s2">&#34;User&#34;</span> <span class="o">]</span> <span class="o">}</span>
-</code></pre></div><p>DynamoDB includes three different Set types which allow you to maintain a collection of unique items of the same type. The String Set is used to hold a set of strings.</p>
-<p>Sets can be particularly useful with expressions. You can run update commands to add &amp; remove elements to a set without fetching &amp; inserting the whole object. You may also check for the existence of an element within a set when updating or retrieving items.</p>
+</code></pre></div><p>String Set是集合类型，它的特点是所有集合的元素的类型必须统一：都是string类型，其次集合里的所有元素必须是不同的。集合与表达式一起使用能够带来一些实用的效果，比如你可以根据集合里的元素来修改数据，这种修改可以不触发读取数据的操作，从而具有很好的性能。</p>
 <p><strong>Number Set类型</strong></p>
 <p><strong>Identifier: &ldquo;NS&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;RelatedUsers&#34;</span>: <span class="o">{</span> <span class="s2">&#34;NS&#34;</span>: <span class="o">[</span> <span class="s2">&#34;123&#34;</span>, <span class="s2">&#34;456&#34;</span>, <span class="s2">&#34;789&#34;</span> <span class="o">]</span> <span class="o">}</span>
-</code></pre></div><p>DynamoDB includes three different Set types which allow you to maintain a collection of unique items of the same type. The Number Set is used to hold a set of numbers.</p>
-<p>Sets can be particularly useful with expressions. You can run update commands to add &amp; remove elements to a set without fetching &amp; inserting the whole object. You may also check for the existence of an element within a set when updating or retrieving items.</p>
+</code></pre></div><p>Number Set类型与String Set类型是类似的，唯一的区别是这种集合中的元素类型是number。</p>
 <p><strong>Binary Set类型</strong></p>
 <p><strong>Identifier: &ldquo;BS&rdquo;</strong></p>
 <p><strong>用例：</strong></p>
@@ -241,9 +235,8 @@
 	<span class="s2">&#34;YW5vdGhlciBzZWNyZXQ=&#34;</span>, 
 	<span class="s2">&#34;dGhpcmQgc2VjcmV0&#34;</span> 
 <span class="o">]</span> <span class="o">}</span>
-</code></pre></div><p>DynamoDB includes three different Set types which allow you to maintain a collection of unique items of the same type. The Binary Set is used to hold a set of binary values.</p>
-<p>Sets can be particularly useful with expressions. You can run update commands to add &amp; remove elements to a set without fetching &amp; inserting the whole object. You may also check for the existence of an element within a set when updating or retrieving items.</p>
-<p>With the basics of Items in mind, let's insert and retrieve our first items.</p>
+</code></pre></div><p>Binary Set类型与String Set类型是类似的，唯一的区别是这种集合中的元素类型是binary。</p>
+<p>对以上关于数据项构成单元有一些基础的理解之后，接下来让<a href="https://2cloudlab.com/nosql/inserting-retrieving-items/">我们插入和查询一些数据项</a>。</p>
 <ul>
 <li><a href="https://www.dynamodbguide.com/anatomy-of-an-item#primary-keys">原文链接</a></li>
 </ul>
