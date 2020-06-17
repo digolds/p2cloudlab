@@ -25,13 +25,46 @@ NoSQL类型的数据库有很多，包括MongoDB，CouchDB和DynamoDB等。之�
     </item>
     
     <item>
+      <title>更新和删除数据项</title>
+      <link>https://2cloudlab.com/nosql/updating-deleting-items/</link>
+      <pubDate>Tue, 25 Feb 2020 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/updating-deleting-items/</guid>
+      <description>在这篇文章中，我们将学习如何向表中更新和删除单项数据。这是最后一篇关于单项数据操作的文章，后续的文章将涉及多个数据项的操作，这些操作主要有Queries和Scans。
+更新单项数据 在之前的例子中，我们使用PutItem操作来向表中插入单项数据。我们也看到这种操作将会完全覆盖表中已存在的数据。为了不让这个操作覆盖已存在的数据项，我们在这个操作上使用了条件表达式。
+有时需要处理这种场景：只更新某项数据的一个或者多个属性，而其它属性保持不变。为了处理这种场景，DynamoDB提供了UpdateItem操作，该操作允许开发者在不读取数据的情况下更新数据。
+当使用UpdateItem操作时，你需要指定更新表达式，该表达式由2部分构成，分别是：更新的语义（比如是向数据项中添加属性还是移除属性）和表达式。
+当使用更新表达式时，你必须提供以下更新的语义：
+ SET: 这个操作用于向数据项中添加新的属性，或者覆盖已有属性 REMOVE: 该操作用于移除数据项中某一个属性 ADD: 对于数值类型的属性，该操作代表加或减；对于集合类型的属性，该操作代表向集合中插入元素 DELETE: 用于从集合中删除元素  让我们通过几个例子来了解更新操作的使用。
+ 使用带有SET语义的UpdateItem  在更新数据项时，最常用的更新操作是SET。比如，如果我想向某项数据添加一个新的属性或者覆盖已有的属性，那么这个SET操作会被用到。
+让我们看看最开始的例子：PutItem，假设，我们想让已经添加的用户拥有属性DateOfBirth。 如果不使用UpdateItem操作，我们的做法是首先通过GetItem获取该数据项，然后通过PutItem插入一项包含DateOfBirth属性的数据项。然而通过UpdateItem操作，我们只需要直接插入属性DateOfBirth即可，如下所示：
+$ aws dynamodb update-item \  --table-name Users \  --key &amp;#39;{ &amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;} }&amp;#39; \  --update-expression &amp;#39;SET #dob = :dob&amp;#39; \  --expression-attribute-names &amp;#39;{ &amp;#34;#dob&amp;#34;: &amp;#34;DateOfBirth&amp;#34; }&amp;#39; \  --expression-attribute-values &amp;#39;{ &amp;#34;:dob&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;1937-04-17&amp;#34;} }&amp;#39; \  $LOCAL 注意我们使用了选项--expression-attribute-names和--expression-attribute-values。
+如果我们再次获取该数据项，那么我们不仅能看到之前的属性，而且还能看到新添的属性，如下所示：
+$ aws dynamodb get-item \  --table-name Users \  --key &amp;#39;{ &amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;} }&amp;#39; \  $LOCAL { &amp;#34;Item&amp;#34;: { &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;DateOfBirth&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;1937-04-17&amp;#34; }, &amp;#34;Age&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;81&amp;#34; }, &amp;#34;Name&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;Daffy Duck&amp;#34; } } }  使用带有REMOVE语义的UpdateItem  带有REMOVE语义的UpdateItem操作与带有SET语义的UpdateItem操作相反&amp;ndash;它用于从一个数据项中删除指定属性。</description>
+    </item>
+    
+    <item>
       <title>DynamoDB的基础表达式</title>
       <link>https://2cloudlab.com/nosql/expression-basics/</link>
       <pubDate>Mon, 24 Feb 2020 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/nosql/expression-basics/</guid>
       <description>本文是关于DynamoDB的表达式。表达式是DynamoDB的内置功能，它又细分为以下几类表达式：
- 条件表达式用于 are used when manipulating individual items to only change an item when certain conditions are true. Projection expressions are used to specify a subset of attributes you want to receive when reading Items. We used these in our GetItem calls in the previous lesson. Update expressions are used to update a particular attribute in an existing Item. Key condition expressions are used when querying a table with a composite primary key to limit the items selected.</description>
+ 条件表达式只能与单项数据的操作配合起来使用，这些操作有PutItem，UpdateItem和DeleteItem。当你为单项数据的操作指定条件表达式时，只有当该表达式的验证结果为true时，该操作才能执行，对应的指令选项是--condition-expression 属性映射表达式通常会与读取数据项的操作配合起来使用，比如之前的GetItem例子就使用了属性映射表达式，它的作用在于仅返回该项数据的部分属性，对应的指令选项是--projection-expression 更新表达式用于更新已经存在的数据项上的某些属性，对应的指令选项是--update-expression 主键条件表达式通常会与查询操作（比如Query）一起使用，这类表达式的条件只能是与主键相关，对应的指令选项是--key-condition-expression 过滤表达式通常会与查询操作或遍历操作一起使用，它将作用于查询结果之上，对应的指令选项是--filter-expression  只有充分理解了这些表达式，才能更好地使用DynamoDB，进而享受DynamoDB给我们带来的好处。在这篇文章，我们将学习表达式的基础知识，包括使用表达式的属性名和属性值。紧接着，我们将基于上一章关于PutItem的例子来学习如何使用条件表达式。
+表达式的基础知识 DynamoDB中的表达式只是一串字符串，它的内容是特定的逻辑表达式，而这个表达式将用来验证数据是否满足该条件。在这些表达式中，你可以应用一些比较操作符，比如&amp;quot;=&amp;rdquo;（相等），&amp;ldquo;&amp;gt;&amp;rdquo;（大于）或者&amp;quot;&amp;gt;=&amp;rdquo;（大于等于）。例如，以下表达式应用了&amp;quot;&amp;gt;=&amp;rdquo;：
+&amp;#34;Age &amp;gt;= 21&amp;#34; 该表达式的作用在于：该操作只能作用于年龄在21岁及以上的用户，否则操作结果会出错。
+ 注意：以上表达式还无法生效，原因在于该表达式没有指定&amp;quot;21&amp;quot;的类型。为了使以上表达式生效，你需要指定expression attribute values，也就是使用指令属性--expression-attribute-values，这一点将在后面提到。
+ 除了可以在表达式中使用比较操作符，还可以在表达式中使用函数。这些函数是DynamoDB提供的，它们有：attribute_exists()，判断某项数据其属性是存在的；attribute_not_exists()，判断某项数据其属性是不存在的；begins_with()，判断某项数据其属性值是以某个子字符串开始的。
+我们可以在表达式中使用attribute_not_exists()函数来判断某个订单是否已经发货了，其用法如下所示：
+&amp;#34;attribute_not_exists(DateShipped)&amp;#34; 如果该订单有DateShipped属性，那么表明它已经发货了，否则表明它还在仓库中。DynamoDB提供的函数不多，所有的函数如下所示：
+ attribute_exists(): 判断某项数据其属性是存在的 attribute_not_exists(): 判断某项数据其属性是不存在的 attribute_type(): 判断某项数据其属性的类型是指定的类型 begins_with(): 判断某项数据其属性值是以某个子字符串开始的 contains(): 如果该属性是字符串类型，则判断某项数据其属性值是包含某个子字符串的；如果该属性是集合类型（比如List或Map），则判断该属性是包含指定元素的 size(): 返回属性的大小，不同类型的属性，其大小的计算规则是不一样的。  关于表达式中的比较操作符和函数，读者可以参考官方文档。
+表达式的占位符 之前的内容表明，表达式是一个具有逻辑运算的字符串，DynamoDB通过执行这个表达式来得到一个是或否的结果。然而，有的时候你需要一种更加清晰的方式来编写表达式，比如在表达式中使用变量，然后在其它地方提供变量值。
+DynamoDB允许你使用--expression-attribute-names和--expression-attribute-values选项来编写更加清晰的表达式。通过这种做法，你可以在表达式中指定变量，然后分别使用以上选项来指定变量值，DynamoDB会将这些变量值自动替换掉表达式中的变量。接下来，让我们看看这2个选项的含义。
+ --expression-attribute-names  有时，你希望针对一个属性编写表达式，但是由于DynamoDB的限制，你无法直接在表达式中使用该属性名，比如：
+ 你的属性名称刚好是DynamoDB中预留的关键字。DynamoDB预先保留了大量的关键字，其中包括了：&amp;ldquo;Date&amp;rdquo;，&amp;ldquo;Year&amp;quot;和&amp;quot;Name&amp;quot;等。如果你的属性名称恰巧在这些预留的关键字里，那么你需要借助这个选项来提供属性名称的占位符 你的属性名称中包含&amp;rdquo;.&amp;quot;。DynamoDB使用&amp;rdquo;.&amp;ldquo;来获取嵌套类型（比如Map类型）中的子项。如果你的属性名中包含了&amp;rdquo;.&amp;quot;，那么你需要借助这个选项来提供属性名称的占位符 你的属性名称开头包含数字。DynamoDB不允许表达式中的属性名称以数字开头，因此如果你的属性名称以数字开头，那么你需要借助这个选项来提供属性名称的占位符  在使用这个选项时，你只需要提供一个Map格式的属性名称集合。这个Map中的key是表达式中的占位符，而value是属性名称。例如，你可以为&amp;quot;Age&amp;quot;属性定义占位符&amp;rdquo;#a&amp;rdquo;，而这个占位符可用于表达式，具体示例如下所示：
+--expression-attribute-names &amp;#39;{ &amp;#34;#a&amp;#34;: &amp;#34;Age&amp;#34; }&amp;#39;  当使用--expression-attribute-names时，占位符必须以&amp;rdquo;#&amp;ldquo;开头。
+ 在之前的GetItem的例子中，我们使用了--projection-expression选项来返回某项数据的部分属性。为了能够在该选项中使用占位符，我们需要将之前的例子改如下：
+$ aws dynamodb get-item \  --table-name Users \  --projection-expression &amp;#34;#a, #u&amp;#34; \  --expression-attribute-names &amp;#39;{ &amp;#34;#a&amp;#34;: &amp;#34;Age&amp;#34;, &amp;#34;#u&amp;#34;: &amp;#34;Username&amp;#34; }&amp;#39; \  --key &amp;#39;{ &amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;} }&amp;#39; \  $LOCAL { &amp;#34;Item&amp;#34;: { &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;Age&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;81&amp;#34; } } } 注意，在以上例子中，我们在--projection-expression中使用了2个占位符，分别是&amp;rdquo;#a&amp;quot;和&amp;rdquo;#u&amp;rdquo;。而这2个占位符定义在--expression-attribute-names选项中，分别对应&amp;quot;Age&amp;quot;和&amp;quot;Username&amp;quot;属性。</description>
     </item>
     
     <item>
@@ -189,15 +222,6 @@ AWS Serverless服务。AWS Lambda服务提供了能自动弹性伸缩，无状�
       
       <guid>https://2cloudlab.com/nosql/secondary-indexes/</guid>
       <description>Secondary Indexes </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://2cloudlab.com/nosql/updating-deleting-items/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://2cloudlab.com/nosql/updating-deleting-items/</guid>
-      <description></description>
     </item>
     
     <item>

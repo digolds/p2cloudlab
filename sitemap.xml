@@ -188,6 +188,11 @@
   </url>
   
   <url>
+    <loc>https://2cloudlab.com/nosql/updating-deleting-items/</loc>
+    <lastmod>2020-02-25T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://2cloudlab.com/nosql/expression-basics/</loc>
     <lastmod>2020-02-24T12:27:38+06:00</lastmod>
   </url>
@@ -369,11 +374,6 @@
   
   <url>
     <loc>https://2cloudlab.com/nosql/secondary-indexes/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://2cloudlab.com/nosql/updating-deleting-items/</loc>
     <priority>0</priority>
   </url>
   
