@@ -68,6 +68,24 @@ $ aws dynamodb get-item \  --table-name Users \  --projection-expression &amp;#3
     </item>
     
     <item>
+      <title>如何在DynamoDB中同时操作多项数据</title>
+      <link>https://2cloudlab.com/nosql/working-with-multiple-items/</link>
+      <pubDate>Tue, 26 Feb 2019 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/working-with-multiple-items/</guid>
+      <description>在过去的章节里，我们一次只能操作一项数据&amp;ndash;比如插入，查找，更新以及删除单项数据。而在这篇文章里，我们将一次同时操作多项数据。从这章开始，我们将创建一张具有复合主键的表，并在该表中同时操作多项数据。
+复合主键对于DynamoDB而言非常有用。它允许你通过一个查询操作就能获取一组相关的数据项，除此之外，它还有其它强大的用途。
+本文将创建一张具有复合主键的表。然后我们将使用BatchWriteItem API来批量生成多项数据。后续的几篇文章将使用Query和Scan API作用到这些数据。
+创建表 创建一张具有复合主键的表与创建一张具有简单主键的表类似，都需要定义属性和key schema。不同的是，你需要指定2个属性构成复合主键，而不是1个。 然后你需要指定其中一个属性是分区键，另外一个属性是排序键。
+分区键决定了你的数据是如何划分的，而排序键则决定了具有相同分期键的数据项是有序的。分区键尤其重要-当使用Query操作时，你只能使用分区键。分区键与排序键组合在一起可以建立一对多的数据模型-因为一个相同的分区键下，可以有多个不同的排序键。
+每当需要基于复合主键来对数据建模时，可以根据以下句子来填写空格处，最终构建正确的查询模式：
+ &amp;ldquo;Give me all of the ____ from a particular ___.&amp;rdquo;
+ 放入第一个空格的属性应该是排序键，而放到最后一个空格的属性则是分区键。在以下示例中，我们将创建一张即包含User类型数据，同时也会包含Order类型数据的表：&amp;ldquo;UserOrdersTable&amp;rdquo;，其中每个User可以包含多个Orders。按照以上句子来构建查询模型，其最终的结果是：&amp;ldquo;返回该Username的所有OrderIds&amp;rdquo;。基于这句话，可以得出：Username是分区键，而OrderId则是排序键。
+为了创建&amp;quot;UserOrdersTable&amp;rdquo;，需要使用CreateTable API：
+$ aws dynamodb create-table \  --table-name UserOrdersTable \  --attribute-definitions &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; } ]&amp;#39; \  --key-schema &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34; } ]&amp;#39; \  --provisioned-throughput &amp;#39;{ &amp;#34;ReadCapacityUnits&amp;#34;: 1, &amp;#34;WriteCapacityUnits&amp;#34;: 1 }&amp;#39; \  $LOCAL 返回的结果如下所示：</description>
+    </item>
+    
+    <item>
       <title>在DynamoDB中插入和读取数据项</title>
       <link>https://2cloudlab.com/nosql/inserting-retrieving-items/</link>
       <pubDate>Sat, 23 Feb 2019 12:27:38 +0600</pubDate>
@@ -222,15 +240,6 @@ AWS Serverless服务。AWS Lambda服务提供了能自动弹性伸缩，无状�
       
       <guid>https://2cloudlab.com/nosql/secondary-indexes/</guid>
       <description>Secondary Indexes </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://2cloudlab.com/nosql/working-with-multiple-items/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://2cloudlab.com/nosql/working-with-multiple-items/</guid>
-      <description>Working with Multiple Items </description>
     </item>
     
   </channel>
