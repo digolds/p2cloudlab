@@ -188,8 +188,28 @@
   </url>
   
   <url>
+    <loc>https://2cloudlab.com/nosql/global-secondary-indexes/</loc>
+    <lastmod>2020-03-04T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/nosql/local-secondary-indexes/</loc>
+    <lastmod>2020-03-03T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://2cloudlab.com/nosql/secondary-indexes/</loc>
+    <lastmod>2020-03-02T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/nosql/filtering/</loc>
     <lastmod>2020-03-01T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/nosql/scans/</loc>
+    <lastmod>2020-02-28T12:27:38+06:00</lastmod>
   </url>
   
   <url>
@@ -384,7 +404,7 @@
   
   <url>
     <loc>https://2cloudlab.com/nosql/dynamodb-streams/</loc>
-    <priority>0</priority>
+    <lastmod>2018-03-05T12:27:38+06:00</lastmod>
   </url>
   
   <url>

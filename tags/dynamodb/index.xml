@@ -25,9 +25,42 @@ NoSQL类型的数据库有很多，包括MongoDB，CouchDB和DynamoDB等。之�
     </item>
     
     <item>
+      <title>DynamoDB的全局附加索引</title>
+      <link>https://2cloudlab.com/nosql/global-secondary-indexes/</link>
+      <pubDate>Wed, 04 Mar 2020 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/global-secondary-indexes/</guid>
+      <description>本文将介绍全局附加索引。与之前介绍本地附加索引的文章一样,我们将涉及全局附加索引的基础知识，然后通过一个例子来使用全局附加索引。
+全局附加索引的基础知识 不像本地附加索引，你可以在具有简单主键或复合主键的表中添加全局附加索引。除此之外，你还可以创建具有简单主键的全局附加索引。
+以下是列举了全局附加索引的不同之处：
+ 拥有属于自己的读写单元。当你创建全局附加索引时，你需要单独为该索引分配读写单元。这无疑会增加使用上的复杂程度以及更多的费用，但是同时也给你更加灵活的选择来处理不同模式的读写请求 Eventual consistency。向表中写入一项数据时，这项数据是以异步的方式同步到全局附加索引的。这意味着，当你同时向表和全局附加索引读取同一数据时，其返回结果可能会不一样。而且使用全局附加索引只能选择该选项来同步数据，而无法选择strong consistency来同步数据 同一全局附加索引的分区键能够容纳无限数据。而使用本地附加索引时，这一限制是10GB。 适用于任何表。本地附加索引只能用于具有复合主键的表，而全局附加索引没有这个限制&amp;ndash;你可以将其用于具有简单主键或复合主键的表 可以创建具有简单主键或者复合主键的全局附加索引。  创建全局附加索引 类似本地附加索引，你可以在创建表的时候创建全局附加索引。然而，你也可以在已有的表上创建全局附加索引。如果在已有的表上创建全局附加索引，那么DynamoDB将自动把表中的数据同步到全局附加索引中。
+以下示例展示了如何使用全局附加索引建立稀疏索引。稀疏索引的用途是存放一小部分常用的数据，以便提高更快的查找效率！只有那些包含稀疏索引主键的数据才会被同步到稀疏索引中。
+假设有一个场景：跟踪用户退货的订单。我们将在这些订单中添加属性ReturnDate，然后将该属性作为稀疏索引的分区键，OrderId属性作为稀疏索引的排序键。
+以下创建了该稀疏索引：
+$ aws dynamodb update-table \  --table-name UserOrdersTable \  --attribute-definitions &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;ReturnDate&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; } ]&amp;#39; \  --global-secondary-index-updates &amp;#39;[ { &amp;#34;Create&amp;#34;: { &amp;#34;IndexName&amp;#34;: &amp;#34;ReturnDateOrderIdIndex&amp;#34;, &amp;#34;KeySchema&amp;#34;: [ { &amp;#34;AttributeName&amp;#34;: &amp;#34;ReturnDate&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34; } ], &amp;#34;Projection&amp;#34;: { &amp;#34;ProjectionType&amp;#34;: &amp;#34;ALL&amp;#34; }, &amp;#34;ProvisionedThroughput&amp;#34;: { &amp;#34;ReadCapacityUnits&amp;#34;: 1, &amp;#34;WriteCapacityUnits&amp;#34;: 1 } } } ]&amp;#39; \  $LOCAL 创建全局附加索引的方式类似于本地附加索引。注意：我只需要在--attribute-definitions中添加全局附加索引的属性，以及使用--global-secondary-index-updates选项来指定分区键或排序键。</description>
+    </item>
+    
+    <item>
+      <title>DynamoDB的本地附加索引</title>
+      <link>https://2cloudlab.com/nosql/local-secondary-indexes/</link>
+      <pubDate>Tue, 03 Mar 2020 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/local-secondary-indexes/</guid>
+      <description>在之前的文章中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&#39;s Go!
+本地附加索引的基础知识 请注意：你只能在具有复合主键的表中添加本地附加索引。本地附加索引的分区键必须和复合主键的分区键一样，然而允许指定不同的排序键。
+一些关于本地附加索引的注意事项：
+ 本地附加索引的创建必须在创建表的时候添加。也就是说你无法在已经创建好的表上添加附加索引，而是在创建表的时候添加。这一点与全局附加索引不一样 拥有相同分区键，但不同排序键的数据量不允许超过10GB。注意这10GB数据包括表中的数据量加上本地附加索引中的数据量。如果你使用了本地附加索引，那么你得认真考虑使用映射表达式 Consistency选项。对于本地附加索引，你可以像表一样选择strong consistency或者eventual consistency。Strong consistency将占用更多的读单元，但是适用于某些场景 附加索引与表中的读写单元是共享的。也就是说向本地索引读写数据时，会占用表中的读写单元  创建本地附加索引 现在，让我们动手来实践本地附加索引。还记得创建本地附加索引需要在创建表的时候完成吗！因此之前创建的&amp;quot;Users&amp;quot;表不能使用本地附加索引，所以我们只能考虑在&amp;quot;UserOrdersTable&amp;quot;表中添加附加索引。
+还记得之前那个根据订单额度来过滤某个用户订单的例子吗？由于订单额度不是主键的一部分，因此我们不得不先根据主键获取该用户的订单，然后再使用过滤表达式来过滤出超过某个额度的订单。
+这种需要根据订单额度来过滤数据的模式对于数据量大的场景显然是不适用的&amp;ndash;原因在于，某个用户的订单有很多，比如上万条，而你只需要在这上万条数据中查找几条数据。为了解决这类问题，我们需要建立本地附加索引，并把订单额度作为该索引的排序键。这么一来，根据订单额度来查询订单数据就变快了许多。
+虽然本地附加索引能解决以上问题，但不幸的是，创建附加索引必须在创建表的时候指定。不管如何，首先，让我们运行以下指令删除之前的表：
+$ aws dynamodb delete-table \  --table-name UserOrdersTable \  $LOCAL 紧接着在创建带有本地附加索引的表：
+$ aws dynamodb create-table \  --table-name UserOrdersTable \  --attribute-definitions &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;Amount&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;N&amp;#34; } ]&amp;#39; \  --key-schema &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34; } ]&amp;#39; \  --local-secondary-indexes &amp;#39;[ { &amp;#34;IndexName&amp;#34;: &amp;#34;UserAmountIndex&amp;#34;, &amp;#34;KeySchema&amp;#34;: [ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;Amount&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34; } ], &amp;#34;Projection&amp;#34;: { &amp;#34;ProjectionType&amp;#34;: &amp;#34;KEYS_ONLY&amp;#34; } } ]&amp;#39; \  --provisioned-throughput &amp;#39;{ &amp;#34;ReadCapacityUnits&amp;#34;: 1, &amp;#34;WriteCapacityUnits&amp;#34;: 1 }&amp;#39; \  $LOCAL 以上示例与CreateTable的命令一样。一开始，我们指定了表名，然后增加了2点：(1) 使&amp;quot;Amount&amp;quot;属性作为本地附加索引的排序键；(2) 使用--local-secondary-indexes选项。</description>
+    </item>
+    
+    <item>
       <title>DynamoDB的附加索引</title>
       <link>https://2cloudlab.com/nosql/secondary-indexes/</link>
-      <pubDate>Sun, 01 Mar 2020 12:27:38 +0600</pubDate>
+      <pubDate>Mon, 02 Mar 2020 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/nosql/secondary-indexes/</guid>
       <description>到目前为止，大部分的读操作主要是基于表的主键来执行的，要么通过GetItem或者Query完成。使用表的主键来查找数据项是非常高效的一种做法，同时也避免了使用Scan来遍历整张表。
@@ -44,6 +77,41 @@ NoSQL类型的数据库有很多，包括MongoDB，CouchDB和DynamoDB等。之�
  KEYS_ONLY: 仅映射表的主键信息，比如分区键和排序键以及对应的值 ALL: 将表中完整的数据项映射到该索引 INCLUDE: 选择若干属性映射到该索引  当你建立索引时，要结合查询模式来考虑。DynamoDB会根据索引所存储的数据量来收费，因此将完整的数据项映射将会使你的存储费用变成2倍。而另一方面，你还需要避免查询一次数据需要读取2次表格的情况（一次索引，另外一次是表）。
 接下来，让我们进一步了解什么是本地索引。
  原文链接  </description>
+    </item>
+    
+    <item>
+      <title>在DynamoDB中使用Filter表达式</title>
+      <link>https://2cloudlab.com/nosql/filtering/</link>
+      <pubDate>Sun, 01 Mar 2020 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/filtering/</guid>
+      <description>在过去的几篇文章里，我们讨论了关键字表达式，条件表达式，映射表达式以及更新表达式。本文将讨论最后一类表达式&amp;ndash;过滤器表达式。
+过滤器表达式用于Query和Scan操作，它在作用于这些操作所返回的数据集，并过滤出满足条件的数据项，进而返回给客户端。在深入了解Filter之前，我们有必要来了解一下Query或Scan底层的执行过程。
+Query和Scan的执行过程 对于DynamoDB的Query和Scan操作，有3步是需要DynamoDB来完成的：
+ 从表中查找数据。对于这2类操作，查询将从Starting Token开始，如果在Query中提供了关键字表达式，那么查询的过程中将考虑这类关键字 （这一步是可选的），如果在查询（Query）或遍历（Query）的过程中使用了Filter，那么这个Filter将作用于第一步返回的数据集。同理，映射表达式也是在这一步作用于第一步返回的数据集。 把数据返回给客户端  有一点需要特别注意的是：DynamoDB对返回数据量的限制是由第一步来决定的。比如，如果你在第一步获取100KB的数据，而在第二步使用过滤器将数据量缩减到10KB，那么DynamoDB依然会按照100KB来计算其最终的返回数据量。还需要注意的是：DynamoDB中的任何操作其处理数据的量不能超过1MB，尽管你正在操作的表有充足的读单元。
+过滤表达式和映射表达式不是一个高性能的利器-它们不会使你的查询效率变高，然而，它们能帮助你减少数据量，从而最终减少传输带宽的使用。不仅如此，你可以将这些过滤操作逻辑从业务层转移到数据库层。
+ 关于更多Filter以及什么时候使用它的知识可以参考这篇文章When to use (and when not to use) DynamoDB Filter Expressions。
+ 如何使用Filter Filter表达式与关键字表达式类似，都可以和Query操作配合&amp;ndash;你只需要在过滤表达式中指定想要过滤的属性，查询结果就会更具该表达式来过滤。
+让我们基于之前Query来查找用户&amp;quot;daffyduck&amp;quot;的订单。这一次我们想依据订单额度来过滤数据，比如我们只想返回订单量超过100美元的订单，示例如下：
+$ aws dynamodb query \  --table-name UserOrdersTable \  --key-condition-expression &amp;#34;Username = :username&amp;#34; \  --filter-expression &amp;#34;Amount &amp;gt; :amount&amp;#34; \  --expression-attribute-values &amp;#39;{ &amp;#34;:username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;:amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;100&amp;#34; } }&amp;#39; \  $LOCAL 以下的返回结果只返回了一个订单：
+{ &amp;#34;Count&amp;#34;: 1, &amp;#34;Items&amp;#34;: [ { &amp;#34;OrderId&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;20170609-25875&amp;#34; }, &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;Amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;116.</description>
+    </item>
+    
+    <item>
+      <title>在DynamoDB中，谨慎使用Scans操作</title>
+      <link>https://2cloudlab.com/nosql/scans/</link>
+      <pubDate>Fri, 28 Feb 2020 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/scans/</guid>
+      <description>本文将介绍DynamoDB的Scans操作。该操作是DynamoDB的重型武器。做一个相似的对比: GetItem操作就是是一对镊子，可以夹出某个特定的物件。Query操作像把铁铲，能挖出一大堆物件，但是其作用的范围依旧很小。然而，Scan操作就像一辆拖拉机，把整个修整区域翻个底朝天。
+在我们深入到Scan操作之前，请记住以下这句话:
+ 不要使用Scan操作，除非你知道自己在做什么。
+ Scan操作作用于整张表。对数据量庞大的表，该操作将耗尽整张表的读取单元。如果你在应用程序里的关键路径里使用它，那么它会增加响应延时。
+只有在以下情况下，才会考虑使用Scan操作:
+ 表的数据量不大 将数据迁移到另外一个数据库系统 you use global secondary indexes in a special way to set up a work queue (very advanced).  带着以上告诫，让我们来探索Scan操作的使用方式。
+Scan操作的基础知识 Scan操作是DynamoDB中最容易使用的功能。开发者只需要在执行该操作时提供表的名字，它就能帮你返回表格中所有数据项（返回的数据量不超过1MB）：
+$ aws dynamodb scan \  --table-name UserOrdersTable \  $LOCAL 以下是返回结果（为了方便阅读，其中省略了中间部分）：
+{ &amp;#34;Count&amp;#34;: 25, &amp;#34;Items&amp;#34;: [ { &amp;#34;OrderId&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;20160630-28176&amp;#34; }, &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;Amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;88.3&amp;#34; } }, ... { &amp;#34;OrderId&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;20171129-28042&amp;#34; }, &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;alexdebrie&amp;#34; }, &amp;#34;Amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;83.</description>
     </item>
     
     <item>
@@ -259,6 +327,15 @@ AWS Serverless服务。AWS Lambda服务提供了能自动弹性伸缩，无状�
 以上只是一些基础知识，想要了解更多的高阶知识，可以参考secondary indexes和DynamoDB Streams。
 如果想要获得更多关于DynamoDB的学习资料，那么这里将是一个不错的地方。
  原文链接  </description>
+    </item>
+    
+    <item>
+      <title>DynamoDB的流</title>
+      <link>https://2cloudlab.com/nosql/dynamodb-streams/</link>
+      <pubDate>Mon, 05 Mar 2018 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/dynamodb-streams/</guid>
+      <description>敬请期待。</description>
     </item>
     
   </channel>

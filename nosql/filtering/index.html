@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   
-  <meta name="description" content="如果你在软件行业（尤其是后端服务的研发）里从业几年，你肯定会听说过与存储和处理数据相关的几个时髦的技术词：NoSQL，大数据，云计算，ServerLess，ACID，CAP，分布式等等。驱动这些技术发展的原因是多样的，主要有以下几点：">
+  <meta name="description" content="在过去的几篇文章里，我们讨论了关键字表达式，条件表达式，映射表达式以及更新表达式。本文将讨论最后一类表达式--过滤器表达式。">
   <meta name="author" content="2cloudlab">
   <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DynamoDB的学习指南</title>
+  <title>在DynamoDB中使用Filter表达式</title>
   <link rel="icon" href="https://2cloudlab.com/images/favicon.ico">
 
   <!-- Twitter Bootstrs CSS -->
@@ -89,9 +89,9 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <h2>DynamoDB的学习指南</h2>
+                    <h2>在DynamoDB中使用Filter表达式</h2>
                     <div class="portfolio-meta">
-                        <span>2020-03-15</span>|
+                        <span>2020-03-01</span>|
                         <span class="ion-pricetags"></span>
                         <span>
                             NoSQL, DynamoDB, Data-Intensive
@@ -123,76 +123,61 @@
             <div class="col-md-12">
                 
                 <div class="post-img">
-                    <img class="img-fluid lazy" alt="" data-src="https://2cloudlab.com/images/blog/nosql-index.png">
+                    <img class="img-fluid lazy" alt="" data-src="https://2cloudlab.com/images/blog/filtering.png">
                 </div>
                 
                 <div class="post-content">
-                    <p>如果你在软件行业（尤其是后端服务的研发）里从业几年，你肯定会听说过与存储和处理数据相关的几个时髦的技术词：NoSQL，大数据，云计算，ServerLess，ACID，CAP，分布式等等。驱动这些技术发展的原因是多样的，主要有以下几点：</p>
+                    <p>在过去的几篇文章里，我们讨论了<a href="https://2cloudlab.com/nosql/expression-basics/">关键字表达式，条件表达式，映射表达式以及更新表达式</a>。本文将讨论最后一类表达式&ndash;过滤器表达式。</p>
+<p>过滤器表达式用于<a href="https://2cloudlab.com/nosql/querying/">Query</a>和<a href="https://2cloudlab.com/nosql/scans/">Scan</a>操作，它在作用于这些操作所返回的数据集，并过滤出满足条件的数据项，进而返回给客户端。在深入了解Filter之前，我们有必要来了解一下Query或Scan底层的执行过程。</p>
+<h2 id="queryscan">Query和Scan的执行过程</h2>
+<p>对于DynamoDB的Query和Scan操作，有3步是需要DynamoDB来完成的：</p>
+<ol>
+<li>从表中查找数据。对于这2类操作，查询将从Starting Token开始，如果在Query中提供了关键字表达式，那么查询的过程中将考虑这类关键字</li>
+<li>（这一步是可选的），如果在查询（Query）或遍历（Query）的过程中使用了Filter，那么这个Filter将作用于第一步返回的数据集。同理，映射表达式也是在这一步作用于第一步返回的数据集。</li>
+<li>把数据返回给客户端</li>
+</ol>
+<p>有一点需要特别注意的是：DynamoDB对返回数据量的限制是由第一步来决定的。比如，如果你在第一步获取100KB的数据，而在第二步使用过滤器将数据量缩减到10KB，那么DynamoDB依然会按照100KB来计算其最终的返回数据量。还需要注意的是：DynamoDB中的任何操作其处理数据的量不能超过1MB，尽管你正在操作的表有充足的读单元。</p>
+<p>过滤表达式和映射表达式不是一个高性能的利器-它们不会使你的查询效率变高，然而，它们能帮助你减少数据量，从而最终减少传输带宽的使用。不仅如此，你可以将这些过滤操作逻辑从业务层转移到数据库层。</p>
+<blockquote>
+<p>关于更多Filter以及什么时候使用它的知识可以参考这篇文章<a href="https://www.alexdebrie.com/posts/dynamodb-filter-expressions/">When to use (and when not to use) DynamoDB Filter Expressions</a>。</p>
+</blockquote>
+<h2 id="filter">如何使用Filter</h2>
+<p>Filter表达式与关键字表达式类似，都可以和Query操作配合&ndash;你只需要在过滤表达式中指定想要过滤的属性，查询结果就会更具该表达式来过滤。</p>
+<p>让我们基于之前Query来查找用户&quot;daffyduck&quot;的订单。这一次我们想依据订单额度来过滤数据，比如我们只想返回订单量超过100美元的订单，示例如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb query <span class="se">\
+</span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\
+</span><span class="se"></span>    --key-condition-expression <span class="s2">&#34;Username = :username&#34;</span> <span class="se">\
+</span><span class="se"></span>    --filter-expression <span class="s2">&#34;Amount &gt; :amount&#34;</span> <span class="se">\
+</span><span class="se"></span>    --expression-attribute-values <span class="s1">&#39;{
+</span><span class="s1">        &#34;:username&#34;: { &#34;S&#34;: &#34;daffyduck&#34; },
+</span><span class="s1">        &#34;:amount&#34;: { &#34;N&#34;: &#34;100&#34; }
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
+</code></pre></div><p>以下的返回结果只返回了一个订单：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
+    <span class="s2">&#34;Count&#34;</span>: 1,
+    <span class="s2">&#34;Items&#34;</span>: <span class="o">[</span>
+        <span class="o">{</span>
+            <span class="s2">&#34;OrderId&#34;</span>: <span class="o">{</span>
+                <span class="s2">&#34;S&#34;</span>: <span class="s2">&#34;20170609-25875&#34;</span>
+            <span class="o">}</span>,
+            <span class="s2">&#34;Username&#34;</span>: <span class="o">{</span>
+                <span class="s2">&#34;S&#34;</span>: <span class="s2">&#34;daffyduck&#34;</span>
+            <span class="o">}</span>,
+            <span class="s2">&#34;Amount&#34;</span>: <span class="o">{</span>
+                <span class="s2">&#34;N&#34;</span>: <span class="s2">&#34;116.86&#34;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">]</span>,
+    <span class="s2">&#34;ScannedCount&#34;</span>: 4,
+    <span class="s2">&#34;ConsumedCapacity&#34;</span>: null
+<span class="o">}</span>
+</code></pre></div><p>需要注意一点：上面的返回结果包括了&quot;ScannedCount&quot;和&quot;Count&rdquo;。前者的含义是：DynamoDB帮你查到了一些数据集，数量是4，而后者是指满足过滤条件的数据项有1项，并返回给客户端。</p>
+<p>在之前的示例中，你会发现这2者的数值是一样的，那是因为我们没有使用Filter。当加上Filter之后，我们可看到DynamoDB依然会根据主键查找数据，然后在这些数据（4项）的基础上根据过滤表达式来过滤数据（1项）。此时，我们依然消耗4项数据的所对应的读单元，虽然最终返回给客户端的数据量是1项。</p>
+<p>最后一点需要注意的是：不能在Filter表达式中使用主键属性。这是合理的，因为你已经可以使用关键字表达式来查询数据了，为什么还需要在Filter表达式中将主键属性指定为过滤条件呢！然而这个限制不适用于Scan操作&ndash;也就是说，你依然可以在过滤表达式中使用主键属性。</p>
+<p>这篇文章将是最后一篇关于如何同时操作多项数据的。在接下来的章节里，我们将学习更多高级的功能比如<a href="https://2cloudlab.com/nosql/secondary-indexes/">附加索引</a>和DynamoDB的流。</p>
 <ul>
-<li>互联网巨头（比如Google，Microsoft，Amazon，Facebook，LinkedIn，Netflix以及Twitter）需要面对体量庞大的数据和流量，这迫使它们创造新的工具来高效处理海量数据</li>
-<li>需要更短的研发周期和更灵活的数据模型支撑更加敏捷，更加容易测试和及时响应市场的业务场景</li>
-<li>开源软件的发展变得更加成熟，而且与商业软件相比，提供了更好的功能</li>
-<li>CPU的时钟频率很难提高，多核CPU已经逐渐成为标准，网络变得更快了（从原来的2G转变成为4G，到现在的5G）。这意味着并行计算的能力将会增强</li>
-<li>得益于云计算服务的出现，即使你在一个小团队，也能打造一个分布式系统，甚至在不同的地理位置的不同机器上运行这套系统</li>
-<li>许多数字化服务会一直处于7*24小时可用的状态，短暂的停机是无法接受的（比如Amazon短暂地停机会导致其商品买卖交易活动停滞，并引起经济损失）</li>
-</ul>
-<p>因此，过去10年，为了应对大规模数据所带来的挑战，相应的工具和技术相继被提出。其中新型数据库系统（&quot;<strong>NoSQL</strong>&quot;）受到了很多关注，但是消息队列（message queues），缓存（caches），搜索引擎，数据流处理框架（Kafka和Samza）和其它分布式技术也相当重要！一个成熟的分布式系统一般会同时应用这些技术和工具。</p>
-<p>以上提到的技术和工具都有对应的书籍介绍，而这个系列的文章（其列表如下）将聚焦在NoSQL数据库上，特别是AWS提供的DynamoDB。对于想要从事数据服务研发的工程师们，掌握NoSQL技能是必备的，因为它能够存储大规模数据（超过100TBs）的同时提供稳定的性能（数据操作的时间低于1ms），而要想在SQL数据库中拥有同样的能力，则需要付出巨大的代价，有时甚至无法实现！</p>
-<p>NoSQL类型的数据库有很多，包括MongoDB，CouchDB和DynamoDB等。之所以使用DynamoDB的原因之一是它完全托管于AWS，开发者无需准备运行它的机器就能直接创建表。除此之外，DynamoDB还提供了永久的免费套餐。你想成为操作大规模数据的大师吗？如果答案是：Yes，那么你可以使用DynamoDB，并根据以下文章来实现这个目标！</p>
-<h2 id="heading">介绍</h2>
-<ul>
-<li>1.1  <a href="https://2cloudlab.com/nosql/what-is-dynamo-db/">什么是DynamoDB？</a></li>
-<li>1.2  <a href="https://2cloudlab.com/nosql/key-concepts/">DynamoDB的关键概念</a></li>
-<li>1.3  <a href="https://2cloudlab.com/nosql/the-dynamo-paper/">关于Dynamo的论文</a></li>
-<li>1.4  <a href="https://2cloudlab.com/nosql/environment-setup/">DynamoDB的环境搭建</a></li>
-</ul>
-<h2 id="heading-1">单项数据操作</h2>
-<ul>
-<li>2.1  <a href="https://2cloudlab.com/nosql/anatomy-of-an-item/">DynamoDB中，每项数据（item）的构成单元</a></li>
-<li>2.2  <a href="https://2cloudlab.com/nosql/inserting-retrieving-items/">在DynamoDB中插入和读取数据项</a></li>
-<li>2.3  <a href="https://2cloudlab.com/nosql/expression-basics/">基础表达式</a></li>
-<li>2.4  <a href="https://2cloudlab.com/nosql/updating-deleting-items/">更新和删除数据项</a></li>
-</ul>
-<h2 id="heading-2">多项数据操作</h2>
-<ul>
-<li>3.1  <a href="https://2cloudlab.com/nosql/working-with-multiple-items/">同时处理多项数据</a></li>
-<li>3.2  <a href="https://2cloudlab.com/nosql/querying/">查询</a></li>
-<li>3.3  <a href="https://2cloudlab.com/nosql/scans/">遍历</a></li>
-<li>3.4  <a href="https://2cloudlab.com/nosql/filtering/">过滤</a></li>
-</ul>
-<h2 id="heading-3">高级功能</h2>
-<ul>
-<li>4.1  <a href="https://2cloudlab.com/nosql/secondary-indexes/">附加索引</a></li>
-<li>4.2  <a href="https://2cloudlab.com/nosql/local-secondary-indexes">本地附加索引</a></li>
-<li>4.3  <a href="https://2cloudlab.com/nosql/global-secondary-indexes/">全局附加索引</a></li>
-<li>4.4  <a href="https://2cloudlab.com/nosql/dynamodb-streams/">DynamoDB流</a></li>
-</ul>
-<h2 id="heading-4">运维相关</h2>
-<ul>
-<li>5.1  Provisioning tables</li>
-<li>5.2  安全</li>
-<li>5.3  备份和恢复</li>
-<li>5.4  自动伸缩</li>
-<li>5.5  Global Tables</li>
-</ul>
-<h2 id="heading-5">数据建模案例</h2>
-<ul>
-<li>6.1  概要</li>
-<li>6.2  层级结构的数据</li>
-<li>6.3  Leaderboard &amp; Write Sharding</li>
-</ul>
-<h2 id="additional-concepts">ADDITIONAL CONCEPTS</h2>
-<ul>
-<li>7.1  如何选择索引类型？</li>
-</ul>
-<h2 id="heading-6">数据库对比</h2>
-<ul>
-<li>8.1  MongoDB vs. DynamoDB</li>
-</ul>
-<h2 id="heading-7">其它学习资源</h2>
-<ul>
-<li>9.1  <a href="https://2cloudlab.com/nosql/additional-reading/">NoSQL的学习资料</a></li>
-<li>9.2  <a href="https://www.dynamodbguide.com">原文链接</a></li>
+<li><a href="https://www.dynamodbguide.com/filtering">原文链接</a></li>
 </ul>
 
                 </div>
