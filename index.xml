@@ -134,6 +134,29 @@ aws-vault exec slz_mfa -- terraform plan slz和slz_mfa所对应的凭证均以�
     </item>
     
     <item>
+      <title>如何在DynamoDB中查询层级结构的数据</title>
+      <link>https://2cloudlab.com/nosql/hierarchical-data/</link>
+      <pubDate>Thu, 12 Mar 2020 12:27:38 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/nosql/hierarchical-data/</guid>
+      <description>在本文的示例中，我们将展示如何在DynamoDB中建立具有层级结构的数据（比如树状结构）。这个例子使用了大约25000个星巴克实体店的地址信息。你可以到这里获取源码来动手实践本文所提到的步骤。
+层级结构的数据经常在关系型数据库中使用，将数据以树状结构来表示，比如组织架构图或族谱就是这种类型的数据。在关系型数据库中，为了将这些层级结构的数据连接在一起，通常需要使用多个JOINs来完成。而在本文中，我们仅使用一张DynamoDB的表来建立这种数据结构，并提供了更快的查询性能。
+ 这个例子的灵感来自于Rick Houlihan在2017年的AWS reInvent上的研讨会，感兴趣的读者可以到这里一睹其风采。
+ 一些关于本文示例的基本信息 假设，我们是星巴克，一家跨国公司，门店遍布全球。现在，我们想把全球所有门店的信息存储在DynamoDB中，并希望能够快速查询以下信息：
+ 根据门店编号来获取对应的门店信息 列举属于某个国家的所有门店信息 列举一个州或一个省下的所有门店信息 列举一个城市中所有门店信息 列举一个区里所有门店信息  第一种查询模式比较简单&amp;ndash;就是那种key:value的关系，只需要给出门店编号，那么就能取到该门店的信息。剩余的4种查询模式就不是那么容易实现了。 当然，你可以创建4个全局附加索引来分别支持这4种查询模式，也可以使用Filter表达式来过滤出我们想要的数据，但是这2种方法并不高效，同时会消耗更多的读取能力，进而增加费用。
+为了解决以上提出的2个问题，我们可以借助该数据的层级信息以及仅使用一个全局附加索引来实现以上4种查询模式！接下来，让我们到Kaggle获取遍布全球的星巴克门店数据&amp;ndash;大约25000条。获取之后需要将这些数据写入到我们的表中，并验证是否完全倒入！以下提到的代码片段摘自这里。
+准备工作 为了运行以下示例，你需要下载之前提到的数据，并解压它，然后将CVS文件复制到你的工作目录，名称是directory.csv。除此之外，你还要安装Python以及Boto3框架，该框架是Python版本的AWS SDK。你可以运行指令pip install boto3来按照该框架。最后，有些例子使用了Click框架，该框架能够帮助你快速制定命令行接口，运行指令pip install click来安装它。
+设计主键和插入数据 一切就绪之后，是时候创建表以及将数据插入到表中。
+首先，为表选择合适的主键。主键应该至少体现以下2点：
+ 它具有唯一性。也就是它能唯一识别每项数据 它具有均匀分布的特性  理想状态下，主键也需要满足至少一条查询模式。
+对于我们要处理的问题，将Store Number作为表的简单主键将是不错的选择。如果我们想要更新某个店铺的信息，那么肯定需要提供该店的Store Number。这符合查询模式的第一项：根据门店编号来获取对应的门店信息。除此之外，Store Number是均匀分布的。
+接着，我们需要考虑其余4种查询数据的模式&amp;ndash;如何根据国家，州，城市，区号来获取对应的实体店信息？我们将很快在后面的内容中讨论这个问题，但是现在，我们只需要创建一个全局附加索引&amp;quot;StoreLocationIndex&amp;rdquo;，这些索引需要满足以下要求：
+ 将Country作为分区键（HASH key），用于指定实体店所在的国家 排序键（RANGE key）为StateCityPostcode，它是一个由State, City和Postcode构成的字符串，其格式为##。例如：一家位于Omaha，NE的店铺，该值应该是：NE#OMAHA#68144。  为了创建这个表，则需要运行以下脚本文件。如果执行成功，则会输出以下信息：
+$ python create_table.py Table created successfully! 接下来，将directory.csv文件中的数据加载到DynamoDB中。脚本文件insert_items.py将读取这个文件的数据，然后遍历所有数据项，并将每一项数据插入到DynamoDB中。注意：整个过程需要一些时间，因为大约有25000项数据。
+$ python insert_items.py 1000 locations written... 2000 locations written... ... &amp;lt;snip&amp;gt; ... 24000 locations written... 25000 locations written.</description>
+    </item>
+    
+    <item>
       <title>提高研发团队使用AWS服务的效率x100--高效使用aws-vault工具</title>
       <link>https://2cloudlab.com/blog/how-to-authority-aws-through-command-line/</link>
       <pubDate>Tue, 10 Mar 2020 12:29:40 +0600</pubDate>
