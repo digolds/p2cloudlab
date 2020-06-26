@@ -4,7 +4,32 @@
   
   <url>
     <loc>https://2cloudlab.com/</loc>
-    <lastmod>2020-03-20T12:21:58+06:00</lastmod>
+    <lastmod>2020-04-15T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/data-intensive/</loc>
+    <lastmod>2020-04-15T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/dynamodb/</loc>
+    <lastmod>2020-04-15T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/nosql/nosql-index/</loc>
+    <lastmod>2020-04-15T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/nosql/</loc>
+    <lastmod>2020-04-15T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/tags/</loc>
+    <lastmod>2020-04-15T12:27:38+06:00</lastmod>
   </url>
   
   <url>
@@ -19,11 +44,6 @@
   
   <url>
     <loc>https://2cloudlab.com/tags/kubernetes/</loc>
-    <lastmod>2020-03-20T12:21:58+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://2cloudlab.com/tags/</loc>
     <lastmod>2020-03-20T12:21:58+06:00</lastmod>
   </url>
   
@@ -98,26 +118,6 @@
   </url>
   
   <url>
-    <loc>https://2cloudlab.com/tags/data-intensive/</loc>
-    <lastmod>2020-03-15T12:27:38+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://2cloudlab.com/tags/dynamodb/</loc>
-    <lastmod>2020-03-15T12:27:38+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://2cloudlab.com/nosql/nosql-index/</loc>
-    <lastmod>2020-03-15T12:27:38+06:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://2cloudlab.com/tags/nosql/</loc>
-    <lastmod>2020-03-15T12:27:38+06:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://2cloudlab.com/tags/aws/</loc>
     <lastmod>2020-03-15T12:21:58+06:00</lastmod>
   </url>
@@ -155,6 +155,16 @@
   <url>
     <loc>https://2cloudlab.com/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E7%BB%8F%E9%AA%8C/</loc>
     <lastmod>2020-03-15T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/nosql/amazon-back-end-data-system/</loc>
+    <lastmod>2020-03-14T12:27:38+06:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://2cloudlab.com/nosql/leaderboard-write-sharding/</loc>
+    <lastmod>2020-03-13T12:27:38+06:00</lastmod>
   </url>
   
   <url>
