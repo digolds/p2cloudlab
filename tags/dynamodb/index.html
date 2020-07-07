@@ -278,6 +278,37 @@
                 <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
                     
                     <div class="blog-post-image">
+                        <a href="https://2cloudlab.com/nosql/dynamodb-streams/">
+                             <img class="img-fluid lazy" data-src="https://2cloudlab.com/images/blog/dynamodb-streams.png" alt="post-image"/>
+                        </a>
+                    </div>
+                    <div class="blog-content">
+                        <h2 class="blogpost-title">
+                            <a href="https://2cloudlab.com/nosql/dynamodb-streams/">DynamoDB Stream</a>
+                        </h2>
+                        <div class="blog-meta">
+                            <span>2020-03-05</span>
+                            <span>作者
+                                郑思龙
+                            </span>
+                            
+                            
+                            <span>
+                                NoSQL, DynamoDB, Data-Intensive
+                            </span>
+                            
+                        </div>
+                        <p>
+                            
+                            DynamoDB的表能够存储大量的数据，为了提高查找性能，研发人员通常会将关联但不同的数据实体（比如User和Order）集中存放在一台服务器上，这就导致表中的数据关系难以理解！如果直接基于该表来分析其中的数据，则分析工作将会变得困难起来，除此之外，也会影响终端用户的用户体验（分析任务会占用该表的读写单元）。为了使分析工作变得简单，则需要将表中的数据导入到其它分析系统，最终依赖其它分析系统来分析数据。将数据导出到其它系统主要有2种办法，它们分别是：1.遍历整张表，并将每一项数据写入到其它系统；2.表中的数据每变更一次，则将变更写入到其它系统。前者不适用于数据量庞大的情景，而后者可以很好地避开处理大量数据，但需要借助DynamoDB Stream功能来实现。
+                        </p>
+                        <a href="https://2cloudlab.com/nosql/dynamodb-streams/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
+                    </div>
+                </article>
+                
+                <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
+                    
+                    <div class="blog-post-image">
                         <a href="https://2cloudlab.com/nosql/global-secondary-indexes/">
                              <img class="img-fluid lazy" data-src="https://2cloudlab.com/images/blog/global-secondary-indexes.png" alt="post-image"/>
                         </a>
@@ -768,37 +799,6 @@
                             DynamoDB是一个由AWS提供的NoSQL数据库服务。它完全托管于AWS，开发者只需要定义数据访问模式以及一些关键信息，就能通过HTTP API来使用它。它具有以下特点：
                         </p>
                         <a href="https://2cloudlab.com/nosql/what-is-dynamo-db/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
-                    </div>
-                </article>
-                
-                <article class="wow fadeInDown" data-wow-delay=".3s" data-wow-duration="500ms">
-                    
-                    <div class="blog-post-image">
-                        <a href="https://2cloudlab.com/nosql/dynamodb-streams/">
-                             <img class="img-fluid lazy" data-src="https://2cloudlab.com/images/blog/dynamodb-streams.png" alt="post-image"/>
-                        </a>
-                    </div>
-                    <div class="blog-content">
-                        <h2 class="blogpost-title">
-                            <a href="https://2cloudlab.com/nosql/dynamodb-streams/">DynamoDB的流</a>
-                        </h2>
-                        <div class="blog-meta">
-                            <span>2018-03-05</span>
-                            <span>作者
-                                Alex
-                            </span>
-                            
-                            
-                            <span>
-                                NoSQL, DynamoDB, Data-Intensive
-                            </span>
-                            
-                        </div>
-                        <p>
-                            
-                            敬请期待。
-                        </p>
-                        <a href="https://2cloudlab.com/nosql/dynamodb-streams/" class="btn btn-dafault btn-details hvr-bounce-to-right">阅读全文</a>
                     </div>
                 </article>
                 
