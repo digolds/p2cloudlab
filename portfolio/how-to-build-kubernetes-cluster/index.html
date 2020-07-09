@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   
-  <meta name="description" content="这篇文章收录了一些关于NoSQL的英文资料。有的解释NoSQL为何能规模化而SQL却受到限制；有的涉及NoSQL的单表设计原则，以及解释为何需要使用单表；其中有一篇文章是关于如何将SQL中多张有关联的表转化成DynamoDB中的单张表。还有一些关于DynamoDB的视频资料，其中的内容讲述了NoSQL的设计原则，以及如何高效使用DynamoDB。读者可以通过这些学习资料来掌握NoSQL的理论知识，通过这些知识来设计既能支持100TBs以上数据又能输出稳定性能的数据应用方案。">
+  <meta name="description" content="This is meta description">
   <meta name="author" content="2cloudlab">
   <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NoSQL的学习资料</title>
+  <title>如何构建Kubernetes cluster</title>
   <link rel="icon" href="https://2cloudlab.com/images/favicon.ico">
 
   <!-- Twitter Bootstrs CSS -->
@@ -84,17 +84,19 @@
     </div>
 </section>
 
+<!-- Page Header -->
 <section class="global-page-header">
-    <div class="container post-container">
+    <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="block">
-                    <h2>NoSQL的学习资料</h2>
+                    <h2>如何构建Kubernetes cluster</h2>
                     <div class="portfolio-meta">
-                        <span>2019-02-21</span>|
+                        <span>2018-07-12</span>|
                         <span class="ion-pricetags"></span>
-                        <span>
-                            NoSQL, DynamoDB, Data-Intensive
+                        <span> 3d-model, product</span>|
+                        <span> 首页:
+                            <a href="https://www.themefisher.com">https://www.themefisher.com</a>
                         </span>
                     </div>
                 </div>
@@ -105,60 +107,43 @@
 
 <style type="text/css">
     @media (min-width: 1200px) {
-        .post-container {
-            max-width: 800px;
-        }
+    .post-container{
+        max-width: 800px;
     }
-
-    img {
-        max-width: 100%;
-        max-height: 100%;
-        display: block;
-        margin: auto;
-    }
+  }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
+}
 </style>
 
-<section class="single-post">
+<!-- work details part start -->
+<section class="work-single">
     <div class="container post-container">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 
-                <div class="post-img">
-                    <img class="img-fluid lazy" alt="" data-src="https://2cloudlab.com/images/blog/additional-reading.png">
+                <div class="work-single-image">
+                    
+                    <img class="img-fluid w-100 lazy" data-src="https://2cloudlab.com/images/portfolio/Kubernetes-logo-1.png" alt="work-single-image">
                 </div>
                 
-                <div class="post-content">
-                    <p>这篇文章收录了一些关于NoSQL的英文资料。有的解释NoSQL为何能规模化而SQL却受到限制；有的涉及NoSQL的单表设计原则，以及解释为何需要使用单表；其中有一篇文章是关于如何将SQL中多张有关联的表转化成DynamoDB中的单张表。还有一些关于DynamoDB的视频资料，其中的内容讲述了NoSQL的设计原则，以及如何高效使用DynamoDB。读者可以通过这些学习资料来掌握NoSQL的理论知识，通过这些知识来设计既能支持100TBs以上数据又能输出稳定性能的数据应用方案。</p>
-<h2 id="heading">文章:</h2>
-<ul>
-<li><a href="https://www.alexdebrie.com/posts/dynamodb-no-bad-queries/">SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don't</a> - This is a post of mine explaining the core architectural decisions that allow NoSQL databases to scale further than their SQL brethren.</li>
-<li><a href="https://www.alexdebrie.com/posts/dynamodb-single-table/">The What, Why, and When of Single-Table Design with DynamoDB</a> - A deep look at what it means to do single-table design in DynamoDB and why you would want to. It also includes a few situations where you may want to avoid single-table design.</li>
-<li><a href="https://www.alexdebrie.com/posts/dynamodb-patterns-serverless/">Faux-SQL or NoSQL? Examining four DynamoDB Patterns in Serverless Applications</a> - This is a post I wrote on the common data modeling patterns I see with DynamoDB in serverless applications.</li>
-<li><a href="">Why Amazon DynamoDB isn't for everyone</a> - My favorite post on this topic. Forrest Brazeal does a great job breaking down the pros and cons of DynamoDB.</li>
-<li><a href="https://www.trek10.com/blog/dynamodb-single-table-relational-modeling/">From relational DB to single DynamoDB table: a step-by-step exploration</a> - Another great post by Forrest Brazeal. It's a detailed walkthrough of how to use the single-table DynamoDB pattern in a complex use case.</li>
-<li><a href="https://www.alexdebrie.com/posts/choosing-a-database-with-pie/">Why the PIE theorem is more relevant than the CAP theorem</a> - Another post I wrote about choosing a database that includes consideration of DynamoDB.</li>
-</ul>
-<h2 id="heading-1">视频:</h2>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=jzeKPKpucS0">Advanced Design Patterns for DynamoDB (reInvent 2017)</a>. Rick Houlihan is a master of DynamoDB and has some great tips.</li>
-<li><a href="https://www.youtube.com/watch?v=HaEPXoXVf2k">Advanced Design Pattens for DynamoDB (reInvent 2018)</a>. Rick Houlihan is back with more tips. The first half is similar to 2017, but the second half has different examples. Highly recommended. Get the slides here.</li>
-<li><a href="https://t.co/fRtp2X3Vgg?amp=1">Advanced Design Patterns for DynamoDB (reInvent 2019)</a>. The most recent edition of Rick Houlihan's DynamoDB talk.</li>
-<li><a href="https://www.youtube.com/watch?v=DIQVJqiSUkE">Data Modeling with DynamoDB (reInvent 2019)</a>. A gentler introduction to DynamoDB single-table concepts. Watch this video if Rick's is too advanced.</li>
-<li><a href="https://acloud.guru/series/serverlessconf-nyc-2019/view/dynamodb-best-practices">Using (and ignoring) DynamoDB Best Practices in Serverless (ServerlessConf NYC 2019)</a>. This talk focuses on using DynamoDB in Serverless applications.</li>
-</ul>
-<h2 id="heading-2">参考资料:</h2>
-<ul>
-<li><a href="https://github.com/alexdebrie/awesome-dynamodb">Awesome DynamoDB</a> &ndash; A GitHub repo with DynamoDB links and resources</li>
-<li><a href="https://aws.amazon.com/dynamodb/">DynamoDB landing page</a></li>
-<li><a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Introduction.html">AWS Developer Guide Docs</a></li>
-<li><a href="https://docs.aws.amazon.com/cli/latest/reference/dynamodb/index.html">AWS CLI reference for DynamoDB</a></li>
-<li><a href="http://boto3.readthedocs.io/en/latest/reference/services/dynamodb.html">Boto3 (Python client library for AWS) docs</a></li>
-<li><a href="https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html">Javascript client library for AWS</a></li>
-<li><a href="https://github.com/dabit3/dynamodb-documentclient-cheat-sheet">Document Client cheat sheet (Javascript)</a>.Created by <a href="https://twitter.com/dabit3">Nader Dabit</a></li>
-<li><a href="https://www.dynamodbguide.com/additional-reading">原文链接</a></li>
-</ul>
+                
+                
+                <div class="work-single-content">
+                    <h3 id="consectur-in-bibendum">Consectur in Bibendum</h3>
+<p>Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim est laborum. Sed ut perspiciatis unde omnis iste natus. error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+<blockquote>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt labore et dolore magna aliqua. ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.</p>
+</blockquote>
+<p>Consequuntur magni dolores ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor sit amet consectetur adipisci velit.lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip commodo consequat.</p>
+<p>Reprehenderit in voluptate velit esse cillum dolore fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident. sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus.</p>
 
                 </div>
+                
             </div>
         </div>
     </div>
@@ -167,6 +152,8 @@
 <script src="https://utteranc.es/client.js" repo="2cloudlab/comments" issue-term="pathname" theme="github-light"
         crossorigin="anonymous" async>
 </script>
+
+<!-- work details part end -->
 
 
 <!-- Call To Action Section Start -->

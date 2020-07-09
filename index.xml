@@ -498,7 +498,7 @@ $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序�
     </item>
     
     <item>
-      <title>企业如何快速推出数字化服务-使用Serverless来验证想法</title>
+      <title>如何使用Serverless来快速推出产品</title>
       <link>https://2cloudlab.com/portfolio/how-to-promote-with-serverless/</link>
       <pubDate>Mon, 12 Aug 2019 16:58:55 +0600</pubDate>
       
@@ -720,28 +720,28 @@ AWS Serverless服务。AWS Lambda服务提供了能自动弹性伸缩，无状�
     
     <item>
       <title>如何构建Kubernetes cluster</title>
-      <link>https://2cloudlab.com/portfolio/table-design/</link>
+      <link>https://2cloudlab.com/portfolio/how-to-build-kubernetes-cluster/</link>
       <pubDate>Thu, 12 Jul 2018 16:56:54 +0600</pubDate>
       
-      <guid>https://2cloudlab.com/portfolio/table-design/</guid>
+      <guid>https://2cloudlab.com/portfolio/how-to-build-kubernetes-cluster/</guid>
       <description>Consectur in Bibendum Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</description>
     </item>
     
     <item>
-      <title>如何设计企业级应用环境</title>
-      <link>https://2cloudlab.com/portfolio/bottle-mockup/</link>
+      <title>设计数据应用的最佳实践</title>
+      <link>https://2cloudlab.com/portfolio/design-large-scale-data-service/</link>
       <pubDate>Thu, 12 Jul 2018 16:54:54 +0600</pubDate>
       
-      <guid>https://2cloudlab.com/portfolio/bottle-mockup/</guid>
+      <guid>https://2cloudlab.com/portfolio/design-large-scale-data-service/</guid>
       <description>Consectur in Bibendum Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</description>
     </item>
     
     <item>
-      <title>Dew Drop</title>
-      <link>https://2cloudlab.com/portfolio/dew-drop/</link>
+      <title>如何在一天之内打造一个新闻服务</title>
+      <link>https://2cloudlab.com/portfolio/how-to-craft-a-new-york-times-in-one-day/</link>
       <pubDate>Thu, 12 Jul 2018 16:53:54 +0600</pubDate>
       
-      <guid>https://2cloudlab.com/portfolio/dew-drop/</guid>
+      <guid>https://2cloudlab.com/portfolio/how-to-craft-a-new-york-times-in-one-day/</guid>
       <description>Consectur in Bibendum Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</description>
     </item>
     
