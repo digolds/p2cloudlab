@@ -26,9 +26,8 @@ gocode ├─bin ├─pkg └─src bin放置所有可执行性文件；pkg放�
 以上步骤操作完成之后，需要执行以下命令来进一步确保Go运行环境安装正确！
 $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序之前，需要根据自身的情况来选择IDE。以下是一些常用的IDE，使用这些IDE能够提高编程效率！
  Vim Editor GitHub Atom Microsoft Visual Studio Code  选择IDE之后，需要为其配置调试环境，这里以VS Code为例来配置调试环境，其它IDE也需要配置对应的调试环境。为了能在VS Code里调试Go代码，则需要安装以下插件:
- VSCode-Go plugin  Analysis工具 Delve  安装完成之后需要按照以下方式配置Go-Plugin，其中program填写Go程序所在的目录。
-接下来将举2个例子来说明如何调试，其中一个例子是调试Go程序，另外一个例子是调试自动化测试用例。
- 如何调试Go程序  // main.</description>
+ VSCode-Go plugin   Analysis工具 Delve  安装完成之后需要按照以下方式配置Go-Plugin，其中program填写Go程序所在的目录。
+ 接下来将举2个例子来说明如何调试，其中一个例子是调试Go程序，另外一个例子是调试自动化测试用例。</description>
     </item>
     
   </channel>

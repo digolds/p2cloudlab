@@ -180,7 +180,9 @@
   }
 }
 </code></pre></div><p>以上例子表明:它期望在AWS上创建一个EC2实例，因此使用terraform运行该脚本文件的最终结果是AWS EC2 Dashboard中启动了一个EC2实例,如下图所示：</p>
-<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/ec2-dashboard.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/ec2-dashboard.png" alt=""  />
+</p>
 <p>这个简单的例子解释了terraform运行过程中所涉及的步骤。企业里也是基于以上过程来使用terraform，但是区别在于:企业内部是由多人同时编写并执行terraform文件。这就引发另外一个问题：如何协调不同人员使用terraform所完成的工作成果以及如何避免文件冲突？解决这个问题最好办法是引入软件工程管理方面的经验。</p>
 <h2 id="terraform-2">如何解决多人同时使用Terraform的问题</h2>
 <p>通过以上简单的示例可知，Terraform的使用过程如下：</p>
@@ -253,7 +255,9 @@
 <p>接下来看看他们3人是如何满足以上规则的。假设目前公司要上线一个网站服务，现在要为这个网站准备环境并将其部署，他们是这么协作的：</p>
 <p>Tony</p>
 <p>这个网站部署在AWS上，支持弹性伸缩、高可用、负载均衡和数据库，因此Tony将运行该网站的环境设计出来，如下图所示：</p>
-<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/Web-App-Reference-Architecture.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/Web-App-Reference-Architecture.png" alt=""  />
+</p>
 <p>紧接着，他根据上图列出一些工作任务，这些任务由在线项目协作工具(比如Jira)记录和跟踪。随后将任务按照优先级分别指派给不同的成员并开会讨论实施细节。以下是实施细节:</p>
 <ol>
 <li>准备3个不同的环境Test、Stage和Product来验证网站运行环境</li>
@@ -263,7 +267,9 @@
 <li>项目的结构和文件命名方式如下(其中package_aws_web_service是通用模块，live是不同环境)</li>
 <li>在编写模块的过程中，需要考虑单元测试(Unit Test)、集成测试(Integration Test)和端对端测试（End-to-End Test），其数量占比情况如下图所示：</li>
 </ol>
-<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/number-of-different-test-types.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/number-of-different-test-types.png" alt=""  />
+</p>
 <ol start="7">
 <li>为每个模块编写手动示例和说明文档</li>
 <li>遵守Terraform规范，并用代码检测工具来做静态检查</li>
@@ -271,7 +277,9 @@
 <li>每名成员都拥有不同的AWS账号，不同环境也需要有不同的AWS账号。AWS账号的分配原则应该根据不同目的来划分，原因在于保持相互独立性</li>
 <li>输出具有可实施的结果（包括文档、图片和代码等）。比如Tony为这次实施细节输出了如下结果：</li>
 </ol>
-<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/file-layout-and-github-repository.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/file-layout-and-github-repository.png" alt=""  />
+</p>
 <p>Tony要确保以上实施细节都能够被大家理解，并且需要不断地优化。接下来就是分工合作，Tony、Jack和Jane的分工如下：</p>
 <ol>
 <li>Tony负责live repositoy的研发</li>
@@ -347,7 +355,9 @@
 <span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The domain name of the load balancer&#34;</span>
 }
 </code></pre></div><p>jack编写了一个通用模块：<code>web_cluster</code>（为了阅读方便省去了细节部分），其他团队可以调用这一模块。这个模块的作用是生成Load Balance和一族EC2实例（如下图所示）。这个模块像一个函数一样有输入参数和输出参数。<code>variables.tf</code>文件中定义了该模块的输入参数，它们分别是：<code>environment</code>、<code>min_size</code>和<code>max_size</code>。<code>outputs.tf</code>文件中定义了该模块的输出参数：<code>alb_dns_name</code>。<code>main.tf</code>文件中定义了具体的逻辑部分：<code>alb</code>和<code>asg</code>。也就是说使用模块<code>web_cluster</code>之后，会生成一个域名地址，用户可以通过该域名地址，访问网站服务。</p>
-<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/only-web-cluster.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/only-web-cluster.png" alt=""  />
+</p>
 <p>Jane</p>
 <p>Jane根据实施细节编写了模块<code>mysql_database</code>(<a href="https://github.com/2cloudlab/package_aws_web_service">完整源码</a>)，结果如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="c1"># main.tf
@@ -395,7 +405,9 @@
 <span class="na">  description</span> <span class="o">=</span> <span class="s2">&#34;The port the database is listening on&#34;</span>
 }
 </code></pre></div><p>像Jack一样，Jane编写了一个通用模块：<code>mysql_database</code>（为了阅读方便省去了细节部分），其他团队可以调用这一模块。Jane和Jack根据规范，编写了统一格式的模块。格式统一的模块能够减少团队之间的障碍，促进工作顺利进行下去。调用Jane编写的模块会生成一个由AWS完全托管的MySQL数据库服务（如下图所示）。DevOps中的团队成员各司其职，都输出了相对独立的模块，因此，需要Tony将Jane和Jack的成果集成在一起才能部署网站应用并对外发布。</p>
-<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/only-mysql-database.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/only-mysql-database.png" alt=""  />
+</p>
 <h2 id="heading">总结</h2>
 <p>Terraform工具主要解决了创建资源和管理资源的问题，随着云计算的普及以及Terraform支持大多数云服务商，包括AWS、GCP、Azure Cloud和阿里云等，使得Terraform工具的使用场景更加丰富！使用Terraform工具的好处是：以统一的方式创建和管理资源，并引入了软件工程管理经验。DevOps工程师只需要编写脚本文件并使用Terraform执行它们，就可以创建和管理基础资源，这些资源构成了产品或服务所需的运行环境。将资源代码化(也就是Infrastructure as code)的好处是可以引入软件工程管理实践经验来更好地发布软件。这些经验包括版本控制、自动化测试、模块复用、Code Review和编写文档等。</p>
 <p>为了帮助企业打造世界级CICD，除了需要熟练掌握Terraform知识以外，还需要结合软件工程实践经验。因此，企业需要专门成立一个DevOps团队来服务于企业内部不同团队以及对外发布产品。当引入一个团队的时候，就需要考虑多人协作和规范的问题。使用Terraform工具所生成的真实环境有各种各样的依赖关系，任何一次局部修改，都有可能导致整个运行环境瘫痪，因此要严格隔离不同环境，比如使test、stage和prod环境相互独立，使每一位研发人员都拥有独立的云服务账号。除此之外DevOps要定义一些规范，这些规范不仅能够使团队内部达成共识，而且能够更加有效地使外部团队消化DevOps的输出成果，最终使得DevOps运动能够在企业内部顺利运转起来。</p>

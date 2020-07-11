@@ -168,11 +168,11 @@ aws-vault exec slz_mfa -- terraform plan slz和slz_mfa所对应的凭证均以�
       <guid>https://2cloudlab.com/nosql/amazon-back-end-data-system/</guid>
       <description>amazon.com是服务于全球的在线电商，用户在它的平台上购买一件商品所需的时间不超过10秒。它是如何陈列成千上万件商品的同时，依然输出稳定的数据存取性能，从而提升全球用户在购物过程中的体验？对于这个问题的思考，将加深我们对数据库系统的理解，进而设计出优良的数据服务！本文将从Amazon的分类商品和推荐商品问题开始，揭示其背后的数据中心及其构成。紧接着为遇到的问题进行数据建模并分别使用MySQL，MongoDB，DynamoDB技术方案来解决这些问题。每种技术方案都有其适用的场景，并体现在文中，最终形成了一些判断依据，用于决定选择NoSQL还是SQL。
 1.1 Amazon的分类商品与推荐商品所引发的思考 下图是从amazon.com首页截取的部分信息，主要包括 分类商品 与 推荐商品 。
-图 1.1 amazon.com主页中部分商品
+ 图 1.1 amazon.com主页中部分商品
 以上信息有一个特点：每一个大类中均包含多件商品。比如：推荐板块中列举了多件商品；Ride electric类目下有多种商品。这些信息通常会存储在中心服务器上，由数据库系统管理。当用户访问amazon.com时，浏览器会向中心服务器获取商品数据。整个过程如下图所示：
-图 1.2 从数据中心查询商品数据
+ 图 1.2 从数据中心查询商品数据
 通过上图可知，数据中心不仅需要存储这些商品信息以及每件商品所属的分类信息，还要提供获取商品信息的方法。为了使数据中心具有数据存取的能力，往往需要引入数据库系统（下图蓝色区域部分）。这些系统不仅能够存储数据，也能够查询数据，通常运行于多台服务器。而这些服务器通过网线连接在一起，作为一个整体对外提供数据存取服务。最终，数据中心的演化如下图所示：
-图 1.3 位于数据中心的数据库系统
+ 图 1.3 位于数据中心的数据库系统
 注意：以上只是一个简化版的数据中心，现实情况是：amazon.com依赖于多个数据中心，每个国家都会有一个或多个数据中心（比如：美国，欧洲以及中国均有多个数据中心），每个数据中心都有大量的微服务支持着amazon.com。不同国家的用户会直接访问该国家的数据中心，这么做的好处是基于地理位置来降低访问延时。以上简化版的数据中心已经足够让我们讨论大多数amazon.com背后的数据服务了，对于业务遍布全球的企业，多数据中心是必须考虑的。接下来，让我们思考：使用数据库系统存取这些商品信息时会遇到的问题。
 首先将遇到问题是：当数据量增多，超过现有的存储能力时，数据如何存储？通常的做法是增加存储空间，比如在每台服务器上挂载多块硬盘。
 其次，当每秒访问数据库系统的次数增多时，如何确保数据库系统是有能力提供服务的？解决这个问题的做法是提供多台服务器（每台服务器中运行着数据库软件），并将数据切分成好几份，再将每一份分配到不同的服务器上。
@@ -182,16 +182,14 @@ aws-vault exec slz_mfa -- terraform plan slz和slz_mfa所对应的凭证均以�
 1.2 面临的问题 摆在我们面前的问题有以下2点：
  作为用户，我希望系统能根据历史购买记录来向我展示推荐商品的列表，时间控制在1s以内 作为用户，我希望系统为商品分类，并展示分类商品，时间控制在1s以内  以上问题有很多，分为前端和后端以及数据端，这里要讨论的焦点主要集中在 数据端。为了解决以上2个问题，我们需要对其进行数据建模-数据建模是指将现实世界中的问题抽象成数据实体（data entity）并建立数据实体之间的关系，最终通过计算机来表示。
 通过问题的描述可知，共有4个数据实体，它们分别是：用户（User），商品（Product），推荐物（Recommend）以及商品分类（Category），以及3个关系，它们分别是：用户与推荐商品的关系，推荐物与商品的关系和商品分类与商品的关系。整个数据实体以及其之间的关系可以通过下图抽象出来：
-图 1.4 基于SQL的Schema来数据建模
+ 图 1.4 基于SQL的Schema来数据建模
 上图实体之间的连线代表它们之间的关系，其中1:*的含义是只1对0或1对多。比如一个用户可以有0，1，或者多个推荐商品。
 对面临的问题建立数据模型之后，接下来需要考虑的问题是：技术选型。
 1.3 技术选型 在软件行业里，专门针对数据存储与查询的数据库系统有很多，主要分为2大阵营，它们分别是SQL和NoSQL。典型的SQL产品有：MySQL，SQL Server，PostgreSQL等等，而NoSQL的产品有：MongoDB，CouchDB，Dynamo，DynamoDB等等。每种类型的数据库都有其适用的场景，没有一个数据库能够解决所有问题，常见的做法是将这些数据库整合在一起来提供一套数据库系统解决方案。比如SQL数据库产品就特别适合OLAP类型（数据分析）的业务，而NoSQL则适合于OLTP类型（线上交易或即时交互）的业务。比如amazon.com的后台数据系统的构成主要分为3大部分，它们分别是：
  由NoSQL数据库系统组成，并提供在线交易支持的数据服务 由SQL数据库系统组成，并为公司内部提供数据分析服务（ETL） 大数据平台，比如由Hadoop，Spark等框架提供的大数据服务  我们所面临的业务问题属于OLTP类型，因此接下来的内容将围绕OLTP类型的业务问题展开。在展开过程中，我们首先考虑使用SQL数据库系统来解决问题，然后分析这种方法能够带来哪些好处以及什么时候能使用它。除此之外，我们也会分析使用这种方法在哪些条件下会遇到瓶颈以及如何使用NoSQL来解决所遇到的问题。其次，我们会分析NoSQL是如何消除这些瓶颈以及需要为之付出的代价。最后，我们将解释为什么使用DynamoDB而不是其它NoSQL数据库系统。以上提出的第2，3点虽然不属于本文讨论的范围，但是它们在现代互联网企业中依旧占有一席之地，只不过这些问题会随着企业的发展而渐渐浮出水面！
  OLTP=(Online transaction processing)，是指线上交易活动的处理，比如电商，社交网络，搜索引擎等属于这类问题。这类活动有一个特征：低延时。
 OLAP=(Online analytical processing)，是指线上分析的处理，比如BI系统，市场分析，销售报告等与数据分析与挖掘相关的日常问题均属于这类问题。这类活动有一个特征：在海量数据里读取一小部分数据来生成报告，进而分析业务活动。
- 首先，让我们看看 使用SQL数据库系统 解决之前所提到的2个业务问题的情况。成熟的SQL数据库系统有很多，这里我们选用MySQL来解决以上提出的问题。接下来提到的方法同样适用于其它数据库系统。使用MySQL的前提条件是创建Schema，如图 1.4所示。该Schema里包含了4张表，每张表对应现实问题中的一个数据实体，比如&amp;quot;users&amp;quot;表代表用户实体，表中的每一行代表一个具体的用户，该表能容纳多个不同的用户。
-为了处理获取某个用户的推荐列表的请求，MySQL数据库需要执行以下步骤：
- 从表&amp;quot;users&amp;quot;中找到该用户所对应的行，拿到user_id 根据user_id到表&amp;quot;recommends&amp;quot;中找到所有与user_id相等的行 遍历步骤2返回的结果，根据每一行数据中的product_id从表&amp;quot;products&amp;quot;中取出详细的商品信息 将1，2，3步获得的数据打包成一个整体返回给请求端（比如浏览器）  为了处理获取分类商品的请求，MySQL数据库需要执行以下步骤：</description>
+ 首先，让我们看看 使用SQL数据库系统 解决之前所提到的2个业务问题的情况。成熟的SQL数据库系统有很多，这里我们选用MySQL来解决以上提出的问题。接下来提到的方法同样适用于其它数据库系统。使用MySQL的前提条件是创建Schema，如图 1.4所示。该Schema里包含了4张表，每张表对应现实问题中的一个数据实体，比如&amp;quot;users&amp;quot;表代表用户实体，表中的每一行代表一个具体的用户，该表能容纳多个不同的用户。</description>
     </item>
     
     <item>
@@ -260,14 +258,13 @@ aws-vault exec slz -- terraform apply aws-vault工具的使用指南 完成以�
       <description>DynamoDB的表能够存储大量的数据，为了提高查找性能，研发人员通常会将关联但不同的数据实体（比如User和Order）集中存放在一台服务器上，这就导致表中的数据关系难以理解！如果直接基于该表来分析其中的数据，则分析工作将会变得困难起来，除此之外，也会影响终端用户的用户体验（分析任务会占用该表的读写单元）。为了使分析工作变得简单，则需要将表中的数据导入到其它分析系统，最终依赖其它分析系统来分析数据。将数据导出到其它系统主要有2种办法，它们分别是：1.遍历整张表，并将每一项数据写入到其它系统；2.表中的数据每变更一次，则将变更写入到其它系统。前者不适用于数据量庞大的情景，而后者可以很好地避开处理大量数据，但需要借助DynamoDB Stream功能来实现。
 DynamoDB Stream是DynamoDB提供的一个功能，现实世界里有许多场景会使用到它，这些场景有：
  同步不同区域的数据。比如你的业务分布在中国和美国，那么你需要将美国的数据同步到中国，反之亦然。此时你需要借助DynamoDB Stream来实现数据同步，最终确保中国用户与美国用户访问的数据是一致的。 发送消息。比如你的App有一个用户注册功能，每当一个新用户注册时，你需要向新用户发送一封表示欢迎的邮件通知。此时你需要DynamoDB Stream的通知机制来触发分发邮件的服务。 索引数据。DynamoDB不适合全文搜索，因此如果你想要搜索表中的数据，那么最好的办法是将表中的数据快速同步到Elastic Search服务或者algolia里，最终通过这些服务来搜索数据。为了能够快速地将数据更新到搜索系统，那么则需要DynamoDB Stream。 聚合或统计数据。有时你想快速得到一些统计信息，比如某个区域的总销量，每家门店每个月所需的成本等等。那么你可以使用DynamoDB Stream来聚合这些数据。  为了实现以上提到的应用场景，则需要了解DynamoDB Stream内部的逻辑以及它与其它服务的关系。这篇文章将从以下几个方面来讲解DynamoDB Stream：
- DynamoDB Stream的构成以及其周边服务 使用DynamoDB Stream的注意事项 基于DynamoDB Stream的设计模式 参考  DynamoDB Stream的构成以及其周边服务 DynamoDB Stream是DynamoDB服务所提供的一个功能，它需要结合DynamoDB Table来使用。开启DynamoDB Stream功能的Table能集成其它服务，最终能够延伸DynamoDB的功能（比如，使用Elastic Search来检索表中的数据，并提供全文搜索功能！）。下图展示了DynamoDB Stream与其它服务的关系：
-上图涉及到DynamoDB Stream的工作流程是：
+ DynamoDB Stream的构成以及其周边服务 使用DynamoDB Stream的注意事项 基于DynamoDB Stream的设计模式 结论 参考  DynamoDB Stream的构成以及其周边服务 DynamoDB Stream是DynamoDB服务所提供的一个功能，它需要结合DynamoDB Table来使用。开启DynamoDB Stream功能的Table能集成其它服务，最终能够延伸DynamoDB的功能（比如，使用Elastic Search来检索表中的数据，并提供全文搜索功能！）。下图展示了DynamoDB Stream与其它服务的关系：
+  图 1.1 DynamoDB Stream与Table，Lambda之间的关系  上图涉及到DynamoDB Stream的工作流程是：
  Producers将向表中修改数据，包括添加数据，修改已有数据，删除数据等。这些操作均是基于HTTPS协议来发起的。 DynamoDB将修改之后的数据写入内部的Transactions Log文件，DynamoDB Stream从该文件中读取更新之后的数据并存放24小时，在这之后，数据将自动从DynamoDB Stream中移除。 Lambda平台向每一个Shard发送HTTPS请求并以poll的方式监听所有的Shards。 Lambda平台从Shard中批量读取新数据（Records），并以Sync的方式启动一个Lambda Function实例，并将Records传入并执行该实例。如果结果返回成功，那么Lambda平台会继续读取下一批数据，失败则把当前的数据集传入该函数实例，并重新执行。  上图涉及到DynamoDB Stream的内部逻辑以及外部交互：
 研发人员在使用DynamoDB服务时，需要创建表（Table），每一张表其内部又根据数据量划分了好几个分区（如上图的Partition A，Partition B，Partition C）。每一个分区其实会分布于不同的服务器上。
 如果在该表上启用了DynamoDB Stream，那么这个Stream会根据分区数量来创建Shard（如上图有3个Shard）。每一个分区中修改的数据只会发送到对应的Shard上，并且是有序的。每一个Shard里的数据（如上图的Record），其生命周期是24小时，在这之后，该数据项自动移除。
 DynamoDB Stream只允许使用者（也就是上图的Consumers）从中批量读取数据，其它操作，比如删除其中的数据项或者修改其中的数据项是禁止的。DynamoDB Stream的吞吐量（MB/S）受到Shard的限制，Shard的数量越多，则其吞吐量越大（每个Shard的吞吐量是2MB/S，每个Consumer每秒最多能读取1MB的数据）。每个Consumer一次最多能从对应的Shard中读取1000条数据（Record）。每个Shard最多同时被2个Consumers来使用，超过这个数量，则会导致读取失败，这一点使得DynamoDB Stream无法直接支持超过2个以上的服务（比如，无法同时支持新用户注册收到欢迎邮件，将数据导出到其它分析系统，检索DynamoDB中的数据等）。
-上图使用了AWS Lambda服务作为DynamoDB Stream的Consumers。研发人员只需要创建一个Lambda Function，然后将该Function的触发器设置成DynamoDB，就能接收DynamoDB Stream的通知了。当每个Shard里有新的数据时，Lambda服务会根据该函数的设置（比如最多一次取10000个Records）读取Records（如果Shard里有100万条数据，每1000条的数据量是0.8MB&amp;lt;1MB，那么Lambda服务会调用10次GetRecords操作，并得到8MB的数据，但是由于Lambda Function的request PayLoad最大是6MB，因此，此时调用Lambda Function时会引发异常。），然后调用Function实例，并将读取到的Records批量传递给Function，由Function决定发送给哪些下游服务，如果这些批量数据均处理成功，那么Lambda服务将继续从对应的Shard中读取下一批Record，直到对应的Shard中没有新的数据。
-除了使用Lambda Function，还可以使用EC2，并运行KCL和DynamoDB Streams Kinesis Adapter应用来读取数据，如下图所示：</description>
+上图使用了AWS Lambda服务作为DynamoDB Stream的Consumers。研发人员只需要创建一个Lambda Function，然后将该Function的触发器设置成DynamoDB，就能接收DynamoDB Stream的通知了。当每个Shard里有新的数据时，Lambda服务会根据该函数的设置（比如最多一次取10000个Records）读取Records（如果Shard里有100万条数据，每1000条的数据量是0.</description>
     </item>
     
     <item>
@@ -350,7 +347,7 @@ $ aws dynamodb query \  --table-name UserOrdersTable \  --key-condition-expressi
       
       <guid>https://2cloudlab.com/nosql/scans/</guid>
       <description>本文将介绍DynamoDB的Scans操作。该操作是DynamoDB的重型武器。做一个相似的对比: GetItem操作就是是一对镊子，可以夹出某个特定的物件。Query操作像把铁铲，能挖出一大堆物件，但是其作用的范围依旧很小。然而，Scan操作就像一辆拖拉机，把整个修整区域翻个底朝天。
-在我们深入到Scan操作之前，请记住以下这句话:
+ 在我们深入到Scan操作之前，请记住以下这句话:
  不要使用Scan操作，除非你知道自己在做什么。
  Scan操作作用于整张表。对数据量庞大的表，该操作将耗尽整张表的读取单元。如果你在应用程序里的关键路径里使用它，那么它会增加响应延时。
 只有在以下情况下，才会考虑使用Scan操作:
@@ -464,9 +461,8 @@ gocode ├─bin ├─pkg └─src bin放置所有可执行性文件；pkg放�
 以上步骤操作完成之后，需要执行以下命令来进一步确保Go运行环境安装正确！
 $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序之前，需要根据自身的情况来选择IDE。以下是一些常用的IDE，使用这些IDE能够提高编程效率！
  Vim Editor GitHub Atom Microsoft Visual Studio Code  选择IDE之后，需要为其配置调试环境，这里以VS Code为例来配置调试环境，其它IDE也需要配置对应的调试环境。为了能在VS Code里调试Go代码，则需要安装以下插件:
- VSCode-Go plugin  Analysis工具 Delve  安装完成之后需要按照以下方式配置Go-Plugin，其中program填写Go程序所在的目录。
-接下来将举2个例子来说明如何调试，其中一个例子是调试Go程序，另外一个例子是调试自动化测试用例。
- 如何调试Go程序  // main.</description>
+ VSCode-Go plugin   Analysis工具 Delve  安装完成之后需要按照以下方式配置Go-Plugin，其中program填写Go程序所在的目录。
+ 接下来将举2个例子来说明如何调试，其中一个例子是调试Go程序，另外一个例子是调试自动化测试用例。</description>
     </item>
     
     <item>
@@ -478,7 +474,7 @@ $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序�
       <description>在企业中经常会发生此类事情：临近产品新功能发布的日子，企业上下忙的不可开交，甚至有些研发人员被半夜叫醒解决新功能无法使用的问题，大家急急忙忙将遇到的问题解决了却又引发了其它问题，最终导致产品新功能无法及时发布或者产品运行在一个容易奔溃的环境。这类事件反复发生，使得研发人员害怕产品新功能的每一次发布。这种害怕将导致企业延长新功能的发布周期，本来一周一次的发布计划改成了一个月一次发布。更长的发布周期将会积累和隐藏更多的风险和不确定因素，因此这类事件变得更加常见，问题变得更加糟糕！面对这个问题所带来的挑战，企业需要缩短发布周期来及早暴露和解决问题，而缩短发布周期的关键点在于如何在短时间内发现更多的缺陷！自动化测试是实现这个关键点的因素之一。
 自动化测试在产品的研发过程中无处不在。研发团队在研发产品时需要为其编写单元测试；测试团队在测试产品时要为其编写手动测试、集成测试和UI测试；DevOps团队需要为产品的运行环境编写自动化测试用例，确保生成的环境是稳定且支持产品的。为产品研发实施自动化测试的目的在于短时间内发现和解决更多的缺陷，从而增强产品对外发布的信心！本文将通过以下方面来介绍如何对产品的运行环境进行自动化测试，企业可以根据自身情况，引入本文所提到的自动化测试经验来确保产品的运行环境是可信的。
  2cloudlab模块的自动化测试 静态检测Terraform的编码 针对Terraform模块编写单元测试（Unit Test） 针对Terraform模块编写集成测试（Integration Test） 针对Terraform模块编写端到端的测试（End-to-End Test） 为测试环境中的资源定制清除策略 总结  其中单元测试、集成测试和End-to-End测试需要使用Go语言来编写大量测试代码，产品运行环境的质量主要由它们来保证。这些测试的难易程度、数量占比和运行时间由下图所示：
-2cloudlab模块的自动化测试 2cloudlab的模块都会包含一些自动化测试用例。每一个Terraform模块都会有对应的测试用例，这些测试用例会放在一个test目录下（目录结构如下所示），每一个测试用例所验证的场景是不同的。由于这些自动化测试用例都是用Go语言来编写的，因此需要使用Go语言的运行时环境来运行。除此之外，为了能够高效地编写自动化测试用例，需要引入第三方工具Terratest，该工具也是基于Go语言来编写的（这篇文章介绍了Go语言的基础知识），它像一把瑞士军刀，提供了大量通用的基础操作。
+ 2cloudlab模块的自动化测试 2cloudlab的模块都会包含一些自动化测试用例。每一个Terraform模块都会有对应的测试用例，这些测试用例会放在一个test目录下（目录结构如下所示），每一个测试用例所验证的场景是不同的。由于这些自动化测试用例都是用Go语言来编写的，因此需要使用Go语言的运行时环境来运行。除此之外，为了能够高效地编写自动化测试用例，需要引入第三方工具Terratest，该工具也是基于Go语言来编写的（这篇文章介绍了Go语言的基础知识），它像一把瑞士军刀，提供了大量通用的基础操作。
 . |____examples | |____iam_across_account_assistant | | |____main.tf | | |____outputs.tf | | |____README.md | | |____terraform.tfstate | | |____terraform.tfstate.backup | | |____variables.tf |____modules | |____iam_across_account_assistant | | |____main.tf | | |____outputs.tf | | |____README.md | | |____variables.tf |____test | |____iam_across_account_assistant_test.go | |____README.md 其中test目录下的测试用例iam_across_account_assistant_test.go会调用examples下的手动测试例子来验证目录modules下的Terraform模块iam_across_account_assistant。
 2cloudlab根据以上目录结构编写了大量的单元测试以及少量的集成测试。这些测试是遵守了以下原则来编写的:
  每一个测试用例都会基于真实环境来执行 每一个测试用例执行结束后都会销毁已创建的资源 为每一个资源指定一个独立的命名空间，以免发生名称冲突 每一个测试用例都会在独立的临时目录下下运行 为每一个集成测试添加可配置stage步骤 测试用例之间是相互独立且可并发执行  在编写测试用例之前，有一步关键的验证：静态检测。为Terraform模块实施静态检测只需要花费几分钟，但是确能够避免一些常见的错误，接下来让我们从静态检测开始来一步一步提高产品运行环境的稳定性！</description>
@@ -535,10 +531,10 @@ Terraform的运行机制 terraform是单文件命令行程序，它基于infrast
 记录与报告  一个有效的账户体系能够记录所有人员的操作历史。在一个有效的账户体系下，任何用户的任何操作都会留下记录，并统一存储在一个集中的地方。除此之外，如果有外来者入侵，那么他们的操作和行踪也会被记录下来，以便查明漏洞。使用AWS服务会产生费用，那么一个有效的账户体系能够集中生成各个环境的费用情况，包括每个环境的各个资源的细节，避免了漏算的情况。
 以上提到的好处是建立在一个有效的账号体系下的。要想更加顺利地研发产品的前提是：建立一个有效的账号体系。接下来，让我们看看一个企业级AWS账号体系应该是怎样的。
 构建企业级AWS账号体系的基本思想 构建AWS账号体系能够带来诸多好处，因此企业在研发初期就应该构建这种账号体系。构建一个有效的AWS账号体系的方案有很多，接下来本文将提出一个可实施并且简单的企业级AWS账号体系解决方案，其设计思路如下图所示：
-上图的账号体系是分步构建的，每一步基本上围绕Users、Groups、Role以及Policy展开。这些组件（Users、Groups、Role以及Policy）是由AWS的IAM（Identity and Access Management）服务提供的，用户可以基于IAM服务来构建安全的用户访问机制。通过手动方式来创建企业级AWS账号体系无疑是具有挑战的，这种方式不仅容易出错，而且时间漫长，因此需要一种自动化的方式来解决这些挑战。2cloudlab所提供的across_account_assistant模块能够帮助企业快速且正确地构建企业级AWS账号体系。接下来让我们看看每一步所涉及的具体内容。
+ 上图的账号体系是分步构建的，每一步基本上围绕Users、Groups、Role以及Policy展开。这些组件（Users、Groups、Role以及Policy）是由AWS的IAM（Identity and Access Management）服务提供的，用户可以基于IAM服务来构建安全的用户访问机制。通过手动方式来创建企业级AWS账号体系无疑是具有挑战的，这种方式不仅容易出错，而且时间漫长，因此需要一种自动化的方式来解决这些挑战。2cloudlab所提供的across_account_assistant模块能够帮助企业快速且正确地构建企业级AWS账号体系。接下来让我们看看每一步所涉及的具体内容。
  创建root账号，并用root用户登陆  在开始使用AWS服务的时候，需要使用邮箱来注册一个账号，这个账号就是上图最上面的root账号。使用root账号登陆的用户就是root用户，这个用户能够做任何事情（包括删除用户、创建各种资源、创建子账号等等）。创建root账号的作用主要有以下2方面：
  创建其它子账号，这些子账号里的Users能够创建和使用云资源；创建组以及每组成员（full_access和billing） 统一管理所有子账号使用云服务而产生的费用。  因此root用户需要创建2组人员：一组是管理人员（组名为full_access），他们负责创建和管理子账号；另外一组是财务人员(组名为billing)，他们负责管理费用。创建组的同时，需要指定哪些用户属于哪个组，这些操作步骤可以通过点击AWS的UI页面完成，但是这种手动方式容易出错而且十分耗时，因此推荐使用2cloudlab所提供的across_account_assistant模块来创建（最多需要一天就能建立完整的企业级AWS账号体系）。为了使billing组的用户能够访问账单相关的页面，需要root用户主动启动IAM访问账单的设置，具体设置如下（点击用户名，选择&amp;quot;My Account&amp;rdquo;，滑动到以下内容，将“Activate IAM Access”勾选并点击“Update”）：
-在创建组full_access和billing以及对应的成员之后，需要降低入侵root账号的风险。具体的操作方式为：为root用户开启MFA验证，其不能用于研发并需要安全放置，只允许少部分人知道，删除所有root用户相关的命令行方式登陆凭证，定期更换密码。从此之后退出root账号，转而用full_access的成员登陆并用于后续操作。
+ 在创建组full_access和billing以及对应的成员之后，需要降低入侵root账号的风险。具体的操作方式为：为root用户开启MFA验证，其不能用于研发并需要安全放置，只允许少部分人知道，删除所有root用户相关的命令行方式登陆凭证，定期更换密码。从此之后退出root账号，转而用full_access的成员登陆并用于后续操作。
 使用full_access的成员登陆AWS之后，首先要做的事情是：创建cloud trail服务（推荐使用2cloudlab所提供的模块来创建），该服务是为了跟踪所有用户使用资源的情况，以便出问题的时候可以根据这些跟踪的信息定位问题发生的原因。其次需要创建organization服务，并使用organization服务创建security、dev、stage、prod和shared-service子账号。每一个子账号都有对应的邮箱，这个邮箱所对应的用户就是该子账号下的root用户。为了登陆这些子账号，需要重制每个子账号下root用户的密码。重制完成之后，需要登陆到各个子账号完成后续的构建。
 注：root账号和root用户是不同的概念。每个账号下可以有多个用户，包括root用户，具有相同权限的用户可以分在同一组。企业只有一个root账号，而且不同企业需要根据自己的实际情况创建对应的子账号，以上给出的例子适用于大多数中小型企业。对于大型企业，则需要考虑在organization服务下创建Unit，每一个Unit对应一个事业部，需要重复创建以上子账号。
 以root用户的方式登陆security账号  在security账号下，主要创建管理组(full_access)和其它组（across_account_dev_*、across_account_stage_*等）。管理组的主要作用在于管理security账号，只允许一部分人加入这个组；其它组的作用在于允许其成员访问其它子账号(比如dev、stage和prod)。企业应该根据实际情况来建立其它组，常见的划分依据有根据职能来划分。比如：across_account_dev_developers_access、across_account_dev_testers_access的组成员能够分别以研发和测试权限访问dev子账号。所有用户都会创建在security账号中，这种方式统一了用户管理。其它子账号则只需要建立对应的role就能够被security账号下有权限的用户访问。
@@ -547,8 +543,7 @@ security账号下的所有用户都不会在该账号下创建资源，反而会
  为role选择一个名字，并创建role 为该role指定trusted policy，该policy的作用是指定能够使用该role的其它账号（比如security账号，通过12位的ID来识别） 为该role指定permission policy，该policy的作用是限制这个role能够在stage账号中使用哪类资源以及对其所执行的操作  为了在其它子账号中使用stage子账号中创建的role，则需要在其它账号中授予用户权限（比如在security子账号中为across_account_dev_developers_access赋予访问allow_dev_access_from_other_account的权限，这一步通过为across_account_dev_developers_access指定inline policy完成）。
 在stage账号中创建其它role的过程类似，为了一次性完成stage账号中所有role的创建，推荐使用2cloudlab所提供的across_account_assistant模块来辅助。dev、prod、shared-service等账号也需要按照类似的方式创建对应的role。
 当完成对所有子账号的构建之后，需要将root用户的登陆方式限制，只允许其通过网站的方式登陆子账号，并且将所有命令行登陆的凭证删除。
-在root账号中创建CloudTrail服务  到目前为止，你已经在root、security、dev、stage、prod、shared-service和test账号中创建了对应的IAM user、IAM group、IAM role和IAM policy。研发人员便可以使用自己的账号登陆AWS服务，并根据自己拥有的权限创建对应的资源。为了能记录每一位用户使用AWS服务的情况，则需要创建CloudTrail服务。该服务可以记录每一名用户使用AWS服务的踪迹，并将这些信息归档到AWS的S3服务。开启cloudtrail的好处是：可以及时通过归档的记录来调查外来入侵者的踪迹，从而修复安全漏洞。
- 在security账号中创建CloudTrail服务</description>
+在root账号中创建CloudTrail服务  到目前为止，你已经在root、security、dev、stage、prod、shared-service和test账号中创建了对应的IAM user、IAM group、IAM role和IAM policy。研发人员便可以使用自己的账号登陆AWS服务，并根据自己拥有的权限创建对应的资源。为了能记录每一位用户使用AWS服务的情况，则需要创建CloudTrail服务。该服务可以记录每一名用户使用AWS服务的踪迹，并将这些信息归档到AWS的S3服务。开启cloudtrail的好处是：可以及时通过归档的记录来调查外来入侵者的踪迹，从而修复安全漏洞。</description>
     </item>
     
     <item>

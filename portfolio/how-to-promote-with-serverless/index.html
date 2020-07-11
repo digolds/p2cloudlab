@@ -135,10 +135,14 @@
                 <div class="work-single-content">
                     <h2 id="introduction">Introduction</h2>
 <p>AWS Lambda was launched at re:Invent 2014. It was the first implementation of serverless computing where users could upload their code to Lambda. It performs operational and administrative activities on their behalf, including provisioning capacity, monitoring fleet health, applying security patches, deploying their code, and publishing realtime logs and metrics to Amazon CloudWatch.Lambda follows the event-driven architecture. Your code is triggered in response to events and runs in parallel. Every trigger is processed individually. Moreover, you are charged only per execution, while with EC2 you are billed by the hour. Therefore, you benefit from autoscaling and fault-tolerance for your application with low cost and zero upfront infrastructure investment.</p>
-<p><img class="lazy" data-src="http://localhost:1313/images/blog/source-events-of-lambda.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="http://localhost:1313/images/blog/source-events-of-lambda.png" alt=""  />
+</p>
 <h2 id="lambda-for-web-application">Lambda for Web application</h2>
 <p><strong>Web applications</strong>: Instead of a maintaining a dedicated instance with a web server to host your static website, you can combine S3 and Lambda to benefit from scalability at a cheaper cost. An example of a serverless website is described in the following diagram:</p>
-<p><img class="lazy" data-src="http://localhost:1313/images/blog/web-application-for-lambda.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="http://localhost:1313/images/blog/web-application-for-lambda.png" alt=""  />
+</p>
 <p>An alias record in Route 53 points to a CloudFront distribution. The CloudFront distribution is built on top of an S3 Bucket where a static website is hosted. CloudFront reduces the response time to static assets (JavaScripts, CSS, fonts, and images), improves webpage load times, and mitigates distributed denial of service (DDoS) attacks. HTTP requests coming from the website then go through API Gateway HTTP endpoints that trigger the right Lambda Function to handle the application logic and persist data to a fully managed database service, such as DynamoDB.</p>
 <h2 id="developing-a-serverless-function-with-lambda">Developing a Serverless Function with Lambda</h2>
 <p>In this chapter, we will finally learn how to write our very first Python-based Lambda function from scratch, followed by how to configure, deploy, and test a Lambda function manually from the AWS Lambda Console. Along the way, you will be given a set of tips on how to grant access to your function so that it can interact with other AWS services in a secure way.</p>

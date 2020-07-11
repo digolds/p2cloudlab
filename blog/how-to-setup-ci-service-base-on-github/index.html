@@ -236,7 +236,9 @@
 </ul>
 <p>这部分定义了2个job，它们分别是<code>lint</code>和<code>test</code>。每一个job运行在一台虚拟机或者容器里，上面运行着Ubuntu操作系统，job之间是相互独立同时运行的。这些job可以引用一些可复用的Actions模块（比如<code>lint</code>中的<code>actions/setup-go@v1</code>和<code>actions/checkout@v1</code>），每个模块定义了一些执行步骤（比如准备Go环境和拉取该Go示例的源码)。</p>
 <p>当研发人员向<code>master</code>分支提交代码，Actions就会根据该<code>yaml</code>文件，创建2台虚拟机或者容器，同时执行<code>lint</code>和<code>test</code>。<code>lint</code>的作用是检查Go的语法问题，而<code>test</code>的作用是运行单元测试并生成测试报告。如果其中有一个job失败了，那么整个流程是失败的，研发工作者可以及时看到整个流程的结果，如下图所示：</p>
-<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/master-workflow-partial-fail.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/master-workflow-partial-fail.png" alt=""  />
+</p>
 <p>其次，让我们看看<code>integration_workflow.yaml</code>中的内容：</p>
 <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">name<span class="p">:</span><span class="w"> </span>Package<span class="w"> </span>routines<span class="w">
 </span><span class="w"></span>on<span class="p">:</span><span class="w">
@@ -298,7 +300,9 @@
 </span><span class="w">        </span>env<span class="p">:</span><span class="w">
 </span><span class="w">          </span>GITHUB_TOKEN<span class="p">:</span><span class="w"> </span>${{secrets.GITHUB_TOKEN}}<span class="w">
 </span></code></pre></div><p>以上内容新增了<code>build</code>任务，这个任务需要等待<code>lint</code>和<code>test</code>任务成功之后才会执行。它使用了<code>docker://goreleaser/goreleaser:latest</code>来制作集成包，并发布到github的存储服务（如下图所示）。除此之外，这个workflow的<code>test</code>任务执行了单元测试和集成测试，之所以执行集成测试，是因为在这个阶段需要将各个模块集成到一起测试，确保软件整体是正常工作的，同时也确保了下游团队拿到的集成包是可信的。由于添加了集成测试，因此执行该过程所需的时间会比前面另外一个过程所需的时间长，从而使得团队无法及时看到结果。这也就是为什么我们不希望将集成测试放在<code>master_workflow.yaml</code>中执行。</p>
-<p><img class="lazy" data-src="https://2cloudlab.com/images/blog/integration-workflow-success.png" alt=""  /></p>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/integration-workflow-success.png" alt=""  />
+</p>
 <p>有了以上2个文件，研发工作者只需要专注于软件功能的研发。在新功能的研发阶段，研发工作者只需要修改<code>master</code>分支，其对应的master_workflow流程会及时响应每一次修改。在准备发布新功能的阶段，发布工作者只需要拉取新的分支（比如<code>integration</code>）并为其打上类似<code>v0.0.2</code>的tag，对应的integration_workflow流程将生成打包结果并归档到github的免费存储服务，供其他团队使用。</p>
 <h2 id="heading">总结</h2>
 <p>构建现代CI的方式有很多种，其中github提供了一些免费的服务来解决这个问题，这些服务分别是源码托管服务、Actions服务和存储服务。开发者只需要定义<code>yaml</code>文件就可以将这3个服务串联在一起创建出一个可靠的CI。在github上构建CI的优势有2个：<strong>免费</strong>和<strong>共享其他开发者的成果</strong>。任何团队都可以免费地使用这3种服务，除此之外，CI的构建者可以使用其他人制作好的可复用模块来快速搭建CI。</p>
