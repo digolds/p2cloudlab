@@ -221,6 +221,8 @@
 <span class="kd">func</span> <span class="nf">TestCase2</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...
 </span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>在文件<em>intergration_test.go</em>中指定tag：<code>// +build integration</code>，运行以下命令将执行该文件中的所有自动化测试用例。</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go <span class="nb">test</span> -v -run -tags<span class="o">=</span>integration
 </code></pre></div><ol start="3">
 <li>Go Concurrency</li>
 </ol>
@@ -231,8 +233,6 @@
         <span class="c1">//
 </span><span class="c1"></span>  <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div><p>在文件<em>intergration_test.go</em>中指定tag：<code>// +build integration</code>，运行以下命令将执行该文件中的所有自动化测试用例。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">go <span class="nb">test</span> -v -run -tags<span class="o">=</span>integration
 </code></pre></div><h2 id="组合terraformaws-vault和go工具的实用技巧">组合Terraform、aws-vault和Go工具的实用技巧</h2>
 <ol>
 <li>如何使用aws-vault和Go工具来操作AWS服务？</li>
