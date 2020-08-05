@@ -6,7 +6,7 @@
   
   <meta name="description" content="在之前的[文章](https://2cloudlab.com/nosql/secondary-indexes/)中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&#39;s Go!">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -128,8 +128,8 @@
                 </div>
                 
                 <div class="post-content">
-                    <p>在之前的<a href="https://2cloudlab.com/nosql/secondary-indexes/">文章</a>中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let's Go!</p>
-<h2 id="heading">本地附加索引的基础知识</h2>
+                    <p>在之前的<a href="https://2cloudlab.com/nosql/secondary-indexes/">文章</a>中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&rsquo;s Go!</p>
+<h2 id="本地附加索引的基础知识">本地附加索引的基础知识</h2>
 <p>请注意：你只能在具有<a href="https://2cloudlab.com/nosql/key-concepts/"><strong>复合主键的表</strong></a>中添加本地附加索引。本地附加索引的分区键必须和复合主键的分区键一样，然而允许指定不同的排序键。</p>
 <p>一些关于本地附加索引的注意事项：</p>
 <ul>
@@ -138,7 +138,7 @@
 <li><strong>Consistency选项</strong>。对于本地附加索引，你可以像表一样选择strong consistency或者eventual consistency。Strong consistency将占用更多的读单元，但是适用于某些场景</li>
 <li><strong>附加索引与表中的读写单元是共享的</strong>。也就是说向本地索引读写数据时，会占用表中的读写单元</li>
 </ul>
-<h2 id="heading-1">创建本地附加索引</h2>
+<h2 id="创建本地附加索引">创建本地附加索引</h2>
 <p>现在，让我们动手来实践本地附加索引。还记得创建本地附加索引需要在创建表的时候完成吗！因此之前创建的&quot;Users&quot;表不能使用本地附加索引，所以我们只能考虑在&quot;UserOrdersTable&quot;表中添加附加索引。</p>
 <p>还记得之前那个根据订单额度来过滤某个用户订单的例子吗？由于订单额度不是主键的一部分，因此我们不得不先根据主键获取该用户的订单，然后再使用过滤表达式来过滤出超过某个额度的订单。</p>
 <p>这种需要根据订单额度来过滤数据的模式对于数据量大的场景显然是不适用的&ndash;原因在于，某个用户的订单有很多，比如上万条，而你只需要在这上万条数据中查找几条数据。为了解决这类问题，我们需要建立本地附加索引，并把订单额度作为该索引的排序键。这么一来，根据订单额度来查询订单数据就变快了许多。</p>
@@ -209,7 +209,7 @@
     <span class="s2">&#34;ScannedCount&#34;</span>: 25,
     <span class="s2">&#34;ConsumedCapacity&#34;</span>: null
 <span class="o">}</span>
-</code></pre></div><h2 id="heading-2">基于本地附加索引来查询数据</h2>
+</code></pre></div><h2 id="基于本地附加索引来查询数据">基于本地附加索引来查询数据</h2>
 <p>到目前为止，我们已经建立了本地附加索引，让我们通过一个具体的例子来使用它。在之前<a href="https://2cloudlab.com/nosql/filtering/">过滤表达式的例子</a>中，我们查找了客户&quot;daffyduck&quot;订单额度在100美元的所有订单。现在，我们可以直接使用本地附加索引来查询符合以上条件的订单，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb query <span class="se">\
 </span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\

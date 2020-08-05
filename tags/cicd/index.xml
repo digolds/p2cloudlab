@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>cicd on 2cloudlab | 企业数字化转型的催化剂</title>
+    <title>CICD on 2cloudlab | 企业数字化转型的催化剂</title>
     <link>https://2cloudlab.com/tags/cicd/</link>
-    <description>Recent content in cicd on 2cloudlab | 企业数字化转型的催化剂</description>
+    <description>Recent content in CICD on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 10 Mar 2020 12:29:40 +0600</lastBuildDate>
@@ -25,7 +25,7 @@ aws-vault add slz 根据提示输入AWS_ACCESS_KEY_ID和AWS_SECRET_ACCESS_KEY信
 # config文件 [profile slz] mfa_serial = arn:aws:iam::120699691161:mfa/Tony aws-vault工具会自动到这个文件中读取该MFA地址，并提示研发人员键入6位安全码。如果研发人员需要用到AWS所提供的role，那么也可以按照类似的方式在该文件中添加以下内容：
 # config文件 [profile slz] role_arn = arn:aws:iam::120699691161:role/update_role aws-vault工具会自动读取这个role，并自动获取该role所拥有的权限来访问AWS服务。
 设置好以上登录凭证之后，研发人员只需要执行以下命令就能自动访问AWS资源:
-aws-vault exec slz -- aws iam list-users 以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
+aws-vault exec slz -- aws iamlist-users 以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
 aws-vault exec slz -- terraform apply aws-vault工具的使用指南 完成以上配置之后，接下来看看aws-vault工具如何结合terraform工具使用的。
 假设我们使用aws-vault添加了以下具有相同登录凭证，但是不同登录方式的登录选择：
  slz：直接通过登录凭证操作AWS服务 slz_mfa：除了需要登录凭证，还需要输入6位安全码才能操作AWS服务 slz_mfa_role：获取临时登录凭证，并以role的方式访问AWS服务  以下命令说明了如何使用aws-vault工具和terraform plan命令生成资源创建的详细信息:
@@ -45,7 +45,7 @@ aws-vault exec slz -- terraform apply aws-vault工具的使用指南 完成以�
 Terraform的运行机制 terraform是单文件命令行程序，它基于infrastructure as code方式来运行的，因此需要给terraform提供脚本文件让其运行。脚本文件的后缀是.tf，其中的内容涉及选择云服务提供商、创建何种类型的资源以及定义输入输出变量等等。
 在开始运行terraform之前，需要准备以下条件:
  一台笔记本电脑 根据操作系统下载对应的terraform可执行性文件，并把该文件所在位置添加到系统的环境变量中 到AWS注册一个根账号，并用根账号创建一个子账号，这个子账号会被terraform使用 将子账号生成的ID和Key提供给terraform  以上步骤准备好之后，接下来编写以下terraform脚本文件:
-# main.tf  terraform { required_version =&amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34; } provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS provider version = &amp;#34;~&amp;gt; 2.0&amp;#34; } resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34; instance_type = &amp;#34;t2.</description>
+# main.tf  terraform { required_version = &amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34; } provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS provider  version = &amp;#34;~&amp;gt; 2.0&amp;#34; } resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34; instance_type = &amp;#34;t2.</description>
     </item>
     
     <item>

@@ -156,7 +156,7 @@ $ aws dynamodb update-table \  --table-name UserOrdersTable \  --attribute-defin
       <pubDate>Tue, 03 Mar 2020 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/nosql/local-secondary-indexes/</guid>
-      <description>在之前的文章中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&#39;s Go!
+      <description>在之前的文章中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&amp;rsquo;s Go!
 本地附加索引的基础知识 请注意：你只能在具有复合主键的表中添加本地附加索引。本地附加索引的分区键必须和复合主键的分区键一样，然而允许指定不同的排序键。
 一些关于本地附加索引的注意事项：
  本地附加索引的创建必须在创建表的时候添加。也就是说你无法在已经创建好的表上添加附加索引，而是在创建表的时候添加。这一点与全局附加索引不一样 拥有相同分区键，但不同排序键的数据量不允许超过10GB。注意这10GB数据包括表中的数据量加上本地附加索引中的数据量。如果你使用了本地附加索引，那么你得认真考虑使用映射表达式 Consistency选项。对于本地附加索引，你可以像表一样选择strong consistency或者eventual consistency。Strong consistency将占用更多的读单元，但是适用于某些场景 附加索引与表中的读写单元是共享的。也就是说向本地索引读写数据时，会占用表中的读写单元  创建本地附加索引 现在，让我们动手来实践本地附加索引。还记得创建本地附加索引需要在创建表的时候完成吗！因此之前创建的&amp;quot;Users&amp;quot;表不能使用本地附加索引，所以我们只能考虑在&amp;quot;UserOrdersTable&amp;quot;表中添加附加索引。
@@ -343,7 +343,7 @@ DynamoDB表中每一项数据除了必须包含主键属性，其它属性不是
       
       <guid>https://2cloudlab.com/nosql/additional-reading/</guid>
       <description>这篇文章收录了一些关于NoSQL的英文资料。有的解释NoSQL为何能规模化而SQL却受到限制；有的涉及NoSQL的单表设计原则，以及解释为何需要使用单表；其中有一篇文章是关于如何将SQL中多张有关联的表转化成DynamoDB中的单张表。还有一些关于DynamoDB的视频资料，其中的内容讲述了NoSQL的设计原则，以及如何高效使用DynamoDB。读者可以通过这些学习资料来掌握NoSQL的理论知识，通过这些知识来设计既能支持100TBs以上数据又能输出稳定性能的数据应用方案。
-文章:  SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&#39;t - This is a post of mine explaining the core architectural decisions that allow NoSQL databases to scale further than their SQL brethren. The What, Why, and When of Single-Table Design with DynamoDB - A deep look at what it means to do single-table design in DynamoDB and why you would want to. It also includes a few situations where you may want to avoid single-table design.</description>
+文章:  SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&amp;rsquo;t - This is a post of mine explaining the core architectural decisions that allow NoSQL databases to scale further than their SQL brethren. The What, Why, and When of Single-Table Design with DynamoDB - A deep look at what it means to do single-table design in DynamoDB and why you would want to. It also includes a few situations where you may want to avoid single-table design.</description>
     </item>
     
     <item>
@@ -372,7 +372,7 @@ $ curl -O https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_lates
       <description>在2004这一年，Amazon.com的增长速度很快，最终其Oracle上的数据规模达到极限，限制了其业务的发展。为了摆脱这种限制，Amazon开始考虑建立他们自己的数据库（注意：在公司内部搭建一个数据库系统是非常糟糕的想法）。在研发自家的数据库之后，亚马逊的工程师创建了创造了Amazon Dynamo数据库，这个数据库支撑了大部分Amazon.com业务，包括其购物车。
 那些研发Amazon Dynamo数据库背后的工程师于2007年发布了关于Dynamo的论文。这篇论文描述了这群工程师在搭建高可用，key-value存储过程中为了满足Amazon.com业务场景所学到的经验。
 这篇论文影响深远，并催生一大批NoSQL的解决方案，这些解决方案包括Apache Cassandra(最初由Facebook研发)和AWS提供的 SimpleDB以及DynamoDB（注意AWS团队和Amazon团队是2拨不同的团队，2者互不关联）。2012年，Amazon Web Services对外发布了DynamoDB，该服务借鉴了Dynamo的经验和原则，且完全托管在AWS上。
- 想要了解为何DynamoDB存储100 TBs以上的数据，却依然能保持稳定的性能? 请参考这篇文章 SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&#39;t。
+ 想要了解为何DynamoDB存储100 TBs以上的数据，却依然能保持稳定的性能? 请参考这篇文章 SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&amp;rsquo;t。
  Dynamo的几个关键点 非关系型数据模型
 关系型数据模型可以用来为不同类型的数据建模（比如针对一个电商的用户和订单来建模）。通常，使用关系型数据建模的方式为数据建模，需要将关联的数据拆分成更小的数据单元，以便这些数据是不重复的，这就是关系型数据库中著名的第一范式。其做法是，如果某类实体数据想要使用另外一类实体数据（比如将订单和用户关联），那么只需要将2类不同的实体数据存储在不同的表格，然后通过外键的方式来关联这2类数据以及通过JOIN操作来拼接和获取这2类数据。此时，你只需要修改某个实体（比如某个用户的用户名），那么另一个数据实体（比如订单所属的用户名也发生了变化）所引用的数据也会因此而变化。
 然而，Amazon.com工程师在收集数据库需求时发现了一个非常有趣的结果：

@@ -6,7 +6,7 @@
   
   <meta name="description" content="使用命令行操作AWS服务之前，需要输入登陆凭证。每一个研发人员会经常使用不同账号的登陆凭证来完成他们的工作，比如在测试账号中进行测试工作，在stage账号中部署测试通过的功能等。在现实的工作中，每个研发人员每天平均会操作AWS服务20～50次，而每次都需要给AWS提供登陆凭证。因此为了提高一个团队的研发效率，需要寻求一个能够高效访问AWS服务的方法。本文将对比几种方法，并最终给出一个更加有效的方法来访问AWS。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -136,7 +136,7 @@
 <li>借助工具aws-valut来设置登陆凭证</li>
 <li>总结</li>
 </ol>
-<h2 id="awscredentials">将登陆凭证写入配置文件<code>~/.aws/credentials</code></h2>
+<h2 id="将登陆凭证写入配置文件awscredentials">将登陆凭证写入配置文件<code>~/.aws/credentials</code></h2>
 <p>通过命令行访问AWS服务之前，你需要获得一对登陆凭证，它们的格式如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">aws_access_key_id</span><span class="o">=</span>AKIAIOSFODNN7EXAMPLE
 <span class="nv">aws_secret_access_key</span><span class="o">=</span>wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
@@ -145,14 +145,14 @@
 <span class="nv">aws_access_key_id</span><span class="o">=</span>AKIAIOSFODNN7EXAMPLE
 <span class="nv">aws_secret_access_key</span><span class="o">=</span>wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 </code></pre></div><p>既然将登陆凭证存放在磁盘上是不合适的，那么可以通过设置环境变量的方式来解决这类安全问题。</p>
-<h2 id="aws-access-key-id--aws-secret-access-key">将登陆凭证写入环境变量<code>AWS_ACCESS_KEY_ID</code> 和 <code>AWS_SECRET_ACCESS_KEY</code></h2>
+<h2 id="将登陆凭证写入环境变量aws_access_key_id-和-aws_secret_access_key">将登陆凭证写入环境变量<code>AWS_ACCESS_KEY_ID</code> 和 <code>AWS_SECRET_ACCESS_KEY</code></h2>
 <p>为了不存储登陆凭证，则可以通过写入环境变量的方式来访问AWS服务，如下所示（注意<em>export</em>前的空格）：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">echo</span> <span class="s2">&#34;Note a space before export command, it will not store used commands in commands history.&#34;</span>
  <span class="nb">export</span> <span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>AKIAIOSFODNN7EXAMPLE
  <span class="nb">export</span> <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 </code></pre></div><p>以上方式只能在当前运行这些命令的命令行中访问AWS服务，如果该命令行关闭，那么这些环境变量需要重新设置。因此这种方式解决了安全的问题，但是确变得麻烦了。比如我需要打开2个命令行窗口来访问不同的AWS账号。</p>
 <p>要想高效访问AWS服务，则应该同时解决以上2个问题。幸运的是，我们可以使用工具：aws-vault来协助我们更好地访问AWS服务。</p>
-<h2 id="aws-valut">借助工具aws-valut来设置登陆凭证</h2>
+<h2 id="借助工具aws-valut来设置登陆凭证">借助工具aws-valut来设置登陆凭证</h2>
 <p>aws-valut是一个管理登陆凭证的命令行工具（<a href="https://2cloudlab.com/blog/how-to-authority-aws-through-command-line/">这篇文章</a>进一步介绍了该工具）。这个工具通过以下方式解决了访问AWS时所遇到问题：</p>
 <ol>
 <li>加密存储登陆凭证</li>
@@ -169,7 +169,7 @@ aws-vault add slz_mfa
 </code></pre></div><p><code>slz</code>和<code>slz_mfa</code>所对应的凭证均以密文的方式存储在磁盘上。通过以上对比，读者应该首先考虑使用aws-vault来访问AWS服务，并考虑在命令行之前加入一个空格来避免命令被记录在历史之中，比如以下示例：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"> aws-vault <span class="nb">exec</span> slz_mfa -- terraform plan
 </code></pre></div><p>基于aws-vault方式，我们可以进一步简化以role和MFA的方式来访问AWS服务，具体操作步骤可以查看这篇文章<a href="https://2cloudlab.com/blog/how-to-authority-aws-through-command-line/">&lt;提高研发团队使用AWS服务的效率X100&ndash;高效使用AWS-VAULT工具&gt;</a>。</p>
-<h2 id="heading">总结</h2>
+<h2 id="总结">总结</h2>
 <p>高效访问AWS服务是提高研发效率的一个环节。在团队中应用以上提到的aws-vault工具将释放团队的生产力！除此之外，团队中的每一个成员都应该将其所涉及的登陆凭证添加到aws-vault工具中。这些登陆凭证有来自不同账号的，也有来自同一个账号但不同的role的，还有些涉及了MFA。因此团队中每一个成员的所有登陆凭证都应该容易区分，比如以下例子：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">aws-vault add slz_&lt;account A&gt;_without_mfa
 aws-vault add slz_&lt;account A&gt;_with_mfa

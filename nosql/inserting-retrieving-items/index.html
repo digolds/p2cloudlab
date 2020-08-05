@@ -6,7 +6,7 @@
   
   <meta name="description" content="[数据项](https://2cloudlab.com/nosql/anatomy-of-an-item/)是DynamoDB的基础单元，每一张表都会包含多项数据。接下来，在本文中，我们将向DynamoDB中插入和读取数据项。我们将创建Users表，并为该表指定一个简单键：Username。接着，我们将操作2个基本的接口：PutItem和GetItem。下一篇文章，我们将在这篇文章的基础上应用表达式来实现更加复杂的查询功能。在这之后，我们另起一篇文章来讲解如何更新和删除数据项。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -132,7 +132,7 @@
 <blockquote>
 <p>为了能顺利操作本文所列举的示例，请确保<a href="https://2cloudlab.com/nosql/environment-setup">DynamoDB的环境</a>已经准备好。注意：如果你使用的是本地版本的DynamoDB，那么请确保<code>$LOCAL</code>变量配置正确，如果使用的是AWS上的DynamoDB，那么在每一个命令后面无需追加这个参数。</p>
 </blockquote>
-<h2 id="heading">创建表</h2>
+<h2 id="创建表">创建表</h2>
 <p>在演练本文列举的用例之前，首先需要创建一张表。我们将创建一张表&quot;Users&rdquo;，并为该表定义了一个简单主键：&ldquo;Username&rdquo;，它的类型是string。</p>
 <p>当创建表时，你需要为主键或索引提供属性定义。这些属性定义包含了属性名和属性类型。在Users这张表中，我们使用&quot;Username&quot;作为主键，其类型是string（&ldquo;S&rdquo;）。除此之外，你还需要为该表定义KeySchema，其中指定了哪些属性构成主键以及这些属性是HASH键还是RANGE键。在以下示例中，属性&quot;Username&quot;构成了该表的简单主键。最后，你需要指定表名和表的吞吐单元，其中吞吐单元由读和写单元构成。在以下示例中，&ldquo;Users&quot;表的读写单元都是1，简单来说，越多的读写单元，单位时间内读写数据的速度越快和越多，反之亦然！</p>
 <p>有了以上概念, 让我们运行以下指令来创建表&quot;Users&rdquo;:</p>
@@ -196,7 +196,7 @@
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb describe-table <span class="se">\
 </span><span class="se"></span>  --table-name Users <span class="se">\
 </span><span class="se"></span>  <span class="nv">$LOCAL</span>
-</code></pre></div><h2 id="heading-1">插入单项数据</h2>
+</code></pre></div><h2 id="插入单项数据">插入单项数据</h2>
 <p>既然我们已经创建了表&quot;Users&rdquo;，接下来，让我们向该表插入一些数据。为了完成这一操作，我们需要借助DynamoDB的PutItem API。使用PutItem时，开发者需要提供完整的数据项，这项数据除了要包含主键信息，还需要包含其它属性信息。如果新插入的数据项，其主键已经包含在&quot;Users&quot;表中，那么将新插入额度数据项将覆盖老的数据项，否则直接将数据项添加到&quot;Users&quot;表里。</p>
 <blockquote>
 <p>如果你想避免覆盖原有的数据项，那么可以考虑使用<a href="https://2cloudlab.com/nosql/expression-basics/">条件表达式</a>。如果你只是想更新某项数据的某些属性，那么你可以考虑使用DynamoDB的<a href="https://2cloudlab.com/nosql/updating-deleting-items/">UpdateItem API</a>。</p>
@@ -220,7 +220,7 @@
 </span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>注意：在上述操作示例中，我们不仅提供了表&quot;Users&quot;所必须的属性&quot;Username&rdquo;，我们还提供了其它非必须的属性，比如&quot;Name&quot;和&quot;Age&quot;以及每一个属性[对应的类型]((<a href="https://2cloudlab.com/nosql/anatomy-of-an-item/">https://2cloudlab.com/nosql/anatomy-of-an-item/</a>)。与关系型数据库不同的是，DynamoDB允许开发者在添加数据项时决定具体的属性信息（Schema-Less），而不是通过Schema提前定义好数据类型。</p>
 <p>DynamoDB的这种数据模型的灵活性（Schema-Less）有好有坏。其好处是，开发者可以将多个不同类型的数据实体放在同一张表里（比如：User和Order可以放在同一张表里），从而提高数据读取的性能。然而，这种灵活性违背了SQL的范式原则，比如可能会导致数据变得不一致，数据冗余等，也会导致分析表中的数据变得更加困难。</p>
-<h2 id="heading-2">获取单项数据</h2>
+<h2 id="获取单项数据">获取单项数据</h2>
 <p>在插入单项数据那一节，我们在表&quot;Users&quot;中插入了2项数据。现在让我们来看看如何读取这2项数据。</p>
 <p>为了获取单项数据，需要借助GetItem API。为了使用这个API，你需要提供表的名称，如&quot;Users&rdquo;，除此之外，你还需要提供需要获取这项数据的主键。让我们获取第一个User，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb get-item <span class="se">\

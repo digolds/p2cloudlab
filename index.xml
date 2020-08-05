@@ -139,7 +139,7 @@ DynamoDB提供2种收费模式，分别是on-demand和provisioned capacity。前
       <description>Terraform实用技巧 aws-vault实用技巧 Go实用技巧 组合Terraform、aws-vault和Go工具的实用技巧  本文记录了2cloudlab.com在使用Terraform、aws-vault和Go工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。
 Terraform实用技巧  aws_launch_configuration资源是无法通过API来修改的  一个aws_launch_configuration实例创建之后，要想修改该实例的属性，则需要重新创建一个新的aws_launch_configuration实例，原因在于aws_launch_configuration类型的实例是无法通过AWS所提供的API来修改的。
 Terraform所提供的所有类别的资源都有一个lifecycle的设置  Terraform工具通过这个设置来决定创建资源的行为。比如以下代码通过设置create_before_destroy = true，最终能够使得Terraform先创建一个aws_launch_configuration新的实例，再将新实例替换掉旧实例，替换成功后再销毁旧实例。lifecycle中的设置只能是常量，因此这种方式：create_before_destroy = var.flag来设置create_before_destroy是不允许的。
-resource &amp;#34;aws_launch_configuration&amp;#34; &amp;#34;launch_configuration_instance&amp;#34; { image_id = &amp;#34;ami-0fc20dd1da406780b&amp;#34;#ubuntu 18.4 instance_type = &amp;#34;t2.micro&amp;#34; security_groups = [aws_security_group.instance.id] user_data = &amp;lt;&amp;lt;-EOF#!/bin/bash  echo &amp;#34;Hello, 2cloudlab.com&amp;#34; &amp;gt; index.html nohup busybox httpd -f -p ${var.server_port} &amp;amp; EOF# Required when using a launch configuration with an auto scaling group. # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html  lifecycle { create_before_destroy = true } } Go实用技巧  如何使用Go来运行某一个测试用例（比如定义了一个TestIntegrationOrganization测试用例）？  go test -v -run TestIntegrationOrganization 如何根据tag(+build integration)来执行一组测试用例？  // intergration_test.</description>
+resource &amp;#34;aws_launch_configuration&amp;#34; &amp;#34;launch_configuration_instance&amp;#34; { image_id = &amp;#34;ami-0fc20dd1da406780b&amp;#34;#ubuntu 18.4  instance_type = &amp;#34;t2.micro&amp;#34; security_groups = [aws_security_group.instance.id] user_data = &amp;lt;&amp;lt;-EOF#!/bin/bash echo &amp;#34;Hello, 2cloudlab.com&amp;#34; &amp;gt; index.html nohup busybox httpd -f -p ${var.server_port} &amp;amp; EOF# Required when using a launch configuration with an auto scaling group. # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html  lifecycle { create_before_destroy = true } } Terraform提供for_each指令来遍历一个map对象，并根据该对象的键值对each.</description>
     </item>
     
     <item>
@@ -239,7 +239,7 @@ aws-vault add slz 根据提示输入AWS_ACCESS_KEY_ID和AWS_SECRET_ACCESS_KEY信
 # config文件 [profile slz] mfa_serial = arn:aws:iam::120699691161:mfa/Tony aws-vault工具会自动到这个文件中读取该MFA地址，并提示研发人员键入6位安全码。如果研发人员需要用到AWS所提供的role，那么也可以按照类似的方式在该文件中添加以下内容：
 # config文件 [profile slz] role_arn = arn:aws:iam::120699691161:role/update_role aws-vault工具会自动读取这个role，并自动获取该role所拥有的权限来访问AWS服务。
 设置好以上登录凭证之后，研发人员只需要执行以下命令就能自动访问AWS资源:
-aws-vault exec slz -- aws iam list-users 以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
+aws-vault exec slz -- aws iamlist-users 以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
 aws-vault exec slz -- terraform apply aws-vault工具的使用指南 完成以上配置之后，接下来看看aws-vault工具如何结合terraform工具使用的。
 假设我们使用aws-vault添加了以下具有相同登录凭证，但是不同登录方式的登录选择：
  slz：直接通过登录凭证操作AWS服务 slz_mfa：除了需要登录凭证，还需要输入6位安全码才能操作AWS服务 slz_mfa_role：获取临时登录凭证，并以role的方式访问AWS服务  以下命令说明了如何使用aws-vault工具和terraform plan命令生成资源创建的详细信息:
@@ -286,7 +286,7 @@ $ aws dynamodb update-table \  --table-name UserOrdersTable \  --attribute-defin
       <pubDate>Tue, 03 Mar 2020 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/nosql/local-secondary-indexes/</guid>
-      <description>在之前的文章中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&#39;s Go!
+      <description>在之前的文章中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&amp;rsquo;s Go!
 本地附加索引的基础知识 请注意：你只能在具有复合主键的表中添加本地附加索引。本地附加索引的分区键必须和复合主键的分区键一样，然而允许指定不同的排序键。
 一些关于本地附加索引的注意事项：
  本地附加索引的创建必须在创建表的时候添加。也就是说你无法在已经创建好的表上添加附加索引，而是在创建表的时候添加。这一点与全局附加索引不一样 拥有相同分区键，但不同排序键的数据量不允许超过10GB。注意这10GB数据包括表中的数据量加上本地附加索引中的数据量。如果你使用了本地附加索引，那么你得认真考虑使用映射表达式 Consistency选项。对于本地附加索引，你可以像表一样选择strong consistency或者eventual consistency。Strong consistency将占用更多的读单元，但是适用于某些场景 附加索引与表中的读写单元是共享的。也就是说向本地索引读写数据时，会占用表中的读写单元  创建本地附加索引 现在，让我们动手来实践本地附加索引。还记得创建本地附加索引需要在创建表的时候完成吗！因此之前创建的&amp;quot;Users&amp;quot;表不能使用本地附加索引，所以我们只能考虑在&amp;quot;UserOrdersTable&amp;quot;表中添加附加索引。
@@ -512,7 +512,7 @@ $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序�
 Terraform的运行机制 terraform是单文件命令行程序，它基于infrastructure as code方式来运行的，因此需要给terraform提供脚本文件让其运行。脚本文件的后缀是.tf，其中的内容涉及选择云服务提供商、创建何种类型的资源以及定义输入输出变量等等。
 在开始运行terraform之前，需要准备以下条件:
  一台笔记本电脑 根据操作系统下载对应的terraform可执行性文件，并把该文件所在位置添加到系统的环境变量中 到AWS注册一个根账号，并用根账号创建一个子账号，这个子账号会被terraform使用 将子账号生成的ID和Key提供给terraform  以上步骤准备好之后，接下来编写以下terraform脚本文件:
-# main.tf  terraform { required_version =&amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34; } provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS provider version = &amp;#34;~&amp;gt; 2.0&amp;#34; } resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34; instance_type = &amp;#34;t2.</description>
+# main.tf  terraform { required_version = &amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34; } provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS provider  version = &amp;#34;~&amp;gt; 2.0&amp;#34; } resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34; instance_type = &amp;#34;t2.</description>
     </item>
     
     <item>
@@ -586,7 +586,7 @@ DynamoDB表中每一项数据除了必须包含主键属性，其它属性不是
       
       <guid>https://2cloudlab.com/nosql/additional-reading/</guid>
       <description>这篇文章收录了一些关于NoSQL的英文资料。有的解释NoSQL为何能规模化而SQL却受到限制；有的涉及NoSQL的单表设计原则，以及解释为何需要使用单表；其中有一篇文章是关于如何将SQL中多张有关联的表转化成DynamoDB中的单张表。还有一些关于DynamoDB的视频资料，其中的内容讲述了NoSQL的设计原则，以及如何高效使用DynamoDB。读者可以通过这些学习资料来掌握NoSQL的理论知识，通过这些知识来设计既能支持100TBs以上数据又能输出稳定性能的数据应用方案。
-文章:  SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&#39;t - This is a post of mine explaining the core architectural decisions that allow NoSQL databases to scale further than their SQL brethren. The What, Why, and When of Single-Table Design with DynamoDB - A deep look at what it means to do single-table design in DynamoDB and why you would want to. It also includes a few situations where you may want to avoid single-table design.</description>
+文章:  SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&amp;rsquo;t - This is a post of mine explaining the core architectural decisions that allow NoSQL databases to scale further than their SQL brethren. The What, Why, and When of Single-Table Design with DynamoDB - A deep look at what it means to do single-table design in DynamoDB and why you would want to. It also includes a few situations where you may want to avoid single-table design.</description>
     </item>
     
     <item>
@@ -634,7 +634,7 @@ $ curl -O https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_lates
       <description>在2004这一年，Amazon.com的增长速度很快，最终其Oracle上的数据规模达到极限，限制了其业务的发展。为了摆脱这种限制，Amazon开始考虑建立他们自己的数据库（注意：在公司内部搭建一个数据库系统是非常糟糕的想法）。在研发自家的数据库之后，亚马逊的工程师创建了创造了Amazon Dynamo数据库，这个数据库支撑了大部分Amazon.com业务，包括其购物车。
 那些研发Amazon Dynamo数据库背后的工程师于2007年发布了关于Dynamo的论文。这篇论文描述了这群工程师在搭建高可用，key-value存储过程中为了满足Amazon.com业务场景所学到的经验。
 这篇论文影响深远，并催生一大批NoSQL的解决方案，这些解决方案包括Apache Cassandra(最初由Facebook研发)和AWS提供的 SimpleDB以及DynamoDB（注意AWS团队和Amazon团队是2拨不同的团队，2者互不关联）。2012年，Amazon Web Services对外发布了DynamoDB，该服务借鉴了Dynamo的经验和原则，且完全托管在AWS上。
- 想要了解为何DynamoDB存储100 TBs以上的数据，却依然能保持稳定的性能? 请参考这篇文章 SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&#39;t。
+ 想要了解为何DynamoDB存储100 TBs以上的数据，却依然能保持稳定的性能? 请参考这篇文章 SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&amp;rsquo;t。
  Dynamo的几个关键点 非关系型数据模型
 关系型数据模型可以用来为不同类型的数据建模（比如针对一个电商的用户和订单来建模）。通常，使用关系型数据建模的方式为数据建模，需要将关联的数据拆分成更小的数据单元，以便这些数据是不重复的，这就是关系型数据库中著名的第一范式。其做法是，如果某类实体数据想要使用另外一类实体数据（比如将订单和用户关联），那么只需要将2类不同的实体数据存储在不同的表格，然后通过外键的方式来关联这2类数据以及通过JOIN操作来拼接和获取这2类数据。此时，你只需要修改某个实体（比如某个用户的用户名），那么另一个数据实体（比如订单所属的用户名也发生了变化）所引用的数据也会因此而变化。
 然而，Amazon.com工程师在收集数据库需求时发现了一个非常有趣的结果：

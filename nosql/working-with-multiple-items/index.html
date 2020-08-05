@@ -6,7 +6,7 @@
   
   <meta name="description" content="在过去的章节里，我们一次只能操作一项数据--比如插入，查找，更新以及删除单项数据。而在这篇文章里，我们将一次同时操作多项数据。从这章开始，我们将创建一张具有复合主键的表，并在该表中同时操作多项数据。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -131,7 +131,7 @@
                     <p>在过去的章节里，我们一次只能操作一项数据&ndash;比如<a href="https://2cloudlab.com/nosql/inserting-retrieving-items/">插入，查找</a>，<a href="https://2cloudlab.com/nosql/updating-deleting-items/">更新以及删除单项数据</a>。而在这篇文章里，我们将一次同时操作多项数据。从这章开始，我们将创建一张具有复合主键的表，并在该表中同时操作多项数据。</p>
 <p><a href="https://2cloudlab.com/nosql/anatomy-of-an-item/">复合主键</a>对于DynamoDB而言非常有用。它允许你通过一个查询操作就能获取一组相关的数据项，除此之外，它还有其它强大的用途。</p>
 <p>本文将创建一张具有复合主键的表。然后我们将使用BatchWriteItem API来批量生成多项数据。后续的几篇文章将使用<a href="https://2cloudlab.com/nosql/querying/">Query</a>和<a href="https://2cloudlab.com/nosql/scans/">Scan</a> API作用到这些数据。</p>
-<h2 id="heading">创建表</h2>
+<h2 id="创建表">创建表</h2>
 <p>创建一张具有复合主键的表<a href="https://2cloudlab.com/nosql/inserting-retrieving-items/">与创建一张具有简单主键的表</a>类似，都需要定义属性和key schema。不同的是，你需要指定2个属性构成复合主键，而不是1个。 然后你需要指定其中一个属性是分区键，另外一个属性是排序键。</p>
 <p>分区键决定了你的数据是如何划分的，而排序键则决定了具有相同分期键的数据项是有序的。分区键尤其重要-当使用Query操作时，你只能使用分区键。分区键与排序键组合在一起可以建立一对多的数据模型-因为一个相同的分区键下，可以有多个不同的排序键。</p>
 <p>每当需要基于复合主键来对数据建模时，可以根据以下句子来填写空格处，最终构建正确的查询模式：</p>
@@ -206,7 +206,7 @@
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div><p>这有点类似我们之前创建的&quot;UsersTable&rdquo;，只不过，这次我们还添加了分区键&quot;OrderId&rdquo;。</p>
-<h2 id="heading-1">批量写入多项数据</h2>
+<h2 id="批量写入多项数据">批量写入多项数据</h2>
 <p>到目前为止，我们已经创建了表&quot;UserOrdersTable&rdquo;。为了同时操作多项数据，接下来我们将向该表写入多项数据。有一种批量写入多项数据的方式是借助BatchWriteItem API。这个API能让你在一次请求中最多同时插入或者删除25项数据。借助这个API，你甚至能在同一请求中操作不同的表。</p>
 <p>然而使用BatchWriteAPI会有一些限制。首先，你无法在其中使用UpdateItem API，因为UpdateItem只能单独使用。其次，你无法使用条件表达式。</p>
 <p>当执行批量操作时，失败的结果有2种。其中一种是：非法参数导致整个操作失败的错误。比如试图向一张不存在的表中插入数据，试图写入超过25项数据或者写入的数据量超过了限制。</p>
@@ -446,7 +446,7 @@
 </span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>其返回结果显示，所有数据项均成功写入DynamoDB，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
-    <span class="s2">&#34;UnprocessedItems&#34;</span>: <span class="o">{</span><span class="o">}</span>
+    <span class="s2">&#34;UnprocessedItems&#34;</span>: <span class="o">{}</span>
 <span class="o">}</span>
 </code></pre></div><ul>
 <li><a href="https://www.dynamodbguide.com/working-with-multiple-items">原文连接</a></li>
