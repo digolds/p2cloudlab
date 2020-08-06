@@ -250,7 +250,7 @@
 	<span class="k">return</span> <span class="nx">resultsStream</span>
 <span class="p">}</span>
 </code></pre></div><ol start="4">
-<li>使用or-channel来检测多任务中某个任务的完成情况：</li>
+<li>使用or-channel来检测多任务中某个任务是否完成：</li>
 </ol>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">or</span><span class="p">(</span><span class="nx">channels</span> <span class="o">...&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
 	<span class="k">switch</span> <span class="nb">len</span><span class="p">(</span><span class="nx">channels</span><span class="p">)</span> <span class="p">{</span>
