@@ -249,6 +249,36 @@
 	<span class="p">}()</span>
 	<span class="k">return</span> <span class="nx">resultsStream</span>
 <span class="p">}</span>
+</code></pre></div><ol start="4">
+<li>使用or-channel来检测多任务中某个任务的完成情况：</li>
+</ol>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">or</span><span class="p">(</span><span class="nx">channels</span> <span class="o">...&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+	<span class="k">switch</span> <span class="nb">len</span><span class="p">(</span><span class="nx">channels</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+		<span class="k">return</span> <span class="kc">nil</span>
+	<span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+		<span class="k">return</span> <span class="nx">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="p">}</span>
+	<span class="nx">orDone</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
+	<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+		<span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">orDone</span><span class="p">)</span>
+		<span class="k">switch</span> <span class="nb">len</span><span class="p">(</span><span class="nx">channels</span><span class="p">)</span> <span class="p">{</span>
+		<span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+			<span class="k">select</span> <span class="p">{</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+			<span class="p">}</span>
+		<span class="k">default</span><span class="p">:</span>
+			<span class="k">select</span> <span class="p">{</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nf">or</span><span class="p">(</span><span class="nb">append</span><span class="p">(</span><span class="nx">channels</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span> <span class="nx">orDone</span><span class="p">)</span><span class="o">...</span><span class="p">):</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}()</span>
+	<span class="k">return</span> <span class="nx">orDone</span>
+<span class="p">}</span>
 </code></pre></div><h2 id="组合terraformaws-vault和go工具的实用技巧">组合Terraform、aws-vault和Go工具的实用技巧</h2>
 <ol>
 <li>如何使用aws-vault和Go工具来操作AWS服务？</li>
