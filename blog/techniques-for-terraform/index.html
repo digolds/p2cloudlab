@@ -285,12 +285,109 @@
 <p>
 <img class="lazy" data-src="https://2cloudlab.com/images/blog/tee-vs-fanout-patterns.png" alt=""  />
 </p>
-<ol start="6">
+<p><strong>fan-out</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">numFinders</span> <span class="o">:=</span> <span class="nx">runtime</span><span class="p">.</span><span class="nf">NumCPU</span><span class="p">()</span>
+<span class="nx">finders</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">numFinders</span><span class="p">)</span>
+<span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">numFinders</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+    <span class="nx">finders</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nf">primeFinder</span><span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">randIntStream</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div><p><strong>tee</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">tee</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span>
+    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
+    <span class="nx">in</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
+<span class="p">)</span> <span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
+    <span class="nx">out1</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
+    <span class="nx">out2</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">out1</span><span class="p">)</span>
+        <span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">out2</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nf">orDone</span><span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">in</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">out1</span><span class="p">,</span> <span class="nx">out2</span> <span class="p">=</span> <span class="nx">out1</span><span class="p">,</span> <span class="nx">out2</span>
+            <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+                <span class="k">select</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">done</span><span class="p">:</span>
+                <span class="k">case</span> <span class="nx">out1</span><span class="o">&lt;-</span><span class="nx">val</span><span class="p">:</span>
+                    <span class="nx">out1</span> <span class="p">=</span> <span class="kc">nil</span>
+                <span class="k">case</span> <span class="nx">out2</span><span class="o">&lt;-</span><span class="nx">val</span><span class="p">:</span>
+                    <span class="nx">out2</span> <span class="p">=</span> <span class="kc">nil</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}()</span>
+    <span class="k">return</span> <span class="nx">out1</span><span class="p">,</span> <span class="nx">out2</span>
+<span class="p">}</span>
+</code></pre></div><ol start="6">
 <li>Fan-in vs bridge 模式</li>
 </ol>
 <p>
 <img class="lazy" data-src="https://2cloudlab.com/images/blog/bridge-fanin-patterns.png" alt=""  />
 </p>
+<p><strong>fan-in</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">fanIn</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span>
+    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
+    <span class="nx">channels</span> <span class="o">...&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
+<span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
+    <span class="nx">multiplexedStream</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
+
+    <span class="nx">multiplex</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+        <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">c</span> <span class="p">{</span>
+            <span class="k">select</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">done</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">case</span> <span class="nx">multiplexedStream</span> <span class="o">&lt;-</span> <span class="nx">i</span><span class="p">:</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Select from all the channels
+</span><span class="c1"></span>    <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">channels</span><span class="p">))</span>
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">channels</span> <span class="p">{</span>
+        <span class="k">go</span> <span class="nf">multiplex</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Wait for all the reads to complete
+</span><span class="c1"></span>    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+        <span class="nb">close</span><span class="p">(</span><span class="nx">multiplexedStream</span><span class="p">)</span>
+    <span class="p">}()</span>
+
+    <span class="k">return</span> <span class="nx">multiplexedStream</span>
+<span class="p">}</span>
+</code></pre></div><p><strong>bridge</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">bridge</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span>
+    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
+    <span class="nx">chanStream</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
+<span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+    <span class="nx">valStream</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">valStream</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">stream</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span>
+            <span class="k">select</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="nx">maybeStream</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">chanStream</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nx">ok</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
+                    <span class="k">return</span>
+                <span class="p">}</span>
+                <span class="nx">stream</span> <span class="p">=</span> <span class="nx">maybeStream</span>
+            <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">done</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nf">orDone</span><span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">stream</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">select</span> <span class="p">{</span>
+                <span class="k">case</span> <span class="nx">valStream</span> <span class="o">&lt;-</span> <span class="nx">val</span><span class="p">:</span>
+                <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">done</span><span class="p">:</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}()</span>
+    <span class="k">return</span> <span class="nx">valStream</span>
+<span class="p">}</span>
+</code></pre></div><ol start="7">
+<li>context package</li>
+</ol>
+<p><a href="https://golangbyexample.com/using-context-in-golang-complete-guide/">Using Context Package in GO (Golang) – Complete Guide</a></p>
 <h2 id="组合terraformaws-vault和go工具的实用技巧">组合Terraform、aws-vault和Go工具的实用技巧</h2>
 <ol>
 <li>如何使用aws-vault和Go工具来操作AWS服务？</li>
