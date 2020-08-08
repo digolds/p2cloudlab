@@ -399,7 +399,70 @@
 <img class="lazy" data-src="https://2cloudlab.com/images/blog/goroutine-flow-vs-context-flow.png" alt=""  />
 </p>
 <p><a href="https://golangbyexample.com/using-context-in-golang-complete-guide/">Using Context Package in GO (Golang) – Complete Guide</a></p>
-<h2 id="组合terraformaws-vault和go工具的实用技巧">组合Terraform、aws-vault和Go工具的实用技巧</h2>
+<ol start="8">
+<li>value receiver 与 pointer receiver的区别</li>
+</ol>
+<ul>
+<li>value receiver指明，调用接口过程中拷贝一份新的对象，因此对新对象进行修改，不会影响原来的对象</li>
+<li>pointer receiver指明，调用接口过程中只会传递原来对象的地址，因此对该地址所指向的对象进行修改则会直接改变原对象</li>
+</ul>
+<p>以下例子说明了这一点：</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">Shape</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Rect</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Width</span>  <span class="kt">float64</span>
+	<span class="nx">Height</span> <span class="kt">float64</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Circle</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Radius</span> <span class="kt">float64</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">Rect</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Width is %f, Height is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Width</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Height</span><span class="p">))</span>
+	<span class="nx">s</span><span class="p">.</span><span class="nx">Width</span> <span class="o">*=</span> <span class="mf">1.414</span>
+	<span class="nx">s</span><span class="p">.</span><span class="nx">Height</span> <span class="o">*=</span> <span class="mf">1.414</span>
+	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Width</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Height</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Radius is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span><span class="p">))</span>
+	<span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*=</span> <span class="mf">1.414</span>
+	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="mf">3.14</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="c1">// pointer receiver
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;[Pointer receiver]&#34;</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">s</span> <span class="nx">Shape</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">Rect</span><span class="p">{</span><span class="nx">Width</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="nx">Height</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+	<span class="nx">s</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">()</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;After double area, the Width is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.(</span><span class="o">*</span><span class="nx">Rect</span><span class="p">).</span><span class="nx">Width</span><span class="p">))</span>
+
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;-----------------------------&#34;</span><span class="p">)</span>
+
+	<span class="c1">// value receiver
+</span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;[Value receiver]&#34;</span><span class="p">)</span>
+	<span class="kd">var</span> <span class="nx">c</span> <span class="nx">Shape</span> <span class="p">=</span> <span class="nx">Circle</span><span class="p">{</span><span class="nx">Radius</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+	<span class="nx">c</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">()</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;After double area, the Radius is %f&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.(</span><span class="nx">Circle</span><span class="p">).</span><span class="nx">Radius</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div><p>运行以上程序的输出结果如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Pointer receiver<span class="o">]</span>
+Width is 1.000000, Height is 1.000000
+After double area, the Width is 1.414000
+-----------------------------
+<span class="o">[</span>Value receiver<span class="o">]</span>
+Radius is 1.000000
+After double area, the Radius is 1.000000
+</code></pre></div><h2 id="组合terraformaws-vault和go工具的实用技巧">组合Terraform、aws-vault和Go工具的实用技巧</h2>
 <ol>
 <li>如何使用aws-vault和Go工具来操作AWS服务？</li>
 </ol>
