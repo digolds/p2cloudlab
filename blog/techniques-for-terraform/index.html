@@ -462,6 +462,43 @@ After double area, the Width is 1.414000
 <span class="o">[</span>Value receiver<span class="o">]</span>
 Radius is 1.000000
 After double area, the Radius is 1.000000
+</code></pre></div><ol start="9">
+<li>将某个struct类型的部分方法抽象成一个interface类型</li>
+</ol>
+<p>
+<img class="lazy" data-src="https://2cloudlab.com/images/blog/golang-abstract-interface.png" alt=""  />
+</p>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+	<span class="s">&#34;fmt&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">type</span> <span class="nx">Shape</span> <span class="kd">interface</span> <span class="p">{</span>
+	<span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span>
+<span class="p">}</span>
+
+<span class="kd">type</span> <span class="nx">Circle</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Radius</span> <span class="kt">float64</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Radius is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span><span class="p">))</span>
+	<span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*=</span> <span class="mf">1.414</span>
+	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="mf">3.14</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">GetVolume</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="mf">2.0</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// We use Shape to abstract Circle to a shape
+</span><span class="c1"></span>	<span class="kd">var</span> <span class="nx">c</span> <span class="nx">Shape</span> <span class="p">=</span> <span class="nx">Circle</span><span class="p">{</span><span class="nx">Radius</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+  <span class="nx">c</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">()</span>
+  <span class="c1">// You can&#39;t call GetVolume, beacuse c is a Shape, which doesn&#39;t contain GetVolume
+</span><span class="c1"></span>  <span class="c1">// c.GetVolume()
+</span><span class="c1"></span><span class="p">}</span>
 </code></pre></div><h2 id="组合terraformaws-vault和go工具的实用技巧">组合Terraform、aws-vault和Go工具的实用技巧</h2>
 <ol>
 <li>如何使用aws-vault和Go工具来操作AWS服务？</li>
