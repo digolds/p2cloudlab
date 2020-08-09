@@ -502,7 +502,9 @@ After double area, the Radius is 1.000000
   <span class="nx">c</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">()</span>
   <span class="c1">// You can&#39;t call GetVolume, beacuse c is a Shape, which doesn&#39;t contain GetVolume
 </span><span class="c1"></span>  <span class="c1">// c.GetVolume()
-</span><span class="c1"></span><span class="p">}</span>
+</span><span class="c1"></span>  <span class="c1">// but you can change c to its dynamic type which is Circle by c.(Circle) and call GetVolume
+</span><span class="c1"></span>  <span class="nx">c</span><span class="p">.(</span><span class="nx">Circle</span><span class="p">).</span><span class="nf">GetVolume</span><span class="p">()</span>
+<span class="p">}</span>
 </code></pre></div><h2 id="组合terraformaws-vault和go工具的实用技巧">组合Terraform、aws-vault和Go工具的实用技巧</h2>
 <ol>
 <li>如何使用aws-vault和Go工具来操作AWS服务？</li>
