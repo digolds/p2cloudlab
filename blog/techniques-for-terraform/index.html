@@ -474,21 +474,25 @@ After double area, the Radius is 1.000000
 	<span class="s">&#34;fmt&#34;</span>
 <span class="p">)</span>
 
-<span class="kd">type</span> <span class="nx">Shape</span> <span class="kd">interface</span> <span class="p">{</span>
+<span class="c1">// interface
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Shape</span> <span class="kd">interface</span> <span class="p">{</span>
 	<span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span>
 <span class="p">}</span>
 
-<span class="kd">type</span> <span class="nx">Circle</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="c1">// struct
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Circle</span> <span class="kd">struct</span> <span class="p">{</span>
 	<span class="nx">Radius</span> <span class="kt">float64</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+<span class="c1">// method
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
 	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Radius is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span><span class="p">))</span>
 	<span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*=</span> <span class="mf">1.414</span>
 	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="mf">3.14</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">GetVolume</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+<span class="c1">// method
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">GetVolume</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
 	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="mf">2.0</span>
 <span class="p">}</span>
 
