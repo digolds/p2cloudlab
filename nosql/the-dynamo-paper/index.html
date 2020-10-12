@@ -6,7 +6,7 @@
   
   <meta name="description" content="在2004这一年，Amazon.com的增长速度很快，最终其Oracle上的数据规模达到极限，限制了其业务的发展。为了摆脱这种限制，Amazon开始考虑建立他们自己的数据库（注意：在公司内部搭建一个数据库系统是非常糟糕的想法）。在研发自家的数据库之后，亚马逊的工程师创建了创造了**Amazon Dynamo**数据库，这个数据库支撑了大部分Amazon.com业务，包括其购物车。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -132,9 +132,9 @@
 <p>那些研发Amazon Dynamo数据库背后的工程师于2007年发布了关于<a href="http://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo的论文</a>。这篇论文描述了这群工程师在搭建高可用，key-value存储过程中为了满足Amazon.com业务场景所学到的经验。</p>
 <p>这篇论文影响深远，并催生一大批NoSQL的解决方案，这些解决方案包括Apache Cassandra(最初由Facebook研发)和AWS提供的 SimpleDB以及DynamoDB（注意AWS团队和Amazon团队是2拨不同的团队，2者互不关联）。2012年，Amazon Web Services对外发布了DynamoDB，该服务借鉴了Dynamo的经验和原则，且完全托管在AWS上。</p>
 <blockquote>
-<p>想要了解为何DynamoDB存储100 TBs以上的数据，却依然能保持稳定的性能? 请参考这篇文章 <a href="https://www.alexdebrie.com/posts/dynamodb-no-bad-queries/">SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&rsquo;t</a>。</p>
+<p>想要了解为何DynamoDB存储100 TBs以上的数据，却依然能保持稳定的性能? 请参考这篇文章 <a href="https://www.alexdebrie.com/posts/dynamodb-no-bad-queries/">SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don't</a>。</p>
 </blockquote>
-<h2 id="dynamo的几个关键点">Dynamo的几个关键点</h2>
+<h2 id="dynamo">Dynamo的几个关键点</h2>
 <p><strong>非关系型数据模型</strong></p>
 <p>关系型数据模型可以用来为不同类型的数据建模（比如针对一个电商的用户和订单来建模）。通常，使用关系型数据建模的方式为数据建模，需要将关联的数据拆分成更小的数据单元，以便这些数据是不重复的，这就是关系型数据库中著名的<strong>第一范式</strong>。其做法是，如果某类实体数据想要使用另外一类实体数据（比如将订单和用户关联），那么只需要将2类不同的实体数据存储在不同的表格，然后通过外键的方式来关联这2类数据以及通过<strong>JOIN</strong>操作来拼接和获取这2类数据。此时，你只需要修改某个实体（比如某个用户的用户名），那么另一个数据实体（比如订单所属的用户名也发生了变化）所引用的数据也会因此而变化。</p>
 <p>然而，Amazon.com工程师在收集数据库需求时发现了一个非常有趣的结果：</p>
@@ -165,10 +165,10 @@
 <p>最后，由于DynamoDB采用了eventual consistency model，这种策略使得同步数据变得更加容易。你可以将数据复制到不同的机器上，然后从任意一台机器上查找数据，这样，获取同一份数据的吞吐量提高了（比如现在有3台机器提供相同的数据）。然后采用这种策略会使得不同时间点，3台机器上的数据会不一样，但在某一个时间点所有机器上的数据最终会保持一致。对于那些对数据一致性不高的应用场景，这种缺点依然可以接受。如果你无法接受这种缺陷，那么你依然可以为DynamoDB指定strongly-consistent model。</p>
 <p>在DynamoDB中引入这些改变使得它面对无限（超过100TBs）的数据依然能提供1ms之内的查询延时。</p>
 <p>准备好使用DynamoDB来处理100TBs以上的数据，同时期望其依然能够提供稳定的性能？请从<a href="https://2cloudlab.com/nosql/environment-setup/">准备环境</a>开始，然后<a href="https://2cloudlab.com/nosql/anatomy-of-an-item/">对单条数据进行操作</a>。</p>
-<h2 id="参考">参考</h2>
+<h2 id="heading">参考</h2>
 <ul>
-<li><a href="http://www.allthingsdistributed.com/2017/10/a-decade-of-dynamo.html">A Decade of Dynamo</a> post on Werner Vogel&rsquo;s blog</li>
-<li><a href="http://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo: Amazon&rsquo;s Highly Available Key-value Store</a></li>
+<li><a href="http://www.allthingsdistributed.com/2017/10/a-decade-of-dynamo.html">A Decade of Dynamo</a> post on Werner Vogel's blog</li>
+<li><a href="http://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf">Dynamo: Amazon's Highly Available Key-value Store</a></li>
 <li><a href="https://en.wikipedia.org/wiki/CAP_theorem">CAP Theorum</a></li>
 <li><a href="http://readwrite.com/2012/01/18/amazon-enters-the-nosql-market/">Amazon Takes Another Pass at NoSQL with DynamoDB</a></li>
 <li><a href="https://www.dynamodbguide.com/the-dynamo-paper">原文链接</a></li>

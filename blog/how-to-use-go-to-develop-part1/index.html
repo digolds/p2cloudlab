@@ -6,7 +6,7 @@
   
   <meta name="description" content="本文将指导你如何准备Go研发环境以及介绍一些基础语法知识。这些内容能够帮助你快速地在企业中应用Go语言所带来的好处。这些好处有：跨平台、丰富的三方库、并发和内置自动化测试功能。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -141,7 +141,7 @@
 <li>导入第三方模块</li>
 <li>总结</li>
 </ol>
-<h2 id="下载和安装go">下载和安装Go</h2>
+<h2 id="go">下载和安装Go</h2>
 <p>在使用Go编程时，首先需要下载和安装Go研发环境。读者可以到其<a href="https://golang.org/dl/">官方网站</a>下载。下载完成之后是安装Go研发环境，假设安装路径为<code>/path/to/go</code>。</p>
 <p>安装完成之后需要配置环境变量<code>GOROOT</code>，根据不同的平台设置环境变量的命令是不一样的，如下所示：</p>
 <ul>
@@ -163,7 +163,7 @@
 <p>以上步骤操作完成之后，需要执行以下命令来进一步确保Go运行环境安装正确！</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ go version
 go version go1.11.5 linux/amd64
-</code></pre></div><h2 id="选择ide">选择IDE</h2>
+</code></pre></div><h2 id="ide">选择IDE</h2>
 <p>在开始编写Go程序之前，需要根据自身的情况来选择IDE。以下是一些常用的IDE，使用这些IDE能够提高编程效率！</p>
 <ul>
 <li><a href="https://github.com/fatih/vim-go/">Vim Editor</a></li>
@@ -196,7 +196,7 @@ go version go1.11.5 linux/amd64
 	<span class="s">&#34;fmt&#34;</span>
 <span class="p">)</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
 	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Hello, 2cloudlab.com!&#34;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>
@@ -218,7 +218,7 @@ go version go1.11.5 linux/amd64
 	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Debug in testing&#34;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>测试用例的调试和调试Go程序的步骤是一样的。</p>
-<h2 id="go常用的命令">Go常用的命令</h2>
+<h2 id="go-1">Go常用的命令</h2>
 <ul>
 <li><code>go run</code></li>
 </ul>
@@ -228,7 +228,7 @@ go version go1.11.5 linux/amd64
 <span class="kn">import</span> <span class="p">(</span>
     <span class="s">&#34;fmt&#34;</span>
 <span class="p">)</span>
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Hello, 2cloudlab.com!&#34;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>以上代码执行所得到的结果如下所示：</p>
@@ -257,13 +257,13 @@ go version go1.11.5 linux/amd64
 </code></pre></div><p>运行以上命令的输出结果如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">package fmt // import <span class="s2">&#34;fmt&#34;</span>
 
-func Println<span class="o">(</span>a ...interface<span class="o">{})</span> <span class="o">(</span>n int, err error<span class="o">)</span>
+func Println<span class="o">(</span>a ...interface<span class="o">{</span><span class="o">}</span><span class="o">)</span> <span class="o">(</span>n int, err error<span class="o">)</span>
     Println formats using the default formats <span class="k">for</span> its operands and writes to
     standard output. Spaces are always added between operands and a newline is
     appended. It returns the number of bytes written and any write error
     encountered.
 </code></pre></div><p>以上命令在Go编程的时候会经常使用，不需要刻意记住，需要使用某个命令的时候，如果忘记了，那么可以再次回来查看本文。接下来，让我们把注意力转向Go语言的编程语法。</p>
-<h2 id="go的内置类型">Go的内置类型</h2>
+<h2 id="go-2">Go的内置类型</h2>
 <p>Go的内置类型主要分为3类：基础类型、集合类型和复杂类型。</p>
 <ul>
 <li>基础类型有以下几种</li>
@@ -277,7 +277,7 @@ func Println<span class="o">(</span>a ...interface<span class="o">{})</span> <sp
 <li>集合类型有Slices和Maps</li>
 </ul>
 <p>Go内置了2中类型，分别是数组和字典，每种集合类型都有能够删除和添加元素。以下例子定义了这2个类型的变量并为其添加了元素。</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">s</span> <span class="p">=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">var</span> <span class="nx">s</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="kt">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="kd">var</span> <span class="nx">m</span> <span class="p">=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">string</span><span class="p">)</span>
 <span class="nx">s</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">s</span><span class="p">,</span> <span class="s">&#34;some string&#34;</span><span class="p">)</span>
 <span class="nx">m</span><span class="p">[</span><span class="s">&#34;some key&#34;</span><span class="p">]</span> <span class="p">=</span> <span class="s">&#34;some value&#34;</span>
@@ -292,35 +292,35 @@ func Println<span class="o">(</span>a ...interface<span class="o">{})</span> <sp
 <span class="o">*</span><span class="nx">ptr</span> <span class="p">=</span> <span class="mi">200</span>
 <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">count</span><span class="p">)</span>
 </code></pre></div><p>以上代码运行的结果如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">100</span>
-<span class="m">200</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">100
+200
 </code></pre></div><p><strong>struct</strong>是结构体，通过结构体可以定义更加复杂的数据类型。比如下面的例子定义了一个<code>Person</code>结构体，这个结构体有2个属性<code>Name</code>和<code>Age</code>以及一个方法<code>SayHi()</code></p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Person</span> <span class="kd">struct</span> <span class="p">{</span>
     <span class="nx">Name</span> <span class="kt">string</span>
     <span class="nx">Age</span> <span class="kt">int</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Person</span><span class="p">)</span> <span class="nf">SayHello</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">p</span> <span class="o">*</span><span class="nx">Person</span><span class="p">)</span> <span class="nf">SayHello</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
        <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Hi! My name is &#34;</span><span class="p">,</span> <span class="nx">p</span><span class="p">.</span><span class="nx">Name</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">guy</span> <span class="p">=</span>  <span class="nb">new</span><span class="p">(</span><span class="nx">Person</span><span class="p">)</span>
     <span class="nx">guy</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;2cloudlab.com&#34;</span>
-    <span class="nx">guy</span><span class="p">.</span><span class="nf">SayHi</span><span class="p">()</span>
+    <span class="nx">guy</span><span class="p">.</span><span class="nf">SayHi</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>运行以上代码将输出以下结果：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Hi! My name is 2cloudlab.com
 </code></pre></div><p><strong>interface</strong>是接口类型，这个类型只允许申明一些方法，这些方法由其它具体的结构体来实现。比如以下例子定义了一个接口类型：</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Friend</span> <span class="kd">interface</span> <span class="p">{</span>
-    <span class="nf">SayHi</span><span class="p">()</span>
+    <span class="nf">SayHi</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span>
 
 <span class="kd">func</span> <span class="nf">Greet</span><span class="p">(</span><span class="nx">f</span> <span class="nx">Friend</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">f</span><span class="p">.</span><span class="nf">SayHi</span><span class="p">()</span>
+    <span class="nx">f</span><span class="p">.</span><span class="nf">SayHi</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">guy</span> <span class="p">=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">Person</span><span class="p">)</span>
     <span class="nx">guy</span><span class="p">.</span><span class="nx">Name</span> <span class="p">=</span> <span class="s">&#34;2cloudlab.com&#34;</span>
     <span class="nf">Greet</span><span class="p">(</span><span class="nx">guy</span><span class="p">)</span>
@@ -328,7 +328,7 @@ func Println<span class="o">(</span>a ...interface<span class="o">{})</span> <sp
 </code></pre></div><p>运行以上代码将得到以下结果：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">Hi! My name is 2cloudlab.com
 </code></pre></div><p>以上代码定义了一个接口类型<code>Friend</code>，结构体类型<code>Person</code>实现了<code>SayHi()</code>方法，因此可以将Person看成<code>Friend</code>类型。</p>
-<h2 id="流程控制">流程控制</h2>
+<h2 id="heading">流程控制</h2>
 <p>每个编程语言都会有流程控制，它们主要分为2类：条件控制和循环控制。</p>
 <ul>
 <li>条件控制</li>
@@ -354,18 +354,18 @@ func Println<span class="o">(</span>a ...interface<span class="o">{})</span> <sp
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span>
 <span class="p">}</span>
-</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">nums</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">}</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">nums</span> <span class="o">:=</span> <span class="p">[</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">}</span>
 <span class="k">for</span> <span class="nx">idx</span><span class="p">,</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">nums</span> <span class="p">{</span>
     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">idx</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span>
 <span class="p">}</span>
-</code></pre></div><h2 id="并发">并发</h2>
+</code></pre></div><h2 id="heading-1">并发</h2>
 <p>Go语言内置了并发功能，它是通过coroutine来实现并发。Go程序运行的时候只有一个线程，因此coroutine不是线程。开启一个coroutine是通过关键字<code>go</code>来实现的，比如：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">f</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">f</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;goroutine f&#34;</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">go</span> <span class="nf">f</span><span class="p">()</span>    
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">go</span> <span class="nf">f</span><span class="p">(</span><span class="p">)</span>    
     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;run in other goroutine&#34;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>以上例子的<code>go</code>关键字使得函数<code>f</code>可以和函数<code>main</code>并发执行。但是以上例子有一个问题，如果<code>main</code>函数比<code>f</code>函数先执行结束，那么<code>f</code>函数将无法输出结果，这就是并发所带来的同步问题。要解决这种同步问题，这需要引入Go特有的<code>chan</code>类型。接下来让我们看看以下例子是如何解决这类同步问题的：</p>
@@ -374,40 +374,40 @@ func Println<span class="o">(</span>a ...interface<span class="o">{})</span> <sp
     <span class="nx">c</span> <span class="o">&lt;-</span><span class="nb">int</span><span class="p">(</span><span class="mi">1990</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">c</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">)</span>
     <span class="k">go</span> <span class="nf">f</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
     <span class="nx">x</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">c</span>
     <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;run in other goroutine&#34;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>上面这个例子定义了一个<code>chan</code>类型的变量，这个变量的作用是在不同的coroutine中传递信息。<code>x := &lt;-c</code>的作用是从变量<code>c</code>中读取信息，如果没有信息，那么执行<code>main</code>的coroutine则会阻塞，直到<code>c &lt;-int(1990)</code>向这个变量填入信息。</p>
-<h2 id="错误处理">错误处理</h2>
+<h2 id="heading-2">错误处理</h2>
 <p>在Go的世界里没有错误处理机制，Go鼓励编写程序的人自己判断可能出现的错误。因此在Go中处理错误的时，通常按照以下方式处理：</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">errorHappens</span><span class="p">()</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">errorHappens</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
 
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">errorHappens</span><span class="p">();</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nf">errorHappens</span><span class="p">(</span><span class="p">)</span><span class="p">;</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
         <span class="c1">//Handle the error
 </span><span class="c1"></span>    <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div><h2 id="结构化数据的转化">结构化数据的转化</h2>
+</code></pre></div><h2 id="heading-3">结构化数据的转化</h2>
 <p>在传输数据时，经常会处理结构化数据。常用的格式有<em>Json</em>和<em>XML</em>。Go语言中提供了内置的格式化处理方法，比如以下示例说明了如何将结构化数据转成<em>Json</em>格式的字符串：</p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Foo</span> <span class="kd">struct</span> <span class="p">{</span>
     <span class="nx">Bar</span> <span class="kt">string</span>
     <span class="nx">Baz</span> <span class="kt">string</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">f</span> <span class="o">:=</span> <span class="nx">Foo</span><span class="p">{</span><span class="s">&#34;Joe Junior&#34;</span><span class="p">,</span> <span class="s">&#34;Hello Shabado&#34;</span><span class="p">}</span>
     <span class="nx">b</span><span class="p">,</span> <span class="nx">_</span> <span class="o">:=</span> <span class="nx">json</span><span class="p">.</span><span class="nf">Marshal</span><span class="p">(</span><span class="nx">f</span><span class="p">)</span>
-    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">b</span><span class="p">))</span>
+    <span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nb">string</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span><span class="p">)</span>
     <span class="nx">json</span><span class="p">.</span><span class="nf">Unmarshal</span><span class="p">(</span><span class="nx">b</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">f</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>运行以上代码将输出以下结果:</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span><span class="s2">&#34;Bar&#34;</span>:<span class="s2">&#34;Joe Junior&#34;</span>,<span class="s2">&#34;Baz&#34;</span>:<span class="s2">&#34;Hello Shabado&#34;</span><span class="o">}</span>
-</code></pre></div><h2 id="导入第三方模块">导入第三方模块</h2>
+</code></pre></div><h2 id="heading-4">导入第三方模块</h2>
 <p>有大量的开发者在github上发布了高质量，可复用的Go包。在我们编写Go代码的时候常常需要引用别人已经写好的功能，此时需要一个包管理工具。该工具能够方便开发者引用别人已经发布的Go包，除此之外，还需要管理同一个Go包的不同版本。为了解决这些问题，需要为Go编程引入包管理工具，这个工具就是:<a href="https://golang.github.io/dep/docs/introduction.html">dep</a>。</p>
 <p>dep工具提供了2个常用命令：<code>dep init</code>和<code>dep ensure</code>。它们的使用场景如下：</p>
 <ul>
@@ -417,10 +417,10 @@ func Println<span class="o">(</span>a ...interface<span class="o">{})</span> <sp
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Gopkg.lock</span>
 <span class="o">[</span>solve-meta<span class="o">]</span>
   analyzer-name <span class="o">=</span> <span class="s2">&#34;dep&#34;</span>
-  analyzer-version <span class="o">=</span> <span class="m">1</span>
+  analyzer-version <span class="o">=</span> 1
   input-imports <span class="o">=</span> <span class="o">[</span><span class="s2">&#34;github.com/stretchr/testify/assert&#34;</span><span class="o">]</span>
   solver-name <span class="o">=</span> <span class="s2">&#34;gps-cdcl&#34;</span>
-  solver-version <span class="o">=</span> <span class="m">1</span>
+  solver-version <span class="o">=</span> 1
 </code></pre></div><ul>
 <li><code>dep ensure</code></li>
 </ul>
@@ -435,25 +435,25 @@ func Println<span class="o">(</span>a ...interface<span class="o">{})</span> <sp
 	<span class="s">&#34;github.com/stretchr/testify/assert&#34;</span>
 <span class="p">)</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
 	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;Hello, 2cloudlab.com!&#34;</span><span class="p">)</span>
 
 	<span class="nx">assert</span><span class="p">.</span><span class="nf">Equal</span><span class="p">(</span><span class="kc">nil</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;&#34;</span><span class="p">,</span> <span class="s">&#34;These 2 groups should be the same.&#34;</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>以上示例引入了3方库<code>github.com/stretchr/testify/assert</code>,引入完成之后会生成以下目录结构。其中3方库<code>stretchr</code>依赖于<code>davcgh</code>和<code>pmezard</code>，因此在使用<code>dep ensure</code>的时候也会将这两个库引入进来。<code>stretchr</code>、<code>davcgh</code>和<code>pmezard</code>目录下面其实放置了Go程序，因此在使用<code>go build main.go</code>的时候，会把这些目录下的Go文件编译一遍。</p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="err">\</span><span class="o">---</span><span class="nx">test</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="err">\</span><span class="o">--</span><span class="o">-</span><span class="nx">test</span>
     <span class="p">|</span>   <span class="nx">Gopkg</span><span class="p">.</span><span class="nx">lock</span>
     <span class="p">|</span>   <span class="nx">Gopkg</span><span class="p">.</span><span class="nx">toml</span>
     <span class="p">|</span>   <span class="nx">main</span><span class="p">.</span><span class="k">go</span>
     <span class="p">|</span>
-    <span class="err">\</span><span class="o">---</span><span class="nx">vendor</span>
-        <span class="o">+---</span><span class="nx">github</span><span class="p">.</span><span class="nx">com</span>
-           <span class="o">+---</span><span class="nx">davecgh</span>
+    <span class="err">\</span><span class="o">--</span><span class="o">-</span><span class="nx">vendor</span>
+        <span class="o">+</span><span class="o">--</span><span class="o">-</span><span class="nx">github</span><span class="p">.</span><span class="nx">com</span>
+           <span class="o">+</span><span class="o">--</span><span class="o">-</span><span class="nx">davecgh</span>
            <span class="p">|</span>
-           <span class="o">+---</span><span class="nx">pmezard</span>
+           <span class="o">+</span><span class="o">--</span><span class="o">-</span><span class="nx">pmezard</span>
            <span class="p">|</span>
-           <span class="err">\</span><span class="o">---</span><span class="nx">stretchr</span>
-</code></pre></div><h2 id="总结">总结</h2>
+           <span class="err">\</span><span class="o">--</span><span class="o">-</span><span class="nx">stretchr</span>
+</code></pre></div><h2 id="heading-5">总结</h2>
 <p>本文介绍了Go编程的基础知识。这些知识足以让你开启Go编程之旅，其中Go常用命令、内置类型、流程控制和包管理是经常使用的。本文还推荐了一些IDE，这些IDE能够提高编写程序的效率，读者应该根据自身的情况来选择！下载和安装IDE后，还需要为其配置调试环境，调试环境是Go编程必备的工具之一。并发是Go里的一大特色，也是Go相较于其它编程语言的优势之一。Go语言的并发不是多线程，而是通过协程(coroutine)来实现的，底层则是通过跳转命令来实现协程！</p>
 <p>本文所提到的基础知识是日后编写更加复杂的Go程序所应该具备的，所以务必将本文提到的知识消化理解，千里之行始于足下！接下来让我们把注意力转移到这篇文章&lt;<a href="https://2cloudlab.com/blog/how-to-test-terraform-code/">如何为产品提供可信度较高的运行环境</a>&gt;，这篇文章讲述了如何使用Go来编写自动化测试用例，通过它们来测试2cloudlab所提供的Terraform模块。</p>
 <p><em><a href="https://2cloudlab.com/">2cloudlab.com</a>为企业准备产品的运行环境，只需要1天！</em></p>

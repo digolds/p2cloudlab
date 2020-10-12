@@ -6,7 +6,7 @@
   
   <meta name="description" content="在本文的示例中，我们将展示如何在DynamoDB中建立具有层级结构的数据（比如树状结构）。这个例子使用了大约25000个星巴克实体店的地址信息。你可以到[这里获取源码](https://github.com/alexdebrie/dynamodbguide.com/tree/master/examples/starbucks)来动手实践本文所提到的步骤。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -133,7 +133,7 @@
 <blockquote>
 <p>这个例子的灵感来自于Rick Houlihan在2017年的AWS reInvent上的研讨会，感兴趣的读者可以到<a href="https://youtu.be/jzeKPKpucS0?t=36m5s">这里一睹其风采</a>。</p>
 </blockquote>
-<h2 id="一些关于本文示例的基本信息">一些关于本文示例的基本信息</h2>
+<h2 id="heading">一些关于本文示例的基本信息</h2>
 <p>假设，我们是星巴克，一家跨国公司，门店遍布全球。现在，我们想把全球所有门店的信息存储在DynamoDB中，并希望能够快速查询以下信息：</p>
 <ul>
 <li>根据门店编号来获取对应的门店信息</li>
@@ -144,9 +144,9 @@
 </ul>
 <p>第一种查询模式比较简单&ndash;就是那种key:value的关系，只需要给出门店编号，那么就能取到该门店的信息。剩余的4种查询模式就不是那么容易实现了。 当然，你可以创建4个<a href="https://2cloudlab.com/nosql/global-secondary-indexes/">全局附加索引</a>来分别支持这4种查询模式，也可以使用<a href="https://2cloudlab.com/nosql/filtering/">Filter表达式</a>来过滤出我们想要的数据，但是这2种方法并不高效，同时会消耗更多的读取能力，进而增加费用。</p>
 <p>为了解决以上提出的2个问题，我们可以借助该数据的层级信息以及仅使用一个全局附加索引来实现以上4种查询模式！接下来，让我们到<a href="https://www.kaggle.com/starbucks/store-locations">Kaggle获取遍布全球的星巴克门店数据</a>&ndash;大约25000条。获取之后需要将这些数据写入到我们的表中，并验证是否完全倒入！以下提到的代码片段<a href="https://github.com/alexdebrie/dynamodbguide.com/tree/master/examples/starbucks">摘自这里</a>。</p>
-<h2 id="准备工作">准备工作</h2>
+<h2 id="heading-1">准备工作</h2>
 <p>为了运行以下示例，你需要下载之前提到的数据，并解压它，然后将CVS文件复制到你的工作目录，名称是directory.csv。除此之外，你还要安装Python以及Boto3框架，该框架是Python版本的AWS SDK。你可以运行指令<code>pip install boto3</code>来按照该框架。最后，有些例子使用了Click框架，该框架能够帮助你快速制定命令行接口，运行指令<code>pip install click</code>来安装它。</p>
-<h2 id="设计主键和插入数据">设计主键和插入数据</h2>
+<h2 id="heading-2">设计主键和插入数据</h2>
 <p>一切就绪之后，是时候创建表以及将数据插入到表中。</p>
 <p>首先，为表选择合适的主键。主键应该至少体现以下2点：</p>
 <ul>
@@ -171,10 +171,10 @@ Table created successfully!
 <span class="m">24000</span> locations written...
 <span class="m">25000</span> locations written...
 </code></pre></div><p>让我们执行Scan语句来确保插入了25599条数据，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\
-</span><span class="se"></span>    --table-name StarbucksLocations <span class="se">\
-</span><span class="se"></span>    --select COUNT <span class="se">\
-</span><span class="se"></span>    <span class="nv">$LOCAL</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\</span>
+    --table-name StarbucksLocations <span class="se">\</span>
+    --select COUNT <span class="se">\</span>
+    <span class="nv">$LOCAL</span>
 </code></pre></div><p>以上指令执行之后将返回25599条结果，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
     <span class="s2">&#34;Count&#34;</span>: 25599,
@@ -182,7 +182,7 @@ Table created successfully!
     <span class="s2">&#34;ConsumedCapacity&#34;</span>: null
 <span class="o">}</span>
 </code></pre></div><p>接下来，让我们查询一些数据！</p>
-<h2 id="根据store-number来获取实体店信息">根据Store Number来获取实体店信息</h2>
+<h2 id="store-number">根据Store Number来获取实体店信息</h2>
 <p>本文的一种获取实体店信息的模式是：给定一个Store Number，返回对应的实体店信息。这里我们将使用&quot;5860-29255&quot;作为Store Number。</p>
 <p>因为表的主键是Store Number，所以我们可以使用GetItem API来完成这类查询模式。</p>
 <p>运行脚本<code>get_store_location</code>，默认情况下，它将获取Store Number为&quot;5860-29255&quot;的实体店信息，如下所示：</p>
@@ -201,7 +201,7 @@ Store number found! Here<span class="s1">&#39;s your store:
 </span><span class="s1"> &#39;</span>StateCityPostcode<span class="s1">&#39;: {&#39;</span>S<span class="s1">&#39;: &#39;</span>CA#PASADENA#911033383<span class="s1">&#39;},
 </span><span class="s1"> &#39;</span>StoreName<span class="s1">&#39;: {&#39;</span>S<span class="s1">&#39;: &#39;</span>Fair Oaks <span class="p">&amp;</span> Orange Grove, Pasadena<span class="s1">&#39;},
 </span><span class="s1"> &#39;</span>StoreNumber<span class="s1">&#39;: {&#39;</span>S<span class="s1">&#39;: &#39;</span>5860-29255<span class="s1">&#39;},
-</span><span class="s1"> &#39;</span>StreetAddress<span class="s1">&#39;: {&#39;</span>S<span class="s1">&#39;: &#39;</span><span class="m">671</span> N. Fair Oaks Avenue<span class="err">&#39;</span><span class="o">}}</span>
+</span><span class="s1"> &#39;</span>StreetAddress<span class="s1">&#39;: {&#39;</span>S<span class="s1">&#39;: &#39;</span><span class="m">671</span> N. Fair Oaks Avenue<span class="err">&#39;</span><span class="o">}</span><span class="o">}</span>
 </code></pre></div><p>从以上结果可知，返回的实体店信息其对应的Store Number就是&quot;5860-29255&rdquo;。如果你想获取其它实体店，那么使用选项<code>--store-number</code>，根据以下示例来实践：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ python get_store_location.py --store-number 3513-125945
 Attempting to retrieve store number 3513-125945...
@@ -218,8 +218,8 @@ Store number found! Here<span class="s1">&#39;s your store:
 </span><span class="s1"> &#39;</span>StateCityPostcode<span class="s1">&#39;: {&#39;</span>S<span class="s1">&#39;: &#39;</span>AK#ANCHORAGE#995042300<span class="s1">&#39;},
 </span><span class="s1"> &#39;</span>StoreName<span class="s1">&#39;: {&#39;</span>S<span class="s1">&#39;: &#39;</span>Safeway-Anchorage <span class="c1">#1809&#39;},</span>
  <span class="s1">&#39;StoreNumber&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;3513-125945&#39;</span><span class="o">}</span>,
- <span class="s1">&#39;StreetAddress&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;5600 Debarr Rd Ste 9&#39;</span><span class="o">}}</span>
-</code></pre></div><h2 id="聚合查询">聚合查询</h2>
+ <span class="s1">&#39;StreetAddress&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;5600 Debarr Rd Ste 9&#39;</span><span class="o">}</span><span class="o">}</span>
+</code></pre></div><h2 id="heading-3">聚合查询</h2>
 <p>现在让我们看看如何支持以上剩余的4种查询模式。为了支持这4种查询模式，则需要借助之前创建的全局附加索引-&ldquo;StoreLocationIndex&rdquo;。</p>
 <p>这里的数据，其层级信息非常关键。在一个州内的所有门店信息肯定属于同一个国家，同一个城市中的所有店铺肯定属于同一个州，同一个区下面的所有店铺肯定属于同一个城市。</p>
 <p>由于这种层级关系，我们可以借助分区键以及<code>begins_with()</code>函数来实现查找某一层下的所有店铺。</p>
@@ -241,23 +241,23 @@ Retrieved <span class="m">4648</span> locations.
 <p>接下来，让我们把查询范围缩小到州级别。比如，试一下查询Nebraska州内所有星巴克门店：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ python query_store_locations.py --country <span class="s1">&#39;US&#39;</span> --state <span class="s1">&#39;NE&#39;</span> --count
 Querying locations in country US, state NE.
-The key expression includes a begins_with<span class="o">()</span> <span class="k">function</span> with input of <span class="s1">&#39;NE&#39;</span>
+The key expression includes a begins_with<span class="o">(</span><span class="o">)</span> <span class="k">function</span> with input of <span class="s1">&#39;NE&#39;</span>
 
 Retrieved <span class="m">58</span> locations.
 </code></pre></div><p>以上示例显示了我们使用关键字表达式以及begins_with()函数来查找州代号为&quot;NE&quot;的所有店铺信息（总共有58家）。</p>
 <p>当然，我们可以再将查询范围缩小到城市Omaha：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ python query_store_locations.py --country <span class="s1">&#39;US&#39;</span> --state <span class="s1">&#39;NE&#39;</span> --city <span class="s1">&#39;Omaha&#39;</span> --count
 Querying locations in country US, state NE, city Omaha.
-The key expression includes a begins_with<span class="o">()</span> <span class="k">function</span> with input of <span class="s1">&#39;NE#OMAHA&#39;</span>
+The key expression includes a begins_with<span class="o">(</span><span class="o">)</span> <span class="k">function</span> with input of <span class="s1">&#39;NE#OMAHA&#39;</span>
 
 Retrieved <span class="m">30</span> locations.
 </code></pre></div><p>此时，我们得到了30家门店。最后，让我们看看查找某一个区下的所有门店。由于返回的结果很少，因此这一次我将去掉&ndash;count选项，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ python query_store_locations.py --country <span class="s1">&#39;US&#39;</span> --state <span class="s1">&#39;NE&#39;</span> --city <span class="s1">&#39;Omaha&#39;</span> --postcode <span class="s1">&#39;68144&#39;</span>
 Querying locations in country US, state NE, city Omaha, postcode 68144.
-The key expression includes a begins_with<span class="o">()</span> <span class="k">function</span> with input of <span class="s1">&#39;NE#OMAHA#68144&#39;</span>
+The key expression includes a begins_with<span class="o">(</span><span class="o">)</span> <span class="k">function</span> with input of <span class="s1">&#39;NE#OMAHA#68144&#39;</span>
 
 <span class="o">{</span><span class="s1">&#39;Count&#39;</span>: 2,
- <span class="s1">&#39;Items&#39;</span>: <span class="o">[{</span><span class="s1">&#39;City&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;OMAHA&#39;</span><span class="o">}</span>,
+ <span class="s1">&#39;Items&#39;</span>: <span class="o">[</span><span class="o">{</span><span class="s1">&#39;City&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;OMAHA&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;Country&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;US&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;Latitude&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;41.23&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;Longitude&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;-96.14&#39;</span><span class="o">}</span>,
@@ -267,7 +267,7 @@ The key expression includes a begins_with<span class="o">()</span> <span class="
             <span class="s1">&#39;StateCityPostcode&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;NE#OMAHA#68144&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;StoreName&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;Family Fare 3784 Omaha&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;StoreNumber&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;48135-261124&#39;</span><span class="o">}</span>,
-            <span class="s1">&#39;StreetAddress&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;14444 W. CENTER RD., Westwood Plaza&#39;</span><span class="o">}}</span>,
+            <span class="s1">&#39;StreetAddress&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;14444 W. CENTER RD., Westwood Plaza&#39;</span><span class="o">}</span><span class="o">}</span>,
            <span class="o">{</span><span class="s1">&#39;City&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;Omaha&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;Country&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;US&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;Latitude&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;41.23&#39;</span><span class="o">}</span>,
@@ -278,7 +278,7 @@ The key expression includes a begins_with<span class="o">()</span> <span class="
             <span class="s1">&#39;StateCityPostcode&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;NE#OMAHA#681443957&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;StoreName&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;125th &amp; W. Center Rd.&#39;</span><span class="o">}</span>,
             <span class="s1">&#39;StoreNumber&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;2651-53179&#39;</span><span class="o">}</span>,
-            <span class="s1">&#39;StreetAddress&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;12245 West Center Rd.&#39;</span><span class="o">}}]</span>,
+            <span class="s1">&#39;StreetAddress&#39;</span>: <span class="o">{</span><span class="s1">&#39;S&#39;</span>: <span class="s1">&#39;12245 West Center Rd.&#39;</span><span class="o">}</span><span class="o">}</span><span class="o">]</span>,
  <span class="s1">&#39;ResponseMetadata&#39;</span>: <span class="o">{</span><span class="s1">&#39;HTTPHeaders&#39;</span>: <span class="o">{</span><span class="s1">&#39;content-length&#39;</span>: <span class="s1">&#39;738&#39;</span>,
                                       <span class="s1">&#39;content-type&#39;</span>: <span class="s1">&#39;application/x-amz-json-1.0&#39;</span>,
                                       <span class="s1">&#39;server&#39;</span>: <span class="s1">&#39;Jetty(8.1.12.v20130726)&#39;</span>,

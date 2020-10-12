@@ -6,7 +6,7 @@
   
   <meta name="description" content="本文记录了2cloudlab.com在使用Terraform、aws-vault和Go工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -135,7 +135,7 @@
 <li>组合Terraform、aws-vault和Go工具的实用技巧</li>
 </ol>
 <p>本文记录了2cloudlab.com在使用Terraform、aws-vault和Go工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。</p>
-<h2 id="terraform实用技巧">Terraform实用技巧</h2>
+<h2 id="terraform">Terraform实用技巧</h2>
 <ol>
 <li><em>aws_launch_configuration</em>资源是无法通过API来修改的</li>
 </ol>
@@ -144,41 +144,41 @@
 <li>Terraform所提供的所有类别的资源都有一个<em>lifecycle</em>的设置</li>
 </ol>
 <p>Terraform工具通过这个设置来决定创建资源的行为。比如以下代码通过设置<code>create_before_destroy = true</code>，最终能够使得Terraform先创建一个<em>aws_launch_configuration</em>新的实例，再将新实例替换掉旧实例，替换成功后再销毁旧实例。<em>lifecycle</em>中的设置只能是常量，因此这种方式：<code>create_before_destroy = var.flag</code>来设置<em>create_before_destroy</em>是不允许的。</p>
-<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="kr">resource</span> <span class="s2">&#34;aws_launch_configuration&#34;</span> <span class="s2">&#34;launch_configuration_instance&#34;</span> <span class="p">{</span>
-  <span class="na">image_id</span>        = <span class="s2">&#34;ami-0fc20dd1da406780b&#34;</span><span class="c1"> #ubuntu 18.4
-</span><span class="c1"></span>  <span class="na">instance_type</span>   = <span class="s2">&#34;t2.micro&#34;</span>
-  <span class="na">security_groups</span> = <span class="p">[</span><span class="nx">aws_security_group</span><span class="p">.</span><span class="nx">instance</span><span class="p">.</span><span class="nx">id</span><span class="p">]</span>
+<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="kr">resource</span> <span class="s">&#34;aws_launch_configuration&#34; &#34;launch_configuration_instance&#34;</span> {<span class="err"></span>
+<span class="na">  image_id</span>        <span class="o">=</span> <span class="s2">&#34;ami-0fc20dd1da406780b&#34;</span><span class="c1"> #ubuntu 18.4
+</span><span class="c1"></span><span class="na">  instance_type</span>   <span class="o">=</span> <span class="s2">&#34;t2.micro&#34;</span>
+  <span class="na">security_groups</span> <span class="o">=</span> <span class="p">[</span><span class="err">a</span><span class="err">w</span><span class="err">s</span><span class="err">_</span><span class="err">s</span><span class="err">e</span><span class="err">c</span><span class="err">u</span><span class="err">r</span><span class="err">i</span><span class="err">t</span><span class="err">y</span><span class="err">_</span><span class="err">g</span><span class="err">r</span><span class="err">o</span><span class="err">u</span><span class="err">p</span><span class="p">.</span><span class="err">i</span><span class="err">n</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">n</span><span class="err">c</span><span class="err">e</span><span class="p">.</span><span class="err">i</span><span class="err">d</span><span class="p">]</span>
 
-  <span class="na">user_data</span> = <span class="o">&lt;&lt;-EOF</span><span class="s">
-</span><span class="s">              #!/bin/bash
-</span><span class="s">              echo &#34;Hello, 2cloudlab.com&#34; &gt; index.html
-</span><span class="s">              nohup busybox httpd -f -p ${var.server_port} &amp;
-</span><span class="s">              </span><span class="o">EOF</span><span class="c1">
+  <span class="na">user_data</span> <span class="o">=</span> <span class="err">&lt;</span><span class="err">&lt;</span><span class="err">-</span><span class="err">E</span><span class="err">O</span><span class="err">F</span><span class="c1">
+</span><span class="c1">              #!/bin/bash
+</span><span class="c1"></span>              <span class="err">e</span><span class="err">c</span><span class="err">h</span><span class="err">o</span> <span class="s2">&#34;Hello, 2cloudlab.com&#34;</span> <span class="err">&gt;</span> <span class="err">i</span><span class="err">n</span><span class="err">d</span><span class="err">e</span><span class="err">x</span><span class="p">.</span><span class="err">h</span><span class="err">t</span><span class="err">m</span><span class="err">l</span>
+              <span class="err">n</span><span class="err">o</span><span class="err">h</span><span class="err">u</span><span class="err">p</span> <span class="err">b</span><span class="err">u</span><span class="err">s</span><span class="err">y</span><span class="err">b</span><span class="err">o</span><span class="err">x</span> <span class="err">h</span><span class="err">t</span><span class="err">t</span><span class="err">p</span><span class="err">d</span> <span class="err">-</span><span class="err">f</span> <span class="err">-</span><span class="err">p</span> <span class="si">${</span><span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">s</span><span class="err">e</span><span class="err">r</span><span class="err">v</span><span class="err">e</span><span class="err">r</span><span class="err">_</span><span class="err">p</span><span class="err">o</span><span class="err">r</span><span class="err">t</span><span class="si">}</span> <span class="err">&amp;</span>
+              <span class="err">E</span><span class="err">O</span><span class="err">F</span><span class="c1">
 </span><span class="c1">
 </span><span class="c1">  # Required when using a launch configuration with an auto scaling group.
-</span><span class="c1">  # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
-</span><span class="c1"></span>  <span class="nx">lifecycle</span> <span class="p">{</span>
-    <span class="na">create_before_destroy</span> = <span class="kc">true</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+</span><span class="c1"></span><span class="c1">  # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html
+</span><span class="c1"></span>  <span class="err">l</span><span class="err">i</span><span class="err">f</span><span class="err">e</span><span class="err">c</span><span class="err">y</span><span class="err">c</span><span class="err">l</span><span class="err">e</span> {
+    <span class="na">create_before_destroy</span> <span class="o">=</span> <span class="kt">true</span>
+  }
+}
 </code></pre></div><ol start="3">
 <li>Terraform提供<code>for_each</code>指令来遍历一个<code>map</code>对象，并根据该对象的键值对<code>each.key</code>和<code>each.value</code>来创建资源</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="nx">locals</span> <span class="p">{</span>
-  <span class="na">buckets</span> = <span class="p">{</span>
-    <span class="na">bucket1</span> = <span class="s2">&#34;2cloudlab-your-unique-bucket-name-1&#34;</span>
-    <span class="na">bucket2</span> = <span class="s2">&#34;2cloudlab-your-unique-bucket-name-2&#34;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-<span class="kr">
-</span><span class="kr">resource</span> <span class="s2">&#34;aws_s3_bucket&#34;</span> <span class="s2">&#34;b&#34;</span> <span class="p">{</span>
-  <span class="na">for_each</span>     = <span class="nx">local</span><span class="p">.</span><span class="nx">buckets</span>
-  <span class="na">bucket</span> = <span class="nb">each</span><span class="p">.</span><span class="nx">value</span>
-<span class="p">}</span>
-<span class="kr">
-</span><span class="kr">output</span> <span class="s2">&#34;results&#34;</span> <span class="p">{</span>
-  <span class="na">value</span> = <span class="nx">aws_s3_bucket</span><span class="p">.</span><span class="nx">b</span>
-<span class="p">}</span>
+<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="err">l</span><span class="err">o</span><span class="err">c</span><span class="err">a</span><span class="err">l</span><span class="err">s</span> {
+  <span class="na">buckets</span> <span class="o">=</span> {
+    <span class="na">bucket1</span> <span class="o">=</span> <span class="s2">&#34;2cloudlab-your-unique-bucket-name-1&#34;</span>
+    <span class="na">bucket2</span> <span class="o">=</span> <span class="s2">&#34;2cloudlab-your-unique-bucket-name-2&#34;</span>
+  }
+}
+
+<span class="kr">resource</span> <span class="s">&#34;aws_s3_bucket&#34; &#34;b&#34;</span> {<span class="err"></span>
+<span class="na">  for_each</span>     <span class="o">=</span> <span class="err">l</span><span class="err">o</span><span class="err">c</span><span class="err">a</span><span class="err">l</span><span class="p">.</span><span class="err">b</span><span class="err">u</span><span class="err">c</span><span class="err">k</span><span class="err">e</span><span class="err">t</span><span class="err">s</span>
+  <span class="na">bucket</span> <span class="o">=</span> <span class="err">e</span><span class="err">a</span><span class="err">c</span><span class="err">h</span><span class="p">.</span><span class="err">v</span><span class="err">a</span><span class="err">l</span><span class="err">u</span><span class="err">e</span>
+}
+
+<span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span> <span class="s2">&#34;results&#34;</span> {
+  <span class="na">value</span> <span class="o">=</span> <span class="err">a</span><span class="err">w</span><span class="err">s</span><span class="err">_</span><span class="err">s</span><span class="m">3</span><span class="err">_</span><span class="err">b</span><span class="err">u</span><span class="err">c</span><span class="err">k</span><span class="err">e</span><span class="err">t</span><span class="p">.</span><span class="err">b</span>
+}
 </code></pre></div><p>以上命令将生成2个S3资源，名字分别是<code>2cloudlab-your-unique-bucket-name-1</code>和<code>2cloudlab-your-unique-bucket-name-2</code>，运行结果如下所示（为了方便显示和阅读，我已经将无关紧要的信息剔除）：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nv">results</span> <span class="o">=</span> <span class="o">{</span>
   <span class="s2">&#34;bucket1&#34;</span> <span class="o">=</span> <span class="o">{</span>
@@ -203,7 +203,7 @@
   <span class="s2">&#34;7&#34;</span> <span class="o">=</span> <span class="s2">&#34;prefix-7&#34;</span>
   <span class="s2">&#34;9&#34;</span> <span class="o">=</span> <span class="s2">&#34;prefix-9&#34;</span>
 <span class="o">}</span>
-</code></pre></div><h2 id="go实用技巧">Go实用技巧</h2>
+</code></pre></div><h2 id="go">Go实用技巧</h2>
 <ol>
 <li>如何使用Go来运行某一个测试用例（比如定义了一个TestIntegrationOrganization测试用例）？</li>
 </ol>
@@ -212,7 +212,7 @@
 <li>如何根据tag(<code>+build integration</code>)来执行一组测试用例？</li>
 </ol>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">// intergration_test.go
-</span><span class="c1">// +build integration
+</span><span class="c1"></span><span class="c1">// +build integration
 </span><span class="c1"></span>
 <span class="kd">func</span> <span class="nf">TestCase1</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
     <span class="c1">// ...
@@ -227,11 +227,11 @@
 <li>Go Concurrency: Confinement, for-select and done channel</li>
 </ol>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//Confinement that channels done, inputStream is read only, and the return value resultsStream is also read only
-</span><span class="c1"></span><span class="kd">func</span> <span class="nf">func1</span><span class="p">(</span><span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span> <span class="nx">inputStream</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">func1</span><span class="p">(</span><span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span> <span class="nx">inputStream</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span> <span class="p">{</span>
 	<span class="c1">//Create unbuffer channel in lexical scope
-</span><span class="c1"></span>	<span class="nx">resultsStream</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
+</span><span class="c1"></span>	<span class="nx">resultsStream</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span>
 	<span class="c1">// Launch another go routine to handle task and generate result which is passed to resultsStream
-</span><span class="c1"></span>	<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="c1"></span>	<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
 		<span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">resultsStream</span><span class="p">)</span>
 		<span class="k">for</span> <span class="p">{</span>
 			<span class="k">select</span> <span class="p">{</span>
@@ -246,37 +246,37 @@
 				<span class="c1">//Continual monitoring
 </span><span class="c1"></span>			<span class="p">}</span>
 		<span class="p">}</span>
-	<span class="p">}()</span>
+	<span class="p">}</span><span class="p">(</span><span class="p">)</span>
 	<span class="k">return</span> <span class="nx">resultsStream</span>
 <span class="p">}</span>
 </code></pre></div><ol start="4">
 <li>使用or-channel来检测多任务中某个任务是否完成：</li>
 </ol>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">or</span><span class="p">(</span><span class="nx">channels</span> <span class="o">...&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="nf">or</span><span class="p">(</span><span class="nx">channels</span> <span class="o">...</span><span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span> <span class="p">{</span>
 	<span class="k">switch</span> <span class="nb">len</span><span class="p">(</span><span class="nx">channels</span><span class="p">)</span> <span class="p">{</span>
 	<span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
 		<span class="k">return</span> <span class="kc">nil</span>
 	<span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
 		<span class="k">return</span> <span class="nx">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 	<span class="p">}</span>
-	<span class="nx">orDone</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
-	<span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+	<span class="nx">orDone</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span>
+	<span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
 		<span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">orDone</span><span class="p">)</span>
 		<span class="k">switch</span> <span class="nb">len</span><span class="p">(</span><span class="nx">channels</span><span class="p">)</span> <span class="p">{</span>
 		<span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
 			<span class="k">select</span> <span class="p">{</span>
-			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">:</span>
 			<span class="p">}</span>
 		<span class="k">default</span><span class="p">:</span>
 			<span class="k">select</span> <span class="p">{</span>
-			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
-			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
-			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
-			<span class="k">case</span> <span class="o">&lt;-</span><span class="nf">or</span><span class="p">(</span><span class="nb">append</span><span class="p">(</span><span class="nx">channels</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span> <span class="nx">orDone</span><span class="p">)</span><span class="o">...</span><span class="p">):</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="p">:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nx">channels</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">:</span>
+			<span class="k">case</span> <span class="o">&lt;-</span><span class="nf">or</span><span class="p">(</span><span class="nb">append</span><span class="p">(</span><span class="nx">channels</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="p">]</span><span class="p">,</span> <span class="nx">orDone</span><span class="p">)</span><span class="o">...</span><span class="p">)</span><span class="p">:</span>
 			<span class="p">}</span>
 		<span class="p">}</span>
-	<span class="p">}()</span>
+	<span class="p">}</span><span class="p">(</span><span class="p">)</span>
 	<span class="k">return</span> <span class="nx">orDone</span>
 <span class="p">}</span>
 </code></pre></div><ol start="5">
@@ -286,19 +286,19 @@
 <img class="lazy" data-src="https://2cloudlab.com/images/blog/tee-vs-fanout-patterns.png" alt=""  />
 </p>
 <p><strong>fan-out</strong></p>
-<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">numFinders</span> <span class="o">:=</span> <span class="nx">runtime</span><span class="p">.</span><span class="nf">NumCPU</span><span class="p">()</span>
-<span class="nx">finders</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">numFinders</span><span class="p">)</span>
+<div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">numFinders</span> <span class="o">:=</span> <span class="nx">runtime</span><span class="p">.</span><span class="nf">NumCPU</span><span class="p">(</span><span class="p">)</span>
+<span class="nx">finders</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="o">&lt;-</span><span class="kd">chan</span> <span class="kt">int</span><span class="p">,</span> <span class="nx">numFinders</span><span class="p">)</span>
 <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">numFinders</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
     <span class="nx">finders</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="p">=</span> <span class="nf">primeFinder</span><span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">randIntStream</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p><strong>tee</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">tee</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span>
-    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
-    <span class="nx">in</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
-<span class="p">)</span> <span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
-    <span class="nx">out1</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
-    <span class="nx">out2</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
-    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span>
+    <span class="nx">in</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span>
+<span class="p">)</span> <span class="p">(</span><span class="nx">_</span><span class="p">,</span> <span class="nx">_</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">{</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">out1</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span>
+    <span class="nx">out2</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">out1</span><span class="p">)</span>
         <span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">out2</span><span class="p">)</span>
         <span class="k">for</span> <span class="nx">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="nf">orDone</span><span class="p">(</span><span class="nx">done</span><span class="p">,</span> <span class="nx">in</span><span class="p">)</span> <span class="p">{</span>
@@ -313,7 +313,7 @@
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
-    <span class="p">}()</span>
+    <span class="p">}</span><span class="p">(</span><span class="p">)</span>
     <span class="k">return</span> <span class="nx">out1</span><span class="p">,</span> <span class="nx">out2</span>
 <span class="p">}</span>
 </code></pre></div><ol start="6">
@@ -324,14 +324,14 @@
 </p>
 <p><strong>fan-in</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">fanIn</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span>
-    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
-    <span class="nx">channels</span> <span class="o">...&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
-<span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
+    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span>
+    <span class="nx">channels</span> <span class="o">...</span><span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span> <span class="p">{</span>
     <span class="kd">var</span> <span class="nx">wg</span> <span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span>
-    <span class="nx">multiplexedStream</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
+    <span class="nx">multiplexedStream</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span>
 
-    <span class="nx">multiplex</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span> <span class="p">{</span>
-        <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">()</span>
+    <span class="nx">multiplex</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span><span class="nx">c</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">defer</span> <span class="nx">wg</span><span class="p">.</span><span class="nf">Done</span><span class="p">(</span><span class="p">)</span>
         <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">c</span> <span class="p">{</span>
             <span class="k">select</span> <span class="p">{</span>
             <span class="k">case</span> <span class="o">&lt;-</span><span class="nx">done</span><span class="p">:</span>
@@ -342,29 +342,29 @@
     <span class="p">}</span>
 
     <span class="c1">// Select from all the channels
-</span><span class="c1"></span>    <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">channels</span><span class="p">))</span>
+</span><span class="c1"></span>    <span class="nx">wg</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nx">channels</span><span class="p">)</span><span class="p">)</span>
     <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">c</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">channels</span> <span class="p">{</span>
         <span class="k">go</span> <span class="nf">multiplex</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span>
     <span class="p">}</span>
 
     <span class="c1">// Wait for all the reads to complete
-</span><span class="c1"></span>    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
-        <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">()</span>
+</span><span class="c1"></span>    <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">wg</span><span class="p">.</span><span class="nf">Wait</span><span class="p">(</span><span class="p">)</span>
         <span class="nb">close</span><span class="p">(</span><span class="nx">multiplexedStream</span><span class="p">)</span>
-    <span class="p">}()</span>
+    <span class="p">}</span><span class="p">(</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="nx">multiplexedStream</span>
 <span class="p">}</span>
 </code></pre></div><p><strong>bridge</strong></p>
 <div class="highlight"><pre class="chroma"><code class="language-go" data-lang="go"><span class="nx">bridge</span> <span class="o">:=</span> <span class="kd">func</span><span class="p">(</span>
-    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
-    <span class="nx">chanStream</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{},</span>
-<span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span> <span class="p">{</span>
-    <span class="nx">valStream</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{})</span>
-    <span class="k">go</span> <span class="kd">func</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">done</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span>
+    <span class="nx">chanStream</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span> <span class="p">{</span>
+    <span class="nx">valStream</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span><span class="p">)</span>
+    <span class="k">go</span> <span class="kd">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">defer</span> <span class="nb">close</span><span class="p">(</span><span class="nx">valStream</span><span class="p">)</span>
         <span class="k">for</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">stream</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{}</span>
+            <span class="kd">var</span> <span class="nx">stream</span> <span class="o">&lt;-</span><span class="kd">chan</span> <span class="kd">interface</span><span class="p">{</span><span class="p">}</span>
             <span class="k">select</span> <span class="p">{</span>
             <span class="k">case</span> <span class="nx">maybeStream</span><span class="p">,</span> <span class="nx">ok</span> <span class="o">:=</span> <span class="o">&lt;-</span><span class="nx">chanStream</span><span class="p">:</span>
                 <span class="k">if</span> <span class="nx">ok</span> <span class="o">==</span> <span class="kc">false</span> <span class="p">{</span>
@@ -381,7 +381,7 @@
                 <span class="p">}</span>
             <span class="p">}</span>
         <span class="p">}</span>
-    <span class="p">}()</span>
+    <span class="p">}</span><span class="p">(</span><span class="p">)</span>
     <span class="k">return</span> <span class="nx">valStream</span>
 <span class="p">}</span>
 </code></pre></div><ol start="7">
@@ -414,7 +414,7 @@
 <span class="p">)</span>
 
 <span class="kd">type</span> <span class="nx">Shape</span> <span class="kd">interface</span> <span class="p">{</span>
-	<span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span>
+	<span class="nf">DoubleArea</span><span class="p">(</span><span class="p">)</span> <span class="kt">float64</span>
 <span class="p">}</span>
 
 <span class="kd">type</span> <span class="nx">Rect</span> <span class="kd">struct</span> <span class="p">{</span>
@@ -426,33 +426,33 @@
 	<span class="nx">Radius</span> <span class="kt">float64</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">Rect</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Width is %f, Height is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Width</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Height</span><span class="p">))</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="o">*</span><span class="nx">Rect</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">(</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Width is %f, Height is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Width</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Height</span><span class="p">)</span><span class="p">)</span>
 	<span class="nx">s</span><span class="p">.</span><span class="nx">Width</span> <span class="o">*=</span> <span class="mf">1.414</span>
 	<span class="nx">s</span><span class="p">.</span><span class="nx">Height</span> <span class="o">*=</span> <span class="mf">1.414</span>
 	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Width</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Height</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Radius is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span><span class="p">))</span>
+<span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">(</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Radius is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span><span class="p">)</span><span class="p">)</span>
 	<span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*=</span> <span class="mf">1.414</span>
 	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="mf">3.14</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
 	<span class="c1">// pointer receiver
 </span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;[Pointer receiver]&#34;</span><span class="p">)</span>
 	<span class="kd">var</span> <span class="nx">s</span> <span class="nx">Shape</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">Rect</span><span class="p">{</span><span class="nx">Width</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="nx">Height</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
-	<span class="nx">s</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">()</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;After double area, the Width is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.(</span><span class="o">*</span><span class="nx">Rect</span><span class="p">).</span><span class="nx">Width</span><span class="p">))</span>
+	<span class="nx">s</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;After double area, the Width is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="p">(</span><span class="o">*</span><span class="nx">Rect</span><span class="p">)</span><span class="p">.</span><span class="nx">Width</span><span class="p">)</span><span class="p">)</span>
 
 	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;-----------------------------&#34;</span><span class="p">)</span>
 
 	<span class="c1">// value receiver
 </span><span class="c1"></span>	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="s">&#34;[Value receiver]&#34;</span><span class="p">)</span>
 	<span class="kd">var</span> <span class="nx">c</span> <span class="nx">Shape</span> <span class="p">=</span> <span class="nx">Circle</span><span class="p">{</span><span class="nx">Radius</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
-	<span class="nx">c</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">()</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;After double area, the Radius is %f&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.(</span><span class="nx">Circle</span><span class="p">).</span><span class="nx">Radius</span><span class="p">))</span>
+	<span class="nx">c</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">(</span><span class="p">)</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;After double area, the Radius is %f&#34;</span><span class="p">,</span> <span class="nx">c</span><span class="p">.</span><span class="p">(</span><span class="nx">Circle</span><span class="p">)</span><span class="p">.</span><span class="nx">Radius</span><span class="p">)</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre></div><p>运行以上程序的输出结果如下：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">[</span>Pointer receiver<span class="o">]</span>
@@ -476,7 +476,7 @@ After double area, the Radius is 1.000000
 
 <span class="c1">// interface
 </span><span class="c1"></span><span class="kd">type</span> <span class="nx">Shape</span> <span class="kd">interface</span> <span class="p">{</span>
-	<span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span>
+	<span class="nf">DoubleArea</span><span class="p">(</span><span class="p">)</span> <span class="kt">float64</span>
 <span class="p">}</span>
 
 <span class="c1">// struct
@@ -485,27 +485,27 @@ After double area, the Radius is 1.000000
 <span class="p">}</span>
 
 <span class="c1">// method
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
-	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Radius is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span><span class="p">))</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">DoubleArea</span><span class="p">(</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
+	<span class="nx">fmt</span><span class="p">.</span><span class="nf">Println</span><span class="p">(</span><span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;Radius is %f&#34;</span><span class="p">,</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span><span class="p">)</span><span class="p">)</span>
 	<span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*=</span> <span class="mf">1.414</span>
 	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="mf">3.14</span>
 <span class="p">}</span>
 
 <span class="c1">// method
-</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">GetVolume</span><span class="p">()</span> <span class="kt">float64</span> <span class="p">{</span>
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">s</span> <span class="nx">Circle</span><span class="p">)</span> <span class="nf">GetVolume</span><span class="p">(</span><span class="p">)</span> <span class="kt">float64</span> <span class="p">{</span>
 	<span class="k">return</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="nx">s</span><span class="p">.</span><span class="nx">Radius</span> <span class="o">*</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="mf">2.0</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
   <span class="c1">// We use Shape to abstract Circle to a shape
 </span><span class="c1"></span>  <span class="kd">var</span> <span class="nx">c</span> <span class="nx">Shape</span> <span class="p">=</span> <span class="nx">Circle</span><span class="p">{</span><span class="nx">Radius</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
-  <span class="nx">c</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">()</span>
+  <span class="nx">c</span><span class="p">.</span><span class="nf">DoubleArea</span><span class="p">(</span><span class="p">)</span>
   <span class="c1">// You can&#39;t call GetVolume, beacuse c is a Shape, which doesn&#39;t contain GetVolume
 </span><span class="c1"></span>  <span class="c1">// c.GetVolume()
 </span><span class="c1"></span>  <span class="c1">// but you can change c to its dynamic type which is Circle by c.(Circle) and call GetVolume
-</span><span class="c1"></span>  <span class="nx">c</span><span class="p">.(</span><span class="nx">Circle</span><span class="p">).</span><span class="nf">GetVolume</span><span class="p">()</span>
+</span><span class="c1"></span>  <span class="nx">c</span><span class="p">.</span><span class="p">(</span><span class="nx">Circle</span><span class="p">)</span><span class="p">.</span><span class="nf">GetVolume</span><span class="p">(</span><span class="p">)</span>
 <span class="p">}</span>
-</code></pre></div><h2 id="组合terraformaws-vault和go工具的实用技巧">组合Terraform、aws-vault和Go工具的实用技巧</h2>
+</code></pre></div><h2 id="terraformaws-vaultgo">组合Terraform、aws-vault和Go工具的实用技巧</h2>
 <ol>
 <li>如何使用aws-vault和Go工具来操作AWS服务？</li>
 </ol>

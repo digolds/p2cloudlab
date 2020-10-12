@@ -51,7 +51,7 @@ github平台存储了开发者的代码，提供了搭建CI的Action服务，拥
 组建一个团队来搭建CI，需要准备服务器，安装软件，用网线连接服务器等，而借助github，则只需要编写yaml文件就能快速构建出一个稳定的CI，这种转变大大地缩短了搭建CI的时间，让开发者专注于软件的功能研发！
 接下来让我们看一个具体的例子来实践在github上构建CI
 通过一个Go示例在github上构建CI 这个例子是由Go语言来编写的，完整的源码可以到这里获取，其目录结构如下所示：
-. |____.github | |____workflows | | |____integration_workflow.yaml | | |____master_workflow.yaml |____go.mod |____main.go |____main_integration_test.go |____main_test.go |____Makefile |____mylib | |____external_lib.go | |____external_lib_test.</description>
+.|____.github| |____workflows| | |____integration_workflow.yaml| | |____master_workflow.yaml|____go.mod|____main.go|____main_integration_test.go|____main_test.go|____Makefile|____mylib| |____external_lib.go| |____external_lib_test.</description>
     </item>
     
   </channel>

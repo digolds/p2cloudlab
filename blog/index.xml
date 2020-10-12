@@ -73,7 +73,7 @@ github平台存储了开发者的代码，提供了搭建CI的Action服务，拥
 组建一个团队来搭建CI，需要准备服务器，安装软件，用网线连接服务器等，而借助github，则只需要编写yaml文件就能快速构建出一个稳定的CI，这种转变大大地缩短了搭建CI的时间，让开发者专注于软件的功能研发！
 接下来让我们看一个具体的例子来实践在github上构建CI
 通过一个Go示例在github上构建CI 这个例子是由Go语言来编写的，完整的源码可以到这里获取，其目录结构如下所示：
-. |____.github | |____workflows | | |____integration_workflow.yaml | | |____master_workflow.yaml |____go.mod |____main.go |____main_integration_test.go |____main_test.go |____Makefile |____mylib | |____external_lib.go | |____external_lib_test.</description>
+.|____.github| |____workflows| | |____integration_workflow.yaml| | |____master_workflow.yaml|____go.mod|____main.go|____main_integration_test.go|____main_test.go|____Makefile|____mylib| |____external_lib.go| |____external_lib_test.</description>
     </item>
     
     <item>
@@ -96,7 +96,7 @@ github平台存储了开发者的代码，提供了搭建CI的Action服务，拥
       <description>Terraform实用技巧 aws-vault实用技巧 Go实用技巧 组合Terraform、aws-vault和Go工具的实用技巧  本文记录了2cloudlab.com在使用Terraform、aws-vault和Go工具所积累的知识和经验。这些知识和经验是在解决某些问题的时候发现的，如果能够将这些知识和经验汇总，也许能够帮助到其他团队。
 Terraform实用技巧  aws_launch_configuration资源是无法通过API来修改的  一个aws_launch_configuration实例创建之后，要想修改该实例的属性，则需要重新创建一个新的aws_launch_configuration实例，原因在于aws_launch_configuration类型的实例是无法通过AWS所提供的API来修改的。
 Terraform所提供的所有类别的资源都有一个lifecycle的设置  Terraform工具通过这个设置来决定创建资源的行为。比如以下代码通过设置create_before_destroy = true，最终能够使得Terraform先创建一个aws_launch_configuration新的实例，再将新实例替换掉旧实例，替换成功后再销毁旧实例。lifecycle中的设置只能是常量，因此这种方式：create_before_destroy = var.flag来设置create_before_destroy是不允许的。
-resource &amp;#34;aws_launch_configuration&amp;#34; &amp;#34;launch_configuration_instance&amp;#34; { image_id = &amp;#34;ami-0fc20dd1da406780b&amp;#34;#ubuntu 18.4  instance_type = &amp;#34;t2.micro&amp;#34; security_groups = [aws_security_group.instance.id] user_data = &amp;lt;&amp;lt;-EOF#!/bin/bash echo &amp;#34;Hello, 2cloudlab.com&amp;#34; &amp;gt; index.html nohup busybox httpd -f -p ${var.server_port} &amp;amp; EOF# Required when using a launch configuration with an auto scaling group. # https://www.terraform.io/docs/providers/aws/r/launch_configuration.html  lifecycle { create_before_destroy = true } } Terraform提供for_each指令来遍历一个map对象，并根据该对象的键值对each.</description>
+resource &amp;#34;aws_launch_configuration&amp;#34; &amp;#34;launch_configuration_instance&amp;#34; { image_id = &amp;#34;ami-0fc20dd1da406780b&amp;#34;#ubuntu 18.4instance_type = &amp;#34;t2.micro&amp;#34;security_groups = [aws_security_group.instance.id]user_data = &amp;lt;&amp;lt;-EOF#!/bin/bash echo &amp;#34;Hello, 2cloudlab.com&amp;#34; &amp;gt; index.htmlnohup busybox httpd -f -p ${var.server_port} &amp;amp;EOF# Required when using a launch configuration with an auto scaling group.# https://www.terraform.io/docs/providers/aws/r/launch_configuration.html lifecycle {create_before_destroy = true}}Terraform提供for_each指令来遍历一个map对象，并根据该对象的键值对each.</description>
     </item>
     
     <item>
@@ -108,16 +108,16 @@ resource &amp;#34;aws_launch_configuration&amp;#34; &amp;#34;launch_configuratio
       <description>使用命令行操作AWS服务之前，需要输入登陆凭证。每一个研发人员会经常使用不同账号的登陆凭证来完成他们的工作，比如在测试账号中进行测试工作，在stage账号中部署测试通过的功能等。在现实的工作中，每个研发人员每天平均会操作AWS服务20～50次，而每次都需要给AWS提供登陆凭证。因此为了提高一个团队的研发效率，需要采用一个能够高效访问AWS服务的方法。本文将对比几种方法，并最终给出一个更加有效的方法来访问AWS。
 本文将基于以下几种方法来说明如何在类Unix系统上配置和使用登陆凭证：
  将登陆凭证写入配置文件~/.aws/credentials 将登陆凭证写入环境变量AWS_ACCESS_KEY_ID 和 AWS_SECRET_ACCESS_KEY 借助工具aws-valut来设置登陆凭证 总结  将登陆凭证写入配置文件~/.aws/credentials 通过命令行访问AWS服务之前，你需要获得一对登陆凭证，它们的格式如下：
-aws_access_key_id=AKIAIOSFODNN7EXAMPLE aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY 将以上登陆凭证写入~/.aws/credentials文件中就可以轻松访问AWS服务（内容如下所示）。这种方式的最大问题是不安全，因为该登陆凭证是以明文的方式存放，而且容易被别人获取。
-[default] aws_access_key_id=AKIAIOSFODNN7EXAMPLE aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY 既然将登陆凭证存放在磁盘上是不合适的，那么可以通过设置环境变量的方式来解决这类安全问题。
+aws_access_key_id=AKIAIOSFODNN7EXAMPLEaws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY将以上登陆凭证写入~/.aws/credentials文件中就可以轻松访问AWS服务（内容如下所示）。这种方式的最大问题是不安全，因为该登陆凭证是以明文的方式存放，而且容易被别人获取。
+[default]aws_access_key_id=AKIAIOSFODNN7EXAMPLEaws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY既然将登陆凭证存放在磁盘上是不合适的，那么可以通过设置环境变量的方式来解决这类安全问题。
 将登陆凭证写入环境变量AWS_ACCESS_KEY_ID 和 AWS_SECRET_ACCESS_KEY 为了不存储登陆凭证，则可以通过写入环境变量的方式来访问AWS服务，如下所示（注意export前的空格）：
-echo &amp;#34;Note a space before export command, it will not store used commands in commands history.&amp;#34; export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY 以上方式只能在当前运行这些命令的命令行中访问AWS服务，如果该命令行关闭，那么这些环境变量需要重新设置。因此这种方式解决了安全的问题，但是确变得麻烦了。比如我需要打开2个命令行窗口来访问不同的AWS账号。
+echo &amp;#34;Note a space before export command, it will not store used commands in commands history.&amp;#34;export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLEexport AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY以上方式只能在当前运行这些命令的命令行中访问AWS服务，如果该命令行关闭，那么这些环境变量需要重新设置。因此这种方式解决了安全的问题，但是确变得麻烦了。比如我需要打开2个命令行窗口来访问不同的AWS账号。
 要想高效访问AWS服务，则应该同时解决以上2个问题。幸运的是，我们可以使用工具：aws-vault来协助我们更好地访问AWS服务。
 借助工具aws-valut来设置登陆凭证 aws-valut是一个管理登陆凭证的命令行工具（这篇文章进一步介绍了该工具）。这个工具通过以下方式解决了访问AWS时所遇到问题：
  加密存储登陆凭证 一个命令行同时处理多个登陆凭证 支持所有访问AWS的命令行工具  在使用aws-vault之前，需要设置登陆凭证，比如设置以下2个不同账号的登陆凭证：
-aws-vault add slz aws-vault add slz_mfa 比如以下命令使用了slz所对应的凭证并运行aws命令行工具
-aws-vault exec slz -- aws iam list-users 以下命令使用了slz_mfa所对应的凭证并运行terraform工具
-aws-vault exec slz_mfa -- terraform plan slz和slz_mfa所对应的凭证均以密文的方式存储在磁盘上。通过以上对比，读者应该首先考虑使用aws-vault来访问AWS服务，并考虑在命令行之前加入一个空格来避免命令被记录在历史之中，比如以下示例：</description>
+aws-vault add slzaws-vault add slz_mfa比如以下命令使用了slz所对应的凭证并运行aws命令行工具
+aws-vault exec slz -- aws iam list-users以下命令使用了slz_mfa所对应的凭证并运行terraform工具
+aws-vault exec slz_mfa -- terraform planslz和slz_mfa所对应的凭证均以密文的方式存储在磁盘上。通过以上对比，读者应该首先考虑使用aws-vault来访问AWS服务，并考虑在命令行之前加入一个空格来避免命令被记录在历史之中，比如以下示例：</description>
     </item>
     
     <item>
@@ -130,15 +130,15 @@ aws-vault exec slz_mfa -- terraform plan slz和slz_mfa所对应的凭证均以�
  什么是aws-vault工具 aws-vault工具的使用指南 总结  什么是aws-vault工具 aws-vault是一个命令行工具，这个工具的主要作用在于帮助研发人员以命令行的方式快速访问AWS服务，最终减轻了每一名研发人员因反复登录而带来的负担，从而提高企业整体的研发效率。
 aws-vault是一款用go语言编写且开源的命令行工具，其项目地址在这里。aws-vault主要解决安全和自动设置凭证的问题。
 初次运行aws-vault时，只需要在命令行里输入如下指令：
-aws-vault add slz 根据提示输入AWS_ACCESS_KEY_ID和AWS_SECRET_ACCESS_KEY信息。如果这个凭证具有操作AWS资源的权限，那么研发人员就能通过aws-vault工具高效访问AWS服务。此外，这2个登录信息是以密文的形式存储的，因此aws-vault进一步保护了登录凭证。如果该用户需要使用MFA，那么只需要在文件~/.aws/config加入以下内容：
-# config文件 [profile slz] mfa_serial = arn:aws:iam::120699691161:mfa/Tony aws-vault工具会自动到这个文件中读取该MFA地址，并提示研发人员键入6位安全码。如果研发人员需要用到AWS所提供的role，那么也可以按照类似的方式在该文件中添加以下内容：
-# config文件 [profile slz] role_arn = arn:aws:iam::120699691161:role/update_role aws-vault工具会自动读取这个role，并自动获取该role所拥有的权限来访问AWS服务。
+aws-vault add slz根据提示输入AWS_ACCESS_KEY_ID和AWS_SECRET_ACCESS_KEY信息。如果这个凭证具有操作AWS资源的权限，那么研发人员就能通过aws-vault工具高效访问AWS服务。此外，这2个登录信息是以密文的形式存储的，因此aws-vault进一步保护了登录凭证。如果该用户需要使用MFA，那么只需要在文件~/.aws/config加入以下内容：
+# config文件[profile slz]mfa_serial = arn:aws:iam::120699691161:mfa/Tonyaws-vault工具会自动到这个文件中读取该MFA地址，并提示研发人员键入6位安全码。如果研发人员需要用到AWS所提供的role，那么也可以按照类似的方式在该文件中添加以下内容：
+# config文件[profile slz]role_arn = arn:aws:iam::120699691161:role/update_roleaws-vault工具会自动读取这个role，并自动获取该role所拥有的权限来访问AWS服务。
 设置好以上登录凭证之后，研发人员只需要执行以下命令就能自动访问AWS资源:
-aws-vault exec slz -- aws iamlist-users 以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
-aws-vault exec slz -- terraform apply aws-vault工具的使用指南 完成以上配置之后，接下来看看aws-vault工具如何结合terraform工具使用的。
+aws-vault exec slz -- aws iam list-users以上命令分两部分：aws-vault exec slz和aws iam list-users。前者会根据slz去找到对应的登录凭证，并自动设置好登录凭证，后者则是使用aws命令行工具列出所有用户信息。后半部分可以是支持AWS凭证登录的任何工具(比如：Terraform工具）。如下例子将aws-vault工具和terraform工具结合在一起使用：
+aws-vault exec slz -- terraform applyaws-vault工具的使用指南 完成以上配置之后，接下来看看aws-vault工具如何结合terraform工具使用的。
 假设我们使用aws-vault添加了以下具有相同登录凭证，但是不同登录方式的登录选择：
  slz：直接通过登录凭证操作AWS服务 slz_mfa：除了需要登录凭证，还需要输入6位安全码才能操作AWS服务 slz_mfa_role：获取临时登录凭证，并以role的方式访问AWS服务  以下命令说明了如何使用aws-vault工具和terraform plan命令生成资源创建的详细信息:
- 以下命令直接通过登录凭证使terraform能够访问AWS服务  aws-vault exec slz -- terraform plan 以下命令与第一种类似，但是在执行访问AWS服务之前需要输入6位安全码  aws-vault exec slz_mfa -- terraform plan 以下命令的登录凭证是临时生成的，所拥有的权限由role来确定，这个role有可能是其它账号的。  aws-vault exec slz_mfa_role -- terraform plan 通过以上命令，研发人员可以快速切换登录场景，并且只需要一行命令就能操作AWS服务。因此对于拥有上百人的研发团队而言，这种便捷能够以100x的系数来提高团队的工作效率！</description>
+ 以下命令直接通过登录凭证使terraform能够访问AWS服务  aws-vault exec slz -- terraform plan以下命令与第一种类似，但是在执行访问AWS服务之前需要输入6位安全码  aws-vault exec slz_mfa -- terraform plan以下命令的登录凭证是临时生成的，所拥有的权限由role来确定，这个role有可能是其它账号的。  aws-vault exec slz_mfa_role -- terraform plan通过以上命令，研发人员可以快速切换登录场景，并且只需要一行命令就能操作AWS服务。因此对于拥有上百人的研发团队而言，这种便捷能够以100x的系数来提高团队的工作效率！</description>
     </item>
     
     <item>
@@ -163,14 +163,14 @@ aws-vault exec slz -- terraform apply aws-vault工具的使用指南 完成以�
       <description>本文将指导你如何准备Go研发环境以及介绍一些基础语法知识。这些内容能够帮助你快速地在企业中应用Go语言所带来的好处。这些好处有：跨平台、丰富的三方库、并发和内置自动化测试功能。本文将按照以下几个方面来介绍Go：
  下载和安装Go 选择IDE Go常用的命令 Go的内置类型 流程控制 并发 错误处理 结构化数据的转化 导入第三方模块 总结  下载和安装Go 在使用Go编程时，首先需要下载和安装Go研发环境。读者可以到其官方网站下载。下载完成之后是安装Go研发环境，假设安装路径为/path/to/go。
 安装完成之后需要配置环境变量GOROOT，根据不同的平台设置环境变量的命令是不一样的，如下所示：
- Linux和macOS平台  export GOROOT=/path/to/go  Window平台  setx GOROOT &amp;#34;\path\to\go&amp;#34; 环境变量GOROOT的作用是告诉系统Go语言的安装路径，以便当执行go命令时能够找到可执行性文件。除了要设置GOROOT，还需要设置环境变量GOPATH。Go所提供的工具集依赖于GOPATH，所有源码、三方库以及编译好的程序都会在GOPATH所指定的目录下。假设在macOS运行以下指令：
-export GOPATH=$HOME/gocode 那么你的所有源码都需要放在src目录下，因此，你需要在目录$HOME/gocode中创建文件夹src。除了使用src目录放置Go源码，在目录$HOME/gocode中还需要创建目录bin和pkg。此时的目录结构是：
-gocode ├─bin ├─pkg └─src bin放置所有可执行性文件；pkg放置Go程序所依赖的3方库；src放置了你即将编写的Go程序。
+ Linux和macOS平台  export GOROOT=/path/to/go Window平台  setx GOROOT &amp;#34;\path\to\go&amp;#34;环境变量GOROOT的作用是告诉系统Go语言的安装路径，以便当执行go命令时能够找到可执行性文件。除了要设置GOROOT，还需要设置环境变量GOPATH。Go所提供的工具集依赖于GOPATH，所有源码、三方库以及编译好的程序都会在GOPATH所指定的目录下。假设在macOS运行以下指令：
+export GOPATH=$HOME/gocode那么你的所有源码都需要放在src目录下，因此，你需要在目录$HOME/gocode中创建文件夹src。除了使用src目录放置Go源码，在目录$HOME/gocode中还需要创建目录bin和pkg。此时的目录结构是：
+gocode├─bin├─pkg└─srcbin放置所有可执行性文件；pkg放置Go程序所依赖的3方库；src放置了你即将编写的Go程序。
 以上步骤操作完成之后，需要执行以下命令来进一步确保Go运行环境安装正确！
-$ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序之前，需要根据自身的情况来选择IDE。以下是一些常用的IDE，使用这些IDE能够提高编程效率！
+$ go versiongo version go1.11.5 linux/amd64选择IDE 在开始编写Go程序之前，需要根据自身的情况来选择IDE。以下是一些常用的IDE，使用这些IDE能够提高编程效率！
  Vim Editor GitHub Atom Microsoft Visual Studio Code  选择IDE之后，需要为其配置调试环境，这里以VS Code为例来配置调试环境，其它IDE也需要配置对应的调试环境。为了能在VS Code里调试Go代码，则需要安装以下插件:
- VSCode-Go plugin   Analysis工具 Delve  安装完成之后需要按照以下方式配置Go-Plugin，其中program填写Go程序所在的目录。
- 接下来将举2个例子来说明如何调试，其中一个例子是调试Go程序，另外一个例子是调试自动化测试用例。</description>
+ VSCode-Go plugin  Analysis工具 Delve  安装完成之后需要按照以下方式配置Go-Plugin，其中program填写Go程序所在的目录。
+接下来将举2个例子来说明如何调试，其中一个例子是调试Go程序，另外一个例子是调试自动化测试用例。</description>
     </item>
     
     <item>
@@ -182,8 +182,8 @@ $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序�
       <description>在企业中经常会发生此类事情：临近产品新功能发布的日子，企业上下忙的不可开交，甚至有些研发人员被半夜叫醒解决新功能无法使用的问题，大家急急忙忙将遇到的问题解决了却又引发了其它问题，最终导致产品新功能无法及时发布或者产品运行在一个容易奔溃的环境。这类事件反复发生，使得研发人员害怕产品新功能的每一次发布。这种害怕将导致企业延长新功能的发布周期，本来一周一次的发布计划改成了一个月一次发布。更长的发布周期将会积累和隐藏更多的风险和不确定因素，因此这类事件变得更加常见，问题变得更加糟糕！面对这个问题所带来的挑战，企业需要缩短发布周期来及早暴露和解决问题，而缩短发布周期的关键点在于如何在短时间内发现更多的缺陷！自动化测试是实现这个关键点的因素之一。
 自动化测试在产品的研发过程中无处不在。研发团队在研发产品时需要为其编写单元测试；测试团队在测试产品时要为其编写手动测试、集成测试和UI测试；DevOps团队需要为产品的运行环境编写自动化测试用例，确保生成的环境是稳定且支持产品的。为产品研发实施自动化测试的目的在于短时间内发现和解决更多的缺陷，从而增强产品对外发布的信心！本文将通过以下方面来介绍如何对产品的运行环境进行自动化测试，企业可以根据自身情况，引入本文所提到的自动化测试经验来确保产品的运行环境是可信的。
  2cloudlab模块的自动化测试 静态检测Terraform的编码 针对Terraform模块编写单元测试（Unit Test） 针对Terraform模块编写集成测试（Integration Test） 针对Terraform模块编写端到端的测试（End-to-End Test） 为测试环境中的资源定制清除策略 总结  其中单元测试、集成测试和End-to-End测试需要使用Go语言来编写大量测试代码，产品运行环境的质量主要由它们来保证。这些测试的难易程度、数量占比和运行时间由下图所示：
- 2cloudlab模块的自动化测试 2cloudlab的模块都会包含一些自动化测试用例。每一个Terraform模块都会有对应的测试用例，这些测试用例会放在一个test目录下（目录结构如下所示），每一个测试用例所验证的场景是不同的。由于这些自动化测试用例都是用Go语言来编写的，因此需要使用Go语言的运行时环境来运行。除此之外，为了能够高效地编写自动化测试用例，需要引入第三方工具Terratest，该工具也是基于Go语言来编写的（这篇文章介绍了Go语言的基础知识），它像一把瑞士军刀，提供了大量通用的基础操作。
-. |____examples | |____iam_across_account_assistant | | |____main.tf | | |____outputs.tf | | |____README.md | | |____terraform.tfstate | | |____terraform.tfstate.backup | | |____variables.tf |____modules | |____iam_across_account_assistant | | |____main.tf | | |____outputs.tf | | |____README.md | | |____variables.tf |____test | |____iam_across_account_assistant_test.go | |____README.md 其中test目录下的测试用例iam_across_account_assistant_test.go会调用examples下的手动测试例子来验证目录modules下的Terraform模块iam_across_account_assistant。
+2cloudlab模块的自动化测试 2cloudlab的模块都会包含一些自动化测试用例。每一个Terraform模块都会有对应的测试用例，这些测试用例会放在一个test目录下（目录结构如下所示），每一个测试用例所验证的场景是不同的。由于这些自动化测试用例都是用Go语言来编写的，因此需要使用Go语言的运行时环境来运行。除此之外，为了能够高效地编写自动化测试用例，需要引入第三方工具Terratest，该工具也是基于Go语言来编写的（这篇文章介绍了Go语言的基础知识），它像一把瑞士军刀，提供了大量通用的基础操作。
+.|____examples| |____iam_across_account_assistant| | |____main.tf| | |____outputs.tf| | |____README.md| | |____terraform.tfstate| | |____terraform.tfstate.backup| | |____variables.tf|____modules| |____iam_across_account_assistant| | |____main.tf| | |____outputs.tf| | |____README.md| | |____variables.tf|____test| |____iam_across_account_assistant_test.go| |____README.md其中test目录下的测试用例iam_across_account_assistant_test.go会调用examples下的手动测试例子来验证目录modules下的Terraform模块iam_across_account_assistant。
 2cloudlab根据以上目录结构编写了大量的单元测试以及少量的集成测试。这些测试是遵守了以下原则来编写的:
  每一个测试用例都会基于真实环境来执行 每一个测试用例执行结束后都会销毁已创建的资源 为每一个资源指定一个独立的命名空间，以免发生名称冲突 每一个测试用例都会在独立的临时目录下下运行 为每一个集成测试添加可配置stage步骤 测试用例之间是相互独立且可并发执行  在编写测试用例之前，有一步关键的验证：静态检测。为Terraform模块实施静态检测只需要花费几分钟，但是确能够避免一些常见的错误，接下来让我们从静态检测开始来一步一步提高产品运行环境的稳定性！</description>
     </item>
@@ -198,7 +198,7 @@ $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序�
  创建一个完整的产品运行环境的任务列表 如何使用2cloudlab所提供的Terraform模块 如何构建infrastructure_modules 如何构建infrastructure_live 在infrastructure_modules中引用2cloudlab的Terraform模块 在infrastructure_live中引用infrastructure_modules 总结  创建一个完整的产品运行环境所需的任务列表 创建一个完整的产品运行环境需要考虑的事情太多了，这些事情有：
  安装：安装产品以及其依赖项（比如准备操作系统） 配置：为软件提供配置信息，这些信息有端口设置、数据库密码等 创建资源：为软件创建运行环境，这些环境由计算资源、存储资源以及其它资源构成 部署：将软件部署到运行环境，在线更新功能等 高可用性：考虑在多个区域启动相同服务，确保任何一个区域停止工作时，其它区域依然能够提供服务 可扩展：支持横向扩展（增加或减少资源来应对高峰期或低峰期）和纵向扩展（增强资源） 性能：优化产品运行环境的性能，包括CPU、GPU和内存 网络：配置IP、端口、VPN、SSH 安全：增加数据安全（包括传输和存储安全）、网络安全 指标监控：收集有价值的数据，通过KPI的方式呈现出来 日志监控：收集用户日志以及产品运行环境日志 备份和恢复：支持数据备份和恢复，支持运行环境快速恢复 成本优化：降低产品运行环境的使用成本 文档：为产品代码编写文档，为产品编写说明书 测试：编写测试用例、自动化测试、集成测试和产品测试  为产品准备运行环境都会遇到以上问题，企业需要根据实际情况来选择哪些事项是需要实施的，哪些事项当下是不需要实现的。以上事项如果都使用手动的方式来实现，那么结果将会是令人失望的。2cloudlab针对这些事项实现了一个个可复用的模块，用户只需要组合并使用这些模块就能轻松地创建出开箱即用的解决方案。2cloudlab所提供的模块经过大量的测试，并可以帮助企业在一天之内完成环境的准备。接下来让我们看看如何使用2cloudlab所提供的模块。
 2cloudlab所提供的Terraform模块 2cloudlab基于Terraform编写了可复用的模块，这些模块主要托管在github上。每个模块的格式如下所示：
-. |____examples | |____iam_across_account_assistant | | |____main.tf | | |____outputs.tf | | |____README.md | | |____variables.tf |____modules | |____iam_across_account_assistant | | |____main.tf | | |____outputs.tf | | |____README.md | | |____variables.tf |____README.md |____test | |____README.md | |____iam_across_account_assistant_test.go  modules目录下包含了子功能，用户将引用这个目录下的子功能来完成环境的搭建 examples目录下包含了如何使用modules目录下子功能的例子以及对应的说明文档 test目录主要测试了modules目录下的子功能 README.</description>
+.|____examples| |____iam_across_account_assistant| | |____main.tf| | |____outputs.tf| | |____README.md| | |____variables.tf|____modules| |____iam_across_account_assistant| | |____main.tf| | |____outputs.tf| | |____README.md| | |____variables.tf|____README.md|____test| |____README.md| |____iam_across_account_assistant_test.go modules目录下包含了子功能，用户将引用这个目录下的子功能来完成环境的搭建 examples目录下包含了如何使用modules目录下子功能的例子以及对应的说明文档 test目录主要测试了modules目录下的子功能 README.</description>
     </item>
     
     <item>
@@ -214,7 +214,7 @@ $ go version go version go1.11.5 linux/amd64 选择IDE 在开始编写Go程序�
 Terraform的运行机制 terraform是单文件命令行程序，它基于infrastructure as code方式来运行的，因此需要给terraform提供脚本文件让其运行。脚本文件的后缀是.tf，其中的内容涉及选择云服务提供商、创建何种类型的资源以及定义输入输出变量等等。
 在开始运行terraform之前，需要准备以下条件:
  一台笔记本电脑 根据操作系统下载对应的terraform可执行性文件，并把该文件所在位置添加到系统的环境变量中 到AWS注册一个根账号，并用根账号创建一个子账号，这个子账号会被terraform使用 将子账号生成的ID和Key提供给terraform  以上步骤准备好之后，接下来编写以下terraform脚本文件:
-# main.tf  terraform { required_version = &amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34; } provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS provider  version = &amp;#34;~&amp;gt; 2.0&amp;#34; } resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34; instance_type = &amp;#34;t2.</description>
+# main.tfterraform {required_version =&amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34;}provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS providerversion = &amp;#34;~&amp;gt; 2.0&amp;#34;}resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34;instance_type = &amp;#34;t2.</description>
     </item>
     
     <item>
