@@ -6,11 +6,7 @@
     <description>Recent content in Kubernetes on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 20 Mar 2020 12:21:58 +0600</lastBuildDate>
-    
-	<atom:link href="https://2cloudlab.com/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 20 Mar 2020 12:21:58 +0600</lastBuildDate><atom:link href="https://2cloudlab.com/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>如何规模化企业的数字化服务--Kubernetes的最佳实践</title>
       <link>https://2cloudlab.com/blog/how-to-improve-organization-effect-kubernetes/</link>

@@ -6,7 +6,7 @@
   
   <meta name="description" content="本文将介绍全局附加索引。与之前[介绍本地附加索引的文章](https://2cloudlab.com/nosql/local-secondary-indexes)一样,我们将涉及全局附加索引的基础知识，然后通过一个例子来使用全局附加索引。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.78.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -129,7 +129,7 @@
                 
                 <div class="post-content">
                     <p>本文将介绍全局附加索引。与之前<a href="https://2cloudlab.com/nosql/local-secondary-indexes">介绍本地附加索引的文章</a>一样,我们将涉及全局附加索引的基础知识，然后通过一个例子来使用全局附加索引。</p>
-<h2 id="heading">全局附加索引的基础知识</h2>
+<h2 id="全局附加索引的基础知识">全局附加索引的基础知识</h2>
 <p>不像本地附加索引，你可以在具有简单主键或复合主键的表中添加全局附加索引。除此之外，你还可以创建具有简单主键的全局附加索引。</p>
 <p>以下是列举了全局附加索引的不同之处：</p>
 <ul>
@@ -139,14 +139,14 @@
 <li><strong>适用于任何表</strong>。本地附加索引只能用于具有复合主键的表，而全局附加索引没有这个限制&ndash;你可以将其用于具有简单主键或复合主键的表</li>
 <li><strong>可以创建具有简单主键或者复合主键的全局附加索引</strong>。</li>
 </ul>
-<h2 id="heading-1">创建全局附加索引</h2>
+<h2 id="创建全局附加索引">创建全局附加索引</h2>
 <p>类似本地附加索引，你可以在创建表的时候创建全局附加索引。然而，你也可以在已有的表上创建全局附加索引。如果在已有的表上创建全局附加索引，那么DynamoDB将自动把表中的数据同步到全局附加索引中。</p>
 <p>以下示例展示了如何使用全局附加索引建立稀疏索引。稀疏索引的用途是存放一小部分常用的数据，以便提高更快的查找效率！只有那些包含稀疏索引主键的数据才会被同步到稀疏索引中。</p>
 <p>假设有一个场景：跟踪用户退货的订单。我们将在这些订单中添加属性ReturnDate，然后将该属性作为稀疏索引的分区键，OrderId属性作为稀疏索引的排序键。</p>
 <p>以下创建了该稀疏索引：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb update-table <span class="se">\</span>
-    --table-name UserOrdersTable <span class="se">\</span>
-    --attribute-definitions <span class="s1">&#39;[
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb update-table <span class="se">\
+</span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\
+</span><span class="se"></span>    --attribute-definitions <span class="s1">&#39;[
 </span><span class="s1">      {
 </span><span class="s1">          &#34;AttributeName&#34;: &#34;ReturnDate&#34;,
 </span><span class="s1">          &#34;AttributeType&#34;: &#34;S&#34;
@@ -155,8 +155,8 @@
 </span><span class="s1">          &#34;AttributeName&#34;: &#34;OrderId&#34;,
 </span><span class="s1">          &#34;AttributeType&#34;: &#34;S&#34;
 </span><span class="s1">      }
-</span><span class="s1">    ]&#39;</span> <span class="se">\</span>
-    --global-secondary-index-updates <span class="s1">&#39;[
+</span><span class="s1">    ]&#39;</span> <span class="se">\
+</span><span class="se"></span>    --global-secondary-index-updates <span class="s1">&#39;[
 </span><span class="s1">        {
 </span><span class="s1">            &#34;Create&#34;: {
 </span><span class="s1">                &#34;IndexName&#34;: &#34;ReturnDateOrderIdIndex&#34;,
@@ -179,26 +179,26 @@
 </span><span class="s1">                }
 </span><span class="s1">            }
 </span><span class="s1">        }
-</span><span class="s1">    ]&#39;</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+</span><span class="s1">    ]&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>创建全局附加索引的方式类似于本地附加索引。注意：我只需要在<code>--attribute-definitions</code>中添加全局附加索引的属性，以及使用<code>--global-secondary-index-updates</code>选项来指定分区键或排序键。</p>
-<h2 id="heading-2">基于全局附加索引查找数据</h2>
+<h2 id="基于全局附加索引查找数据">基于全局附加索引查找数据</h2>
 <p>使用全局附加索引来查找数据与本地附加索引类似&ndash;你可以使用Query或Scan操作以及指定想要使用的全局附加索引。</p>
 <p>在这个例子中，我们创建了一个稀疏索引，但是表中的任何数据都没有包含ReturnDate字段，因此该索引中不会包含任何数据，让我们执行以下Scan操作来验证这一结果：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\</span>
-    --table-name UserOrdersTable <span class="se">\</span>
-    --index-name ReturnDateOrderIdIndex <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\
+</span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\
+</span><span class="se"></span>    --index-name ReturnDateOrderIdIndex <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>从该稀疏索引中返回的结果是空的，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
     <span class="s2">&#34;Count&#34;</span>: 0,
-    <span class="s2">&#34;Items&#34;</span>: <span class="o">[</span><span class="o">]</span>,
+    <span class="s2">&#34;Items&#34;</span>: <span class="o">[]</span>,
     <span class="s2">&#34;ScannedCount&#34;</span>: 0,
     <span class="s2">&#34;ConsumedCapacity&#34;</span>: null
 <span class="o">}</span>
 </code></pre></div><p>让我们使用BatchWriteItem接口来插入几条带有ReturnDate属性的数据，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb batch-write-item <span class="se">\</span>
-    --request-items <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb batch-write-item <span class="se">\
+</span><span class="se"></span>    --request-items <span class="s1">&#39;{
 </span><span class="s1">        &#34;UserOrdersTable&#34;: [
 </span><span class="s1">            {
 </span><span class="s1">                &#34;PutRequest&#34;: {
@@ -241,13 +241,13 @@
 </span><span class="s1">                }
 </span><span class="s1">            }
 </span><span class="s1">        ]
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>以上4条数据将覆盖掉之前的数据，让我们再次执行之前的Scan操作，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\</span>
-    --table-name UserOrdersTable <span class="se">\</span>
-    --index-name ReturnDateOrderIdIndex <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\
+</span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\
+</span><span class="se"></span>    --index-name ReturnDateOrderIdIndex <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>现在，我们从稀疏索引中读到了4项数据，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
     <span class="s2">&#34;Count&#34;</span>: 4,

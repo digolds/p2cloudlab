@@ -6,11 +6,7 @@
     <description>Recent content in Data-Intensive on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Apr 2020 12:27:38 +0600</lastBuildDate>
-    
-	<atom:link href="https://2cloudlab.com/tags/data-intensive/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 15 Apr 2020 12:27:38 +0600</lastBuildDate><atom:link href="https://2cloudlab.com/tags/data-intensive/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>DynamoDB的学习指南</title>
       <link>https://2cloudlab.com/nosql/nosql-index/</link>
@@ -41,7 +37,7 @@ NoSQL类型的数据库有很多，包括MongoDB，CouchDB和DynamoDB等。之�
 1.2 DynamoDB与周围的工具 DynamoDB本身提供了数据存取功能，它还考虑了高可用性（所有的数据会自动拷贝到不同的可用区，以免某一个区发生故障了，另外一个区能够及时补上），除此之外，它会将所有数据以加密的方式存储在磁盘（从9.KMS中获取秘钥），而传输过程中则使用了HTTPS协议来加密传输数据。DynamoDB还提供了1.Stream功能，该功能能够捕获数据的变动，因此可以基于这个功能将数据同步到4.其它数据分析系统。如果企业需要海外扩张，那么可以借助DynamoDB的2.Global Table功能。为了避免人为因素引起数据丢失，DynamoDB提供了2种数据备份的方式：分别是按需备份和按时间备份。这些功能均是开箱即用的，也就是说研发人员只需要根据实际的业务场景来组合所需的功能。之前所提到的部分问题均可以迎刃而解！而剩下的一些问题则需要结合一些周围的工具来解决。
 使用DynamoDB的初期需要选择合适的数据建模工具：NoSQL Workbench。这个工具是一个可视化工具，有了它，研发人员可以通过可视化的方式数字化建模，定义数据存取模式，查看数据以及操作数据。通过这种方式，数据服务的设计者们可以很快地验证想法。
 安装本地版本的DynamoDB对于研发人员来说是非常有必要的，原因在于它能够方便研发人员减少调试数据服务的时间。比如，你用Go语言编写了一个函数，该函数调用了GetItem接口，那么你可以在本地执行单元测试来验证这个函数是否达到预期。安装DynamoDB数据库的方式有很多种，其中通过Docker来启动DynamoDB是一个不错的方法，你要做的只需要安装Docker，之后运行以下指令，就能在本地使用DynamoDB。具体说明可以参考这里。
-sudo docker run -p 8000:8000 amazon/dynamodb-local为了对已有的数据服务调优，比如将经常被访问的数据放到缓存里，首先需要借助DynamoDB提供的10.Contributor Insights功能来查看哪些数据被频繁访问，哪些数据引发了错误，然后还需要启动3.DAX集群服务来缓存这部分数据。DAX集群与DynamoDB无缝连接，它将热数据放到DAX集群机器的内存里，最终从内存里取出数据提供给终端用户。
+sudo docker run -p 8000:8000 amazon/dynamodb-local 为了对已有的数据服务调优，比如将经常被访问的数据放到缓存里，首先需要借助DynamoDB提供的10.Contributor Insights功能来查看哪些数据被频繁访问，哪些数据引发了错误，然后还需要启动3.DAX集群服务来缓存这部分数据。DAX集群与DynamoDB无缝连接，它将热数据放到DAX集群机器的内存里，最终从内存里取出数据提供给终端用户。
 有时候，有些业务要求返回部分数据，比如对于线上机票业务，用户购买了一张机票，此时该用户只需要知道该机票的登机信息而不需要知道机长等信息。对于这种场景，则借助IAM服务来控制某些数据的访问权限（比如，创建5.Role）。再比如你的所有服务均部署在AWS，且你希望只有AWS中的服务才能访问DynamoDB，那么此时也可以借助IAM服务来支持这种场景。
 使用DynamoDB的时候会产生各种信息，有些信息是指标数据：DynamoDB资源的使用情况，有多少请求因为资源不足而无法处理，错误信息，为了得到这些信息，研发人员可以使用7.CloudWatch服务来收集它们。除此之外，还可以创建8.CloudWatch Alarms来判断指标是否超出了一个界限，如果超出则会自动触发一系列操作。还有一些信息是关于操作相关的信息：是谁在什么时间段使用了DynamoDB以及做了什么操作，为了收集这些信息，研发人员可以借助6.CloudTrail服务。
 通过以上描述可知，只有将DynamoDB以及周围的服务或工具结合在一起才能打造出一个完整稳定的系统。作为研发者，则只需要根据自身的业务需求来选择是否启用某些服务，比如，如果你的业务不要求微秒级别的响应，那么则没有必要启动3.DAX服务；如果你的业务只是服务于中国的用户，那么2.Global Tables的功能则不需要开启。这里需要注意的是，每种服务的使用都会增加系统的复杂性和费用，因此使用AWS服务的首要原则是按需使用。
@@ -110,10 +106,10 @@ DynamoDB提供2种收费模式，分别是on-demand和provisioned capacity。前
 首先，为表选择合适的主键。主键应该至少体现以下2点：
  它具有唯一性。也就是它能唯一识别每项数据 它具有均匀分布的特性  理想状态下，主键也需要满足至少一条查询模式。
 对于我们要处理的问题，将Store Number作为表的简单主键将是不错的选择。如果我们想要更新某个店铺的信息，那么肯定需要提供该店的Store Number。这符合查询模式的第一项：根据门店编号来获取对应的门店信息。除此之外，Store Number是均匀分布的。
-接着，我们需要考虑其余4种查询数据的模式&amp;ndash;如何根据国家，州，城市，区号来获取对应的实体店信息？我们将很快在后面的内容中讨论这个问题，但是现在，我们只需要创建一个全局附加索引&amp;quot;StoreLocationIndex&amp;rdquo;，这些索引需要满足以下要求：
+接着，我们需要考虑其余4种查询数据的模式&amp;ndash;如何根据国家，州，城市，区号来获取对应的实体店信息？我们将很快在后面的内容中讨论这个问题，但是现在，我们只需要创建一个全局附加索引&amp;quot;StoreLocationIndex&amp;quot;，这些索引需要满足以下要求：
  将Country作为分区键（HASH key），用于指定实体店所在的国家 排序键（RANGE key）为StateCityPostcode，它是一个由State, City和Postcode构成的字符串，其格式为##。例如：一家位于Omaha，NE的店铺，该值应该是：NE#OMAHA#68144。  为了创建这个表，则需要运行以下脚本文件。如果执行成功，则会输出以下信息：
-$ python create_table.pyTable created successfully!接下来，将directory.csv文件中的数据加载到DynamoDB中。脚本文件insert_items.py将读取这个文件的数据，然后遍历所有数据项，并将每一项数据插入到DynamoDB中。注意：整个过程需要一些时间，因为大约有25000项数据。
-$ python insert_items.py1000 locations written...2000 locations written...... &amp;lt;snip&amp;gt; ...24000 locations written...25000 locations written.</description>
+$ python create_table.py Table created successfully! 接下来，将directory.csv文件中的数据加载到DynamoDB中。脚本文件insert_items.py将读取这个文件的数据，然后遍历所有数据项，并将每一项数据插入到DynamoDB中。注意：整个过程需要一些时间，因为大约有25000项数据。
+$ python insert_items.py 1000 locations written... 2000 locations written... ... &amp;lt;snip&amp;gt; ... 24000 locations written... 25000 locations written.</description>
     </item>
     
     <item>
@@ -147,7 +143,7 @@ DynamoDB Stream只允许使用者（也就是上图的Consumers）从中批量�
 以下示例展示了如何使用全局附加索引建立稀疏索引。稀疏索引的用途是存放一小部分常用的数据，以便提高更快的查找效率！只有那些包含稀疏索引主键的数据才会被同步到稀疏索引中。
 假设有一个场景：跟踪用户退货的订单。我们将在这些订单中添加属性ReturnDate，然后将该属性作为稀疏索引的分区键，OrderId属性作为稀疏索引的排序键。
 以下创建了该稀疏索引：
-$ aws dynamodb update-table \ --table-name UserOrdersTable \ --attribute-definitions &amp;#39;[{&amp;#34;AttributeName&amp;#34;: &amp;#34;ReturnDate&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34;},{&amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34;}]&amp;#39; \ --global-secondary-index-updates &amp;#39;[{&amp;#34;Create&amp;#34;: {&amp;#34;IndexName&amp;#34;: &amp;#34;ReturnDateOrderIdIndex&amp;#34;,&amp;#34;KeySchema&amp;#34;: [{&amp;#34;AttributeName&amp;#34;: &amp;#34;ReturnDate&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34;},{&amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34;}],&amp;#34;Projection&amp;#34;: {&amp;#34;ProjectionType&amp;#34;: &amp;#34;ALL&amp;#34;},&amp;#34;ProvisionedThroughput&amp;#34;: {&amp;#34;ReadCapacityUnits&amp;#34;: 1,&amp;#34;WriteCapacityUnits&amp;#34;: 1}}}]&amp;#39; \ $LOCAL创建全局附加索引的方式类似于本地附加索引。注意：我只需要在--attribute-definitions中添加全局附加索引的属性，以及使用--global-secondary-index-updates选项来指定分区键或排序键。</description>
+$ aws dynamodb update-table \  --table-name UserOrdersTable \  --attribute-definitions &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;ReturnDate&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; } ]&amp;#39; \  --global-secondary-index-updates &amp;#39;[ { &amp;#34;Create&amp;#34;: { &amp;#34;IndexName&amp;#34;: &amp;#34;ReturnDateOrderIdIndex&amp;#34;, &amp;#34;KeySchema&amp;#34;: [ { &amp;#34;AttributeName&amp;#34;: &amp;#34;ReturnDate&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34; } ], &amp;#34;Projection&amp;#34;: { &amp;#34;ProjectionType&amp;#34;: &amp;#34;ALL&amp;#34; }, &amp;#34;ProvisionedThroughput&amp;#34;: { &amp;#34;ReadCapacityUnits&amp;#34;: 1, &amp;#34;WriteCapacityUnits&amp;#34;: 1 } } } ]&amp;#39; \  $LOCAL 创建全局附加索引的方式类似于本地附加索引。注意：我只需要在--attribute-definitions中添加全局附加索引的属性，以及使用--global-secondary-index-updates选项来指定分区键或排序键。</description>
     </item>
     
     <item>
@@ -156,15 +152,15 @@ $ aws dynamodb update-table \ --table-name UserOrdersTable \ --attribute-defin
       <pubDate>Tue, 03 Mar 2020 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/nosql/local-secondary-indexes/</guid>
-      <description>在之前的文章中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&#39;s Go!
+      <description>在之前的文章中，我们学习了附加索引的基础知识。在本文中，我们将深入到本地附加索引。首先，我们将涉及本地附加索引的基础，紧接着通过一个例子来使用本地附加索引。Let&amp;rsquo;s Go!
 本地附加索引的基础知识 请注意：你只能在具有复合主键的表中添加本地附加索引。本地附加索引的分区键必须和复合主键的分区键一样，然而允许指定不同的排序键。
 一些关于本地附加索引的注意事项：
  本地附加索引的创建必须在创建表的时候添加。也就是说你无法在已经创建好的表上添加附加索引，而是在创建表的时候添加。这一点与全局附加索引不一样 拥有相同分区键，但不同排序键的数据量不允许超过10GB。注意这10GB数据包括表中的数据量加上本地附加索引中的数据量。如果你使用了本地附加索引，那么你得认真考虑使用映射表达式 Consistency选项。对于本地附加索引，你可以像表一样选择strong consistency或者eventual consistency。Strong consistency将占用更多的读单元，但是适用于某些场景 附加索引与表中的读写单元是共享的。也就是说向本地索引读写数据时，会占用表中的读写单元  创建本地附加索引 现在，让我们动手来实践本地附加索引。还记得创建本地附加索引需要在创建表的时候完成吗！因此之前创建的&amp;quot;Users&amp;quot;表不能使用本地附加索引，所以我们只能考虑在&amp;quot;UserOrdersTable&amp;quot;表中添加附加索引。
 还记得之前那个根据订单额度来过滤某个用户订单的例子吗？由于订单额度不是主键的一部分，因此我们不得不先根据主键获取该用户的订单，然后再使用过滤表达式来过滤出超过某个额度的订单。
 这种需要根据订单额度来过滤数据的模式对于数据量大的场景显然是不适用的&amp;ndash;原因在于，某个用户的订单有很多，比如上万条，而你只需要在这上万条数据中查找几条数据。为了解决这类问题，我们需要建立本地附加索引，并把订单额度作为该索引的排序键。这么一来，根据订单额度来查询订单数据就变快了许多。
 虽然本地附加索引能解决以上问题，但不幸的是，创建附加索引必须在创建表的时候指定。不管如何，首先，让我们运行以下指令删除之前的表：
-$ aws dynamodb delete-table \ --table-name UserOrdersTable \ $LOCAL紧接着在创建带有本地附加索引的表：
-$ aws dynamodb create-table \ --table-name UserOrdersTable \ --attribute-definitions &amp;#39;[{&amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34;},{&amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34;},{&amp;#34;AttributeName&amp;#34;: &amp;#34;Amount&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;N&amp;#34;}]&amp;#39; \ --key-schema &amp;#39;[{&amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34;},{&amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34;}]&amp;#39; \ --local-secondary-indexes &amp;#39;[{&amp;#34;IndexName&amp;#34;: &amp;#34;UserAmountIndex&amp;#34;,&amp;#34;KeySchema&amp;#34;: [{&amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34;},{&amp;#34;AttributeName&amp;#34;: &amp;#34;Amount&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34;}],&amp;#34;Projection&amp;#34;: {&amp;#34;ProjectionType&amp;#34;: &amp;#34;KEYS_ONLY&amp;#34;}}]&amp;#39; \ --provisioned-throughput &amp;#39;{&amp;#34;ReadCapacityUnits&amp;#34;: 1,&amp;#34;WriteCapacityUnits&amp;#34;: 1}&amp;#39; \ $LOCAL以上示例与CreateTable的命令一样。一开始，我们指定了表名，然后增加了2点：(1) 使&amp;quot;Amount&amp;quot;属性作为本地附加索引的排序键；(2) 使用--local-secondary-indexes选项。</description>
+$ aws dynamodb delete-table \  --table-name UserOrdersTable \  $LOCAL 紧接着在创建带有本地附加索引的表：
+$ aws dynamodb create-table \  --table-name UserOrdersTable \  --attribute-definitions &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;Amount&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;N&amp;#34; } ]&amp;#39; \  --key-schema &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34; } ]&amp;#39; \  --local-secondary-indexes &amp;#39;[ { &amp;#34;IndexName&amp;#34;: &amp;#34;UserAmountIndex&amp;#34;, &amp;#34;KeySchema&amp;#34;: [ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;Amount&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34; } ], &amp;#34;Projection&amp;#34;: { &amp;#34;ProjectionType&amp;#34;: &amp;#34;KEYS_ONLY&amp;#34; } } ]&amp;#39; \  --provisioned-throughput &amp;#39;{ &amp;#34;ReadCapacityUnits&amp;#34;: 1, &amp;#34;WriteCapacityUnits&amp;#34;: 1 }&amp;#39; \  $LOCAL 以上示例与CreateTable的命令一样。一开始，我们指定了表名，然后增加了2点：(1) 使&amp;quot;Amount&amp;quot;属性作为本地附加索引的排序键；(2) 使用--local-secondary-indexes选项。</description>
     </item>
     
     <item>
@@ -203,8 +199,8 @@ Query和Scan的执行过程 对于DynamoDB的Query和Scan操作，有3步是需�
  关于更多Filter以及什么时候使用它的知识可以参考这篇文章When to use (and when not to use) DynamoDB Filter Expressions。
  如何使用Filter Filter表达式与关键字表达式类似，都可以和Query操作配合&amp;ndash;你只需要在过滤表达式中指定想要过滤的属性，查询结果就会更具该表达式来过滤。
 让我们基于之前Query来查找用户&amp;quot;daffyduck&amp;quot;的订单。这一次我们想依据订单额度来过滤数据，比如我们只想返回订单量超过100美元的订单，示例如下：
-$ aws dynamodb query \ --table-name UserOrdersTable \ --key-condition-expression &amp;#34;Username = :username&amp;#34; \ --filter-expression &amp;#34;Amount &amp;gt; :amount&amp;#34; \ --expression-attribute-values &amp;#39;{&amp;#34;:username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; },&amp;#34;:amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;100&amp;#34; }}&amp;#39; \ $LOCAL以下的返回结果只返回了一个订单：
-{&amp;#34;Count&amp;#34;: 1,&amp;#34;Items&amp;#34;: [{&amp;#34;OrderId&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;20170609-25875&amp;#34;},&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;},&amp;#34;Amount&amp;#34;: {&amp;#34;N&amp;#34;: &amp;#34;116.</description>
+$ aws dynamodb query \  --table-name UserOrdersTable \  --key-condition-expression &amp;#34;Username = :username&amp;#34; \  --filter-expression &amp;#34;Amount &amp;gt; :amount&amp;#34; \  --expression-attribute-values &amp;#39;{ &amp;#34;:username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;:amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;100&amp;#34; } }&amp;#39; \  $LOCAL 以下的返回结果只返回了一个订单：
+{ &amp;#34;Count&amp;#34;: 1, &amp;#34;Items&amp;#34;: [ { &amp;#34;OrderId&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;20170609-25875&amp;#34; }, &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;Amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;116.</description>
     </item>
     
     <item>
@@ -220,8 +216,8 @@ $ aws dynamodb query \ --table-name UserOrdersTable \ --key-condition-expressi
 只有在以下情况下，才会考虑使用Scan操作:
  表的数据量不大 将数据迁移到另外一个数据库系统 you use global secondary indexes in a special way to set up a work queue (very advanced).  带着以上告诫，让我们来探索Scan操作的使用方式。
 Scan操作的基础知识 Scan操作是DynamoDB中最容易使用的功能。开发者只需要在执行该操作时提供表的名字，它就能帮你返回表格中所有数据项（返回的数据量不超过1MB）：
-$ aws dynamodb scan \ --table-name UserOrdersTable \ $LOCAL以下是返回结果（为了方便阅读，其中省略了中间部分）：
-{&amp;#34;Count&amp;#34;: 25,&amp;#34;Items&amp;#34;: [{&amp;#34;OrderId&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;20160630-28176&amp;#34;},&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;},&amp;#34;Amount&amp;#34;: {&amp;#34;N&amp;#34;: &amp;#34;88.3&amp;#34;}},...{&amp;#34;OrderId&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;20171129-28042&amp;#34;},&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;alexdebrie&amp;#34;},&amp;#34;Amount&amp;#34;: {&amp;#34;N&amp;#34;: &amp;#34;83.</description>
+$ aws dynamodb scan \  --table-name UserOrdersTable \  $LOCAL 以下是返回结果（为了方便阅读，其中省略了中间部分）：
+{ &amp;#34;Count&amp;#34;: 25, &amp;#34;Items&amp;#34;: [ { &amp;#34;OrderId&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;20160630-28176&amp;#34; }, &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;Amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;88.3&amp;#34; } }, ... { &amp;#34;OrderId&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;20171129-28042&amp;#34; }, &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;alexdebrie&amp;#34; }, &amp;#34;Amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;83.</description>
     </item>
     
     <item>
@@ -235,8 +231,8 @@ $ aws dynamodb scan \ --table-name UserOrdersTable \ $LOCAL以下是返回结
 根据某个分区键查找多项数据 在之前的章节里，我们实践了如何一次操作一项数据。这种操作适合于一些场景，比如：一次操作一个用户信息，这些信息可能是该用户的简介或姓名。
 然而，在某些场景，这样的数据操作就不适用了，比如操作用户的订单。有时你可能只需要获取某个订单数据，但是，有的时候我们想获取某个用户的所有订单信息。如果每个订单的信息由不同的分区键识别，那么查找这些订单的效率会很慢。
 接下来，让我们看看有什么更好的办法能够快速查找某个用户的所有订单。答案是使用Query操作，首先，我们的场景是获取用户为&amp;quot;daffyduck&amp;quot;的所有订单信息。注意：--key-condition-expression选项是非常关键的参数，这个参数定义了我们如何选择要返回的订单。如下所示：
-$ aws dynamodb query \ --table-name UserOrdersTable \ --key-condition-expression &amp;#34;Username = :username&amp;#34; \ --expression-attribute-values &amp;#39;{&amp;#34;:username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }}&amp;#39; \ $LOCAL运行以上指令将得到4个属于&amp;quot;daffyduck&amp;quot;的订单，如下所示：
-{&amp;#34;Count&amp;#34;: 4,&amp;#34;Items&amp;#34;: [{&amp;#34;OrderId&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;20160630-28176&amp;#34;},&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;},&amp;#34;Amount&amp;#34;: {&amp;#34;N&amp;#34;: &amp;#34;88.3&amp;#34;}},{&amp;#34;OrderId&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;20170608-10171&amp;#34;},&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;},&amp;#34;Amount&amp;#34;: {&amp;#34;N&amp;#34;: &amp;#34;18.</description>
+$ aws dynamodb query \  --table-name UserOrdersTable \  --key-condition-expression &amp;#34;Username = :username&amp;#34; \  --expression-attribute-values &amp;#39;{ &amp;#34;:username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; } }&amp;#39; \  $LOCAL 运行以上指令将得到4个属于&amp;quot;daffyduck&amp;quot;的订单，如下所示：
+{ &amp;#34;Count&amp;#34;: 4, &amp;#34;Items&amp;#34;: [ { &amp;#34;OrderId&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;20160630-28176&amp;#34; }, &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;Amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;88.3&amp;#34; } }, { &amp;#34;OrderId&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;20170608-10171&amp;#34; }, &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;Amount&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;18.</description>
     </item>
     
     <item>
@@ -253,8 +249,8 @@ $ aws dynamodb query \ --table-name UserOrdersTable \ --key-condition-expressi
 每当需要基于复合主键来对数据建模时，可以根据以下句子来填写空格处，最终构建正确的查询模式：
  &amp;ldquo;Give me all of the ____ from a particular ___.&amp;rdquo;
  放入第一个空格的属性应该是排序键，而放到最后一个空格的属性则是分区键。在以下示例中，我们将创建一张即包含User类型数据，同时也会包含Order类型数据的表：&amp;ldquo;UserOrdersTable&amp;rdquo;，其中每个User可以包含多个Orders。按照以上句子来构建查询模型，其最终的结果是：&amp;ldquo;返回该Username的所有OrderIds&amp;rdquo;。基于这句话，可以得出：Username是分区键，而OrderId则是排序键。
-为了创建&amp;quot;UserOrdersTable&amp;rdquo;，需要使用CreateTable API：
-$ aws dynamodb create-table \ --table-name UserOrdersTable \ --attribute-definitions &amp;#39;[{&amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34;},{&amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34;}]&amp;#39; \ --key-schema &amp;#39;[{&amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34;},{&amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34;}]&amp;#39; \ --provisioned-throughput &amp;#39;{&amp;#34;ReadCapacityUnits&amp;#34;: 1,&amp;#34;WriteCapacityUnits&amp;#34;: 1}&amp;#39; \ $LOCAL返回的结果如下所示：</description>
+为了创建&amp;quot;UserOrdersTable&amp;quot;，需要使用CreateTable API：
+$ aws dynamodb create-table \  --table-name UserOrdersTable \  --attribute-definitions &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; } ]&amp;#39; \  --key-schema &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; }, { &amp;#34;AttributeName&amp;#34;: &amp;#34;OrderId&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;RANGE&amp;#34; } ]&amp;#39; \  --provisioned-throughput &amp;#39;{ &amp;#34;ReadCapacityUnits&amp;#34;: 1, &amp;#34;WriteCapacityUnits&amp;#34;: 1 }&amp;#39; \  $LOCAL 返回的结果如下所示：</description>
     </item>
     
     <item>
@@ -271,9 +267,9 @@ $ aws dynamodb create-table \ --table-name UserOrdersTable \ --attribute-defin
  SET: 这个操作用于向数据项中添加新的属性，或者覆盖已有属性 REMOVE: 该操作用于移除数据项中某一个属性 ADD: 对于数值类型的属性，该操作代表加或减；对于集合类型的属性，该操作代表向集合中插入元素 DELETE: 用于从集合中删除元素  让我们通过几个例子来了解更新操作的使用。
  使用带有SET语义的UpdateItem  在更新数据项时，最常用的更新操作是SET。比如，如果我想向某项数据添加一个新的属性或者覆盖已有的属性，那么这个SET操作会被用到。
 让我们看看最开始的例子：PutItem，假设，我们想让已经添加的用户拥有属性DateOfBirth。 如果不使用UpdateItem操作，我们的做法是首先通过GetItem获取该数据项，然后通过PutItem插入一项包含DateOfBirth属性的数据项。然而通过UpdateItem操作，我们只需要直接插入属性DateOfBirth即可，如下所示：
-$ aws dynamodb update-item \ --table-name Users \ --key &amp;#39;{&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;}}&amp;#39; \ --update-expression &amp;#39;SET #dob = :dob&amp;#39; \ --expression-attribute-names &amp;#39;{&amp;#34;#dob&amp;#34;: &amp;#34;DateOfBirth&amp;#34;}&amp;#39; \ --expression-attribute-values &amp;#39;{&amp;#34;:dob&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;1937-04-17&amp;#34;}}&amp;#39; \ $LOCAL注意我们使用了选项--expression-attribute-names和--expression-attribute-values。
+$ aws dynamodb update-item \  --table-name Users \  --key &amp;#39;{ &amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;} }&amp;#39; \  --update-expression &amp;#39;SET #dob = :dob&amp;#39; \  --expression-attribute-names &amp;#39;{ &amp;#34;#dob&amp;#34;: &amp;#34;DateOfBirth&amp;#34; }&amp;#39; \  --expression-attribute-values &amp;#39;{ &amp;#34;:dob&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;1937-04-17&amp;#34;} }&amp;#39; \  $LOCAL 注意我们使用了选项--expression-attribute-names和--expression-attribute-values。
 如果我们再次获取该数据项，那么我们不仅能看到之前的属性，而且还能看到新添的属性，如下所示：
-$ aws dynamodb get-item \ --table-name Users \ --key &amp;#39;{&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;}}&amp;#39; \ $LOCAL{&amp;#34;Item&amp;#34;: {&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;},&amp;#34;DateOfBirth&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;1937-04-17&amp;#34;},&amp;#34;Age&amp;#34;: {&amp;#34;N&amp;#34;: &amp;#34;81&amp;#34;},&amp;#34;Name&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;Daffy Duck&amp;#34;}}} 使用带有REMOVE语义的UpdateItem  带有REMOVE语义的UpdateItem操作与带有SET语义的UpdateItem操作相反&amp;ndash;它用于从一个数据项中删除指定属性。</description>
+$ aws dynamodb get-item \  --table-name Users \  --key &amp;#39;{ &amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;} }&amp;#39; \  $LOCAL { &amp;#34;Item&amp;#34;: { &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;DateOfBirth&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;1937-04-17&amp;#34; }, &amp;#34;Age&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;81&amp;#34; }, &amp;#34;Name&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;Daffy Duck&amp;#34; } } }  使用带有REMOVE语义的UpdateItem  带有REMOVE语义的UpdateItem操作与带有SET语义的UpdateItem操作相反&amp;ndash;它用于从一个数据项中删除指定属性。</description>
     </item>
     
     <item>
@@ -284,20 +280,20 @@ $ aws dynamodb get-item \ --table-name Users \ --key &amp;#39;{&amp;#34;Usern
       <guid>https://2cloudlab.com/nosql/expression-basics/</guid>
       <description>本文是关于DynamoDB的表达式。表达式是DynamoDB的内置功能，它又细分为以下几类表达式：
  条件表达式只能与单项数据的操作配合起来使用，这些操作有PutItem，UpdateItem和DeleteItem。当你为单项数据的操作指定条件表达式时，只有当该表达式的验证结果为true时，该操作才能执行，对应的指令选项是--condition-expression 属性映射表达式通常会与读取数据项的操作配合起来使用，比如之前的GetItem例子就使用了属性映射表达式，它的作用在于仅返回该项数据的部分属性，对应的指令选项是--projection-expression 更新表达式用于更新已经存在的数据项上的某些属性，对应的指令选项是--update-expression 主键条件表达式通常会与查询操作（比如Query）一起使用，这类表达式的条件只能是与主键相关，对应的指令选项是--key-condition-expression 过滤表达式通常会与查询操作或遍历操作一起使用，它将作用于查询结果之上，对应的指令选项是--filter-expression  只有充分理解了这些表达式，才能更好地使用DynamoDB，进而享受DynamoDB给我们带来的好处。在这篇文章，我们将学习表达式的基础知识，包括使用表达式的属性名和属性值。紧接着，我们将基于上一章关于PutItem的例子来学习如何使用条件表达式。
-表达式的基础知识 DynamoDB中的表达式只是一串字符串，它的内容是特定的逻辑表达式，而这个表达式将用来验证数据是否满足该条件。在这些表达式中，你可以应用一些比较操作符，比如&amp;quot;=&amp;rdquo;（相等），&amp;ldquo;&amp;gt;&amp;rdquo;（大于）或者&amp;quot;&amp;gt;=&amp;rdquo;（大于等于）。例如，以下表达式应用了&amp;quot;&amp;gt;=&amp;rdquo;：
-&amp;#34;Age &amp;gt;= 21&amp;#34;该表达式的作用在于：该操作只能作用于年龄在21岁及以上的用户，否则操作结果会出错。
+表达式的基础知识 DynamoDB中的表达式只是一串字符串，它的内容是特定的逻辑表达式，而这个表达式将用来验证数据是否满足该条件。在这些表达式中，你可以应用一些比较操作符，比如&amp;quot;=&amp;quot;（相等），&amp;quot;&amp;gt;&amp;quot;（大于）或者&amp;quot;&amp;gt;=&amp;quot;（大于等于）。例如，以下表达式应用了&amp;quot;&amp;gt;=&amp;quot;：
+&amp;#34;Age &amp;gt;= 21&amp;#34; 该表达式的作用在于：该操作只能作用于年龄在21岁及以上的用户，否则操作结果会出错。
  注意：以上表达式还无法生效，原因在于该表达式没有指定&amp;quot;21&amp;quot;的类型。为了使以上表达式生效，你需要指定expression attribute values，也就是使用指令属性--expression-attribute-values，这一点将在后面提到。
  除了可以在表达式中使用比较操作符，还可以在表达式中使用函数。这些函数是DynamoDB提供的，它们有：attribute_exists()，判断某项数据其属性是存在的；attribute_not_exists()，判断某项数据其属性是不存在的；begins_with()，判断某项数据其属性值是以某个子字符串开始的。
 我们可以在表达式中使用attribute_not_exists()函数来判断某个订单是否已经发货了，其用法如下所示：
-&amp;#34;attribute_not_exists(DateShipped)&amp;#34;如果该订单有DateShipped属性，那么表明它已经发货了，否则表明它还在仓库中。DynamoDB提供的函数不多，所有的函数如下所示：
+&amp;#34;attribute_not_exists(DateShipped)&amp;#34; 如果该订单有DateShipped属性，那么表明它已经发货了，否则表明它还在仓库中。DynamoDB提供的函数不多，所有的函数如下所示：
  attribute_exists(): 判断某项数据其属性是存在的 attribute_not_exists(): 判断某项数据其属性是不存在的 attribute_type(): 判断某项数据其属性的类型是指定的类型 begins_with(): 判断某项数据其属性值是以某个子字符串开始的 contains(): 如果该属性是字符串类型，则判断某项数据其属性值是包含某个子字符串的；如果该属性是集合类型（比如List或Map），则判断该属性是包含指定元素的 size(): 返回属性的大小，不同类型的属性，其大小的计算规则是不一样的。  关于表达式中的比较操作符和函数，读者可以参考官方文档。
 表达式的占位符 之前的内容表明，表达式是一个具有逻辑运算的字符串，DynamoDB通过执行这个表达式来得到一个是或否的结果。然而，有的时候你需要一种更加清晰的方式来编写表达式，比如在表达式中使用变量，然后在其它地方提供变量值。
 DynamoDB允许你使用--expression-attribute-names和--expression-attribute-values选项来编写更加清晰的表达式。通过这种做法，你可以在表达式中指定变量，然后分别使用以上选项来指定变量值，DynamoDB会将这些变量值自动替换掉表达式中的变量。接下来，让我们看看这2个选项的含义。
  --expression-attribute-names  有时，你希望针对一个属性编写表达式，但是由于DynamoDB的限制，你无法直接在表达式中使用该属性名，比如：
- 你的属性名称刚好是DynamoDB中预留的关键字。DynamoDB预先保留了大量的关键字，其中包括了：&amp;ldquo;Date&amp;rdquo;，&amp;ldquo;Year&amp;quot;和&amp;quot;Name&amp;quot;等。如果你的属性名称恰巧在这些预留的关键字里，那么你需要借助这个选项来提供属性名称的占位符 你的属性名称中包含&amp;rdquo;.&amp;quot;。DynamoDB使用&amp;rdquo;.&amp;ldquo;来获取嵌套类型（比如Map类型）中的子项。如果你的属性名中包含了&amp;rdquo;.&amp;quot;，那么你需要借助这个选项来提供属性名称的占位符 你的属性名称开头包含数字。DynamoDB不允许表达式中的属性名称以数字开头，因此如果你的属性名称以数字开头，那么你需要借助这个选项来提供属性名称的占位符  在使用这个选项时，你只需要提供一个Map格式的属性名称集合。这个Map中的key是表达式中的占位符，而value是属性名称。例如，你可以为&amp;quot;Age&amp;quot;属性定义占位符&amp;rdquo;#a&amp;rdquo;，而这个占位符可用于表达式，具体示例如下所示：
---expression-attribute-names &amp;#39;{&amp;#34;#a&amp;#34;: &amp;#34;Age&amp;#34;}&amp;#39; 当使用--expression-attribute-names时，占位符必须以&amp;rdquo;#&amp;ldquo;开头。
+ 你的属性名称刚好是DynamoDB中预留的关键字。DynamoDB预先保留了大量的关键字，其中包括了：&amp;ldquo;Date&amp;rdquo;，&amp;ldquo;Year&amp;quot;和&amp;quot;Name&amp;quot;等。如果你的属性名称恰巧在这些预留的关键字里，那么你需要借助这个选项来提供属性名称的占位符 你的属性名称中包含&amp;rdquo;.&amp;quot;。DynamoDB使用&amp;quot;.&amp;ldquo;来获取嵌套类型（比如Map类型）中的子项。如果你的属性名中包含了&amp;rdquo;.&amp;quot;，那么你需要借助这个选项来提供属性名称的占位符 你的属性名称开头包含数字。DynamoDB不允许表达式中的属性名称以数字开头，因此如果你的属性名称以数字开头，那么你需要借助这个选项来提供属性名称的占位符  在使用这个选项时，你只需要提供一个Map格式的属性名称集合。这个Map中的key是表达式中的占位符，而value是属性名称。例如，你可以为&amp;quot;Age&amp;quot;属性定义占位符&amp;quot;#a&amp;quot;，而这个占位符可用于表达式，具体示例如下所示：
+--expression-attribute-names &amp;#39;{ &amp;#34;#a&amp;#34;: &amp;#34;Age&amp;#34; }&amp;#39;  当使用--expression-attribute-names时，占位符必须以&amp;quot;#&amp;ldquo;开头。
  在之前的GetItem的例子中，我们使用了--projection-expression选项来返回某项数据的部分属性。为了能够在该选项中使用占位符，我们需要将之前的例子改如下：
-$ aws dynamodb get-item \ --table-name Users \ --projection-expression &amp;#34;#a, #u&amp;#34; \ --expression-attribute-names &amp;#39;{&amp;#34;#a&amp;#34;: &amp;#34;Age&amp;#34;,&amp;#34;#u&amp;#34;: &amp;#34;Username&amp;#34;}&amp;#39; \ --key &amp;#39;{&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;}}&amp;#39; \ $LOCAL{&amp;#34;Item&amp;#34;: {&amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;},&amp;#34;Age&amp;#34;: {&amp;#34;N&amp;#34;: &amp;#34;81&amp;#34;}}}注意，在以上例子中，我们在--projection-expression中使用了2个占位符，分别是&amp;rdquo;#a&amp;quot;和&amp;rdquo;#u&amp;rdquo;。而这2个占位符定义在--expression-attribute-names选项中，分别对应&amp;quot;Age&amp;quot;和&amp;quot;Username&amp;quot;属性。</description>
+$ aws dynamodb get-item \  --table-name Users \  --projection-expression &amp;#34;#a, #u&amp;#34; \  --expression-attribute-names &amp;#39;{ &amp;#34;#a&amp;#34;: &amp;#34;Age&amp;#34;, &amp;#34;#u&amp;#34;: &amp;#34;Username&amp;#34; }&amp;#39; \  --key &amp;#39;{ &amp;#34;Username&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34;} }&amp;#39; \  $LOCAL { &amp;#34;Item&amp;#34;: { &amp;#34;Username&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;daffyduck&amp;#34; }, &amp;#34;Age&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;81&amp;#34; } } } 注意，在以上例子中，我们在--projection-expression中使用了2个占位符，分别是&amp;rdquo;#a&amp;quot;和&amp;quot;#u&amp;quot;。而这2个占位符定义在--expression-attribute-names选项中，分别对应&amp;quot;Age&amp;quot;和&amp;quot;Username&amp;quot;属性。</description>
     </item>
     
     <item>
@@ -308,11 +304,11 @@ $ aws dynamodb get-item \ --table-name Users \ --projection-expression &amp;#3
       <guid>https://2cloudlab.com/nosql/inserting-retrieving-items/</guid>
       <description>数据项是DynamoDB的基础单元，每一张表都会包含多项数据。接下来，在本文中，我们将向DynamoDB中插入和读取数据项。我们将创建Users表，并为该表指定一个简单键：Username。接着，我们将操作2个基本的接口：PutItem和GetItem。下一篇文章，我们将在这篇文章的基础上应用表达式来实现更加复杂的查询功能。在这之后，我们将另起一篇文章来讲解如何更新和删除数据项。
  为了能顺利操作本文所列举的示例，请确保DynamoDB的环境已经准备好。注意：如果你使用的是本地版本的DynamoDB，那么请确保$LOCAL变量配置正确，如果使用的是AWS上的DynamoDB，那么在每一个命令后面无需追加这个参数。
- 创建表 在演练本文列举的用例之前，首先需要创建一张表。我们将创建一张表&amp;quot;Users&amp;rdquo;，并为该表定义了一个简单主键：&amp;ldquo;Username&amp;rdquo;，它的类型是string。
+ 创建表 在演练本文列举的用例之前，首先需要创建一张表。我们将创建一张表&amp;quot;Users&amp;quot;，并为该表定义了一个简单主键：&amp;ldquo;Username&amp;rdquo;，它的类型是string。
 当创建表时，你需要为主键或索引提供属性定义。这些属性定义包含了属性名和属性类型。在Users这张表中，我们使用&amp;quot;Username&amp;quot;作为主键，其类型是string（&amp;ldquo;S&amp;rdquo;）。除此之外，你还需要为该表定义KeySchema，其中指定了哪些属性构成主键以及这些属性是HASH键还是RANGE键。在以下示例中，属性&amp;quot;Username&amp;quot;构成了该表的简单主键。最后，你需要指定表名和表的吞吐单元，其中吞吐单元由读和写单元构成。在以下示例中，&amp;ldquo;Users&amp;quot;表的读写单元都是1，简单来说，越多的读写单元，单位时间内读写数据的速度越快和越多，反之亦然！
 有了以上概念, 让我们运行以下指令来创建表&amp;quot;Users&amp;rdquo;:
-$ aws dynamodb create-table \ --table-name Users \ --attribute-definitions &amp;#39;[{&amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34;}]&amp;#39; \ --key-schema &amp;#39;[{&amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;,&amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34;}]&amp;#39; \ --provisioned-throughput &amp;#39;{&amp;#34;ReadCapacityUnits&amp;#34;: 1,&amp;#34;WriteCapacityUnits&amp;#34;: 1}&amp;#39; \ $LOCAL如果创建表的操作成功了，你将看到以下返回结果：
-{&amp;#34;TableDescription&amp;#34;: {&amp;#34;TableArn&amp;#34;: &amp;#34;arn:aws:dynamodb:ddblocal:000000000000:table/Users&amp;#34;,&amp;#34;AttributeDefinitions&amp;#34;: [{&amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;,&amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34;}],&amp;#34;ProvisionedThroughput&amp;#34;: {&amp;#34;NumberOfDecreasesToday&amp;#34;: 0,&amp;#34;WriteCapacityUnits&amp;#34;: 1,&amp;#34;LastIncreaseDateTime&amp;#34;: 0.</description>
+$ aws dynamodb create-table \  --table-name Users \  --attribute-definitions &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; } ]&amp;#39; \  --key-schema &amp;#39;[ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;KeyType&amp;#34;: &amp;#34;HASH&amp;#34; } ]&amp;#39; \  --provisioned-throughput &amp;#39;{ &amp;#34;ReadCapacityUnits&amp;#34;: 1, &amp;#34;WriteCapacityUnits&amp;#34;: 1 }&amp;#39; \  $LOCAL 如果创建表的操作成功了，你将看到以下返回结果：
+{ &amp;#34;TableDescription&amp;#34;: { &amp;#34;TableArn&amp;#34;: &amp;#34;arn:aws:dynamodb:ddblocal:000000000000:table/Users&amp;#34;, &amp;#34;AttributeDefinitions&amp;#34;: [ { &amp;#34;AttributeName&amp;#34;: &amp;#34;Username&amp;#34;, &amp;#34;AttributeType&amp;#34;: &amp;#34;S&amp;#34; } ], &amp;#34;ProvisionedThroughput&amp;#34;: { &amp;#34;NumberOfDecreasesToday&amp;#34;: 0, &amp;#34;WriteCapacityUnits&amp;#34;: 1, &amp;#34;LastIncreaseDateTime&amp;#34;: 0.</description>
     </item>
     
     <item>
@@ -330,9 +326,9 @@ Dynamo支持2种主键。一种是简单主键，这种主键只使用了一个�
 DynamoDB表中每一项数据除了必须包含主键属性，其它属性不是必须的。DynamoDB是NoSQL数据库，因此它允许更加灵活的数据模型，而这一点在关系型数据库中是无法办到的。因为这种灵活的数据模型，你能在一张DynamoDB表中存储多种不同类型的数据，比如有一条Car数据，它包含产地，型号和生产年限等属性，同时在相同的表中也包含另外一条Pet数据，它包含类型，血型，年龄，颜色等属性。在DynamoDB中，一张表中同时包含不同类型的数据是常见的做法，这种做法会提高数据查询的效率！
 属性的类型 当为每一项数据设置属性时，同时需要指定该属性的类型。可指定的类型有简单类型：比如，strings和numbers；也有复合类型：比如：lists，maps和sets。
 每当更新或者插入数据时，需要为数据中的每一个属性指定其对应的类型。这些属性的设置需要借助一个map数据结构来完成，其中该map的keys是每一个属性名，而对应的values则是另外一个map，而这个map只有一个元素，其key是对应属性的类型，而value是对应属性的值。比如：你想存储一个用户数据，该数据包含3个属性，分别是姓名，年龄和角色，它们的类型分别是string，number和list，那么你需要为该用户数据设置如下属性信息：
-{&amp;#34;Name&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;Alex DeBrie&amp;#34; },&amp;#34;Age&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;29&amp;#34; },&amp;#34;Roles&amp;#34;: { &amp;#34;L&amp;#34;: [&amp;#34;Admin&amp;#34;, &amp;#34;User&amp;#34;] }}在以上例子，我们存储了Name属性，其类型是string（通过&amp;quot;S&amp;quot;来代表），值为&amp;quot;Alex DeBrie&amp;rdquo;。此外，还存储了Age属性，其类型是number（通过&amp;quot;N&amp;quot;来代表），值为&amp;quot;29&amp;rdquo;。最后，还存储了Roles属性，其类型是list（通过&amp;quot;L&amp;quot;来代表），值为&amp;quot;Admin&amp;quot;和&amp;quot;User&amp;rdquo;。
+{ &amp;#34;Name&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;Alex DeBrie&amp;#34; }, &amp;#34;Age&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;29&amp;#34; }, &amp;#34;Roles&amp;#34;: { &amp;#34;L&amp;#34;: [&amp;#34;Admin&amp;#34;, &amp;#34;User&amp;#34;] } } 在以上例子，我们存储了Name属性，其类型是string（通过&amp;quot;S&amp;quot;来代表），值为&amp;quot;Alex DeBrie&amp;quot;。此外，还存储了Age属性，其类型是number（通过&amp;quot;N&amp;quot;来代表），值为&amp;quot;29&amp;quot;。最后，还存储了Roles属性，其类型是list（通过&amp;quot;L&amp;quot;来代表），值为&amp;quot;Admin&amp;quot;和&amp;quot;User&amp;quot;。
 同样，每当你从表中获取数据项时，其属性会以map的方式返回。其中，map中的keys是属性名，而values则是另外一个map，这个map的key是对应属性的类型，而value则是对应属性的值。例如，如果你使用GetItem API来获取以上用户数据，那么得到的结果如下所示：
-{&amp;#34;Item&amp;#34;: {&amp;#34;Name&amp;#34;: {&amp;#34;S&amp;#34;: &amp;#34;Alex DeBrie&amp;#34;},&amp;#34;Age&amp;#34;: {&amp;#34;N&amp;#34;: &amp;#34;29&amp;#34;},&amp;#34;Roles&amp;#34;: {&amp;#34;L&amp;#34;: [&amp;#34;Admin&amp;#34;, &amp;#34;User&amp;#34;]}}} 需要注意的是：Age属性的值&amp;quot;29&amp;quot;是字符串，因此为了得到数值类型29，那么需要在应用程序里将字符串转成数值类型。
+{ &amp;#34;Item&amp;#34;: { &amp;#34;Name&amp;#34;: { &amp;#34;S&amp;#34;: &amp;#34;Alex DeBrie&amp;#34; }, &amp;#34;Age&amp;#34;: { &amp;#34;N&amp;#34;: &amp;#34;29&amp;#34; }, &amp;#34;Roles&amp;#34;: { &amp;#34;L&amp;#34;: [&amp;#34;Admin&amp;#34;, &amp;#34;User&amp;#34;] } } }  需要注意的是：Age属性的值&amp;quot;29&amp;quot;是字符串，因此为了得到数值类型29，那么需要在应用程序里将字符串转成数值类型。
  对以上属性类型有一些基本了解之后，让我们来看看不同的属性类型。每种属性类型都会以类型标识（比如&amp;quot;S&amp;quot;代表string，而&amp;quot;N&amp;quot;代表number）和用例开始介绍。</description>
     </item>
     
@@ -343,7 +339,7 @@ DynamoDB表中每一项数据除了必须包含主键属性，其它属性不是
       
       <guid>https://2cloudlab.com/nosql/additional-reading/</guid>
       <description>这篇文章收录了一些关于NoSQL的英文资料。有的解释NoSQL为何能规模化而SQL却受到限制；有的涉及NoSQL的单表设计原则，以及解释为何需要使用单表；其中有一篇文章是关于如何将SQL中多张有关联的表转化成DynamoDB中的单张表。还有一些关于DynamoDB的视频资料，其中的内容讲述了NoSQL的设计原则，以及如何高效使用DynamoDB。读者可以通过这些学习资料来掌握NoSQL的理论知识，通过这些知识来设计既能支持100TBs以上数据又能输出稳定性能的数据应用方案。
-文章:  SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&#39;t - This is a post of mine explaining the core architectural decisions that allow NoSQL databases to scale further than their SQL brethren. The What, Why, and When of Single-Table Design with DynamoDB - A deep look at what it means to do single-table design in DynamoDB and why you would want to. It also includes a few situations where you may want to avoid single-table design.</description>
+文章:  SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&amp;rsquo;t - This is a post of mine explaining the core architectural decisions that allow NoSQL databases to scale further than their SQL brethren. The What, Why, and When of Single-Table Design with DynamoDB - A deep look at what it means to do single-table design in DynamoDB and why you would want to. It also includes a few situations where you may want to avoid single-table design.</description>
     </item>
     
     <item>
@@ -354,13 +350,13 @@ DynamoDB表中每一项数据除了必须包含主键属性，其它属性不是
       <guid>https://2cloudlab.com/nosql/environment-setup/</guid>
       <description>DynamoDB是一个完全托管于AWS的NoSQL解决方案。开发者可以选择直接在AWS上创建一个DynamoDB的表或者将DynamoDB安装到本地。后续的内容将涉及DynamoDB的API，比如通过AWS CLI来操作DynamoDB。为了操作DynamoDB，我们需要搭建DynamoDB的环境。
 安装 AWS CLI AWS CLI是AWS提供的命令行工具，开发者通过使用这个工具能够方便地使用AWS所提供的云服务，包括DynamoDB服务。运行以下命令来安装AWS CLI：
-$ pip install awscli如果在安装过程种遇到困难，可以参考这里进行安装。
+$ pip install awscli 如果在安装过程种遇到困难，可以参考这里进行安装。
 获取认证和授权 如果你打算使用AWS提供的DynamoDB服务，那么你需要正确地设置认证和授权的权限，具体需要参考官方文档。
 比较简单的一种方式是授予开发者所有关于DynamoDB操作的权限，其策略定义如下：
-{&amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;,&amp;#34;Statement&amp;#34;: [{&amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;,&amp;#34;Action&amp;#34;: [&amp;#34;dynamodb:*&amp;#34;],&amp;#34;Resource&amp;#34;: &amp;#34;*&amp;#34;}]}一旦你在AWS上申请了一个账号并得到了能够操作DynamoDB的凭证，那么你还需要将这个凭证通过以下方式设置到本地电脑
-$ aws configureAWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLEAWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEYDefault region name [None]: us-west-2Default output format [None]: json在本地搭建DynamoDB服务 AWS提供了可在本地运行的DynamoDB，它可以在本地运行，免除了凭证的设置和避免了使用云端DynamoDB所产生的费用。
+{ &amp;#34;Version&amp;#34;: &amp;#34;2012-10-17&amp;#34;, &amp;#34;Statement&amp;#34;: [ { &amp;#34;Effect&amp;#34;: &amp;#34;Allow&amp;#34;, &amp;#34;Action&amp;#34;: [ &amp;#34;dynamodb:*&amp;#34; ], &amp;#34;Resource&amp;#34;: &amp;#34;*&amp;#34; } ] } 一旦你在AWS上申请了一个账号并得到了能够操作DynamoDB的凭证，那么你还需要将这个凭证通过以下方式设置到本地电脑
+$ aws configure AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY Default region name [None]: us-west-2 Default output format [None]: json 在本地搭建DynamoDB服务 AWS提供了可在本地运行的DynamoDB，它可以在本地运行，免除了凭证的设置和避免了使用云端DynamoDB所产生的费用。
 想要在本地使用DynamoDB，那么根据以下指令下载和安装DynamoDB：
-$ curl -O https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.zip$ unzip dynamodb_local_latest.zip$ rm dynamodb_local_latest.</description>
+$ curl -O https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.zip $ unzip dynamodb_local_latest.zip $ rm dynamodb_local_latest.</description>
     </item>
     
     <item>
@@ -372,7 +368,7 @@ $ curl -O https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_lates
       <description>在2004这一年，Amazon.com的增长速度很快，最终其Oracle上的数据规模达到极限，限制了其业务的发展。为了摆脱这种限制，Amazon开始考虑建立他们自己的数据库（注意：在公司内部搭建一个数据库系统是非常糟糕的想法）。在研发自家的数据库之后，亚马逊的工程师创建了创造了Amazon Dynamo数据库，这个数据库支撑了大部分Amazon.com业务，包括其购物车。
 那些研发Amazon Dynamo数据库背后的工程师于2007年发布了关于Dynamo的论文。这篇论文描述了这群工程师在搭建高可用，key-value存储过程中为了满足Amazon.com业务场景所学到的经验。
 这篇论文影响深远，并催生一大批NoSQL的解决方案，这些解决方案包括Apache Cassandra(最初由Facebook研发)和AWS提供的 SimpleDB以及DynamoDB（注意AWS团队和Amazon团队是2拨不同的团队，2者互不关联）。2012年，Amazon Web Services对外发布了DynamoDB，该服务借鉴了Dynamo的经验和原则，且完全托管在AWS上。
- 想要了解为何DynamoDB存储100 TBs以上的数据，却依然能保持稳定的性能? 请参考这篇文章 SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&#39;t。
+ 想要了解为何DynamoDB存储100 TBs以上的数据，却依然能保持稳定的性能? 请参考这篇文章 SQL, NoSQL, and Scale: How DynamoDB scales where relational databases don&amp;rsquo;t。
  Dynamo的几个关键点 非关系型数据模型
 关系型数据模型可以用来为不同类型的数据建模（比如针对一个电商的用户和订单来建模）。通常，使用关系型数据建模的方式为数据建模，需要将关联的数据拆分成更小的数据单元，以便这些数据是不重复的，这就是关系型数据库中著名的第一范式。其做法是，如果某类实体数据想要使用另外一类实体数据（比如将订单和用户关联），那么只需要将2类不同的实体数据存储在不同的表格，然后通过外键的方式来关联这2类数据以及通过JOIN操作来拼接和获取这2类数据。此时，你只需要修改某个实体（比如某个用户的用户名），那么另一个数据实体（比如订单所属的用户名也发生了变化）所引用的数据也会因此而变化。
 然而，Amazon.com工程师在收集数据库需求时发现了一个非常有趣的结果：
