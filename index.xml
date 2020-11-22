@@ -725,12 +725,17 @@ AWS Serverless服务。AWS Lambda服务提供了能自动弹性伸缩，无状�
     </item>
     
     <item>
-      <title>如何在一天之内打造一个新闻服务</title>
-      <link>https://2cloudlab.com/portfolio/how-to-craft-a-new-york-times-in-one-day/</link>
+      <title>如何在一天之内上线一款WSGI兼容的Python Web App</title>
+      <link>https://2cloudlab.com/portfolio/how-to-craft-a-wsgi-python-web-app-in-one-day-supervisor-ec2-gunicorn-nginx-cloud-computing/</link>
       <pubDate>Thu, 12 Jul 2018 16:53:54 +0600</pubDate>
       
-      <guid>https://2cloudlab.com/portfolio/how-to-craft-a-new-york-times-in-one-day/</guid>
-      <description>Consectur in Bibendum Totam rem aperiam eaque ipsa quae illo inventore veritatis et quasi architebetea.vitae dicta sunt explicabo. nemo enim ipsam volup as tatem quia voluptassit aspernatur.aut odit aut fugit sed quia consequuntur magni dolores eo ratione voluptatem.sequi nesciunt neque porro quisquam est dolorem ipsum quia dolor amet consectetur adipisci velit. lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</description>
+      <guid>https://2cloudlab.com/portfolio/how-to-craft-a-wsgi-python-web-app-in-one-day-supervisor-ec2-gunicorn-nginx-cloud-computing/</guid>
+      <description>如何在一天之内上线一款WSGI兼容的Python Web App 这篇指南将通过以下4步来帮助你在一天之内上线一款WSGI兼容的Python Web App：
+ 开箱即用的云原生解决方案 现实情况 准备和实现 具体案例 存在的问题  开箱即用的云原生解决方案 module_load_balancer模块用于创建WSGI兼容Web App所依赖的环境，非常适合只有Python技术栈的团队。在使用它之前，你需要参考这里来准备研发环境和了解一些注意事项。这个解决方案能够帮助你创建以下环境，你只需要提供图中Web App部分（它是基于Python来编写的并且是WSGI兼容的）。
+现实情况 你拥有一支非常擅长Python的研发团队，然而却缺乏DevOps和软件工程经验。你迫切希望，你的团队能够研发一款面向互联网的服务，并能快速接入互联网。
+准备和实现 首先，你需要使用Python研发一个Web App，它是WSGI兼容的，然后将其打包成tar.gz格式，包中的目录结构如下所示：
+. |-web-app-root | |-web-app | | |-wsgiapp.py | |-requirements.txt  web-app-root是包中的根目录，你可以重命名成其它 web-app是你的Web App所有可执行性文件所在的目录 wsgiapp.py是你的Web App的入口，里面定义了一个WSGI对象 requirements.txt是你的Web App所依赖的Python库  其次，你需要创建main.tf文件，内容如下：
+terraform { required_version = &amp;#34;= 0.12.19&amp;#34; } provider &amp;#34;aws&amp;#34; { version = &amp;#34;= 2.58&amp;#34; region = &amp;#34;ap-northeast-1&amp;#34; } module &amp;#34;load_balance&amp;#34; { source = &amp;#34;github.com/2cloudlab/module_load_balancer//modules/load_balancer?ref=&amp;lt;tag&amp;gt;&amp;#34; download_url = &amp;lt;your-WSGI-Compatible-Python-Package-URL&amp;gt; package_base_dir = &amp;lt;your-root-folder-name-in-web-app-package&amp;gt; app_dir = &amp;lt;your-web-app-folder&amp;gt; envs = &amp;lt;your-app-environment-variables&amp;gt; wsgi_app = &amp;lt;WSGI-Entry&amp;gt; } output &amp;#34;alb_dns_name&amp;#34; { value = module.</description>
     </item>
     
   </channel>
