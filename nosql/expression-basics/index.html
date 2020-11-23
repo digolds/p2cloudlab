@@ -6,7 +6,7 @@
   
   <meta name="description" content="本文是关于DynamoDB的表达式。表达式是DynamoDB的内置功能，它又细分为以下几类表达式：">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.78.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -137,8 +137,8 @@
 <li><strong>过滤表达式</strong>通常会与查询操作或遍历操作一起使用，它将作用于查询结果之上，对应的指令选项是<code>--filter-expression</code></li>
 </ul>
 <p>只有充分理解了这些表达式，才能更好地使用DynamoDB，进而享受DynamoDB给我们带来的好处。在这篇文章，我们将学习表达式的基础知识，包括使用表达式的属性名和属性值。紧接着，我们将基于上一章关于PutItem的例子来学习如何使用<strong>条件表达式</strong>。</p>
-<h2 id="表达式的基础知识">表达式的基础知识</h2>
-<p>DynamoDB中的表达式只是一串字符串，它的内容是特定的逻辑表达式，而这个表达式将用来验证数据是否满足该条件。在这些表达式中，你可以应用一些比较操作符，比如&quot;=&quot;（相等），&quot;&gt;&quot;（大于）或者&quot;&gt;=&quot;（大于等于）。例如，以下表达式应用了&quot;&gt;=&quot;：</p>
+<h2 id="heading">表达式的基础知识</h2>
+<p>DynamoDB中的表达式只是一串字符串，它的内容是特定的逻辑表达式，而这个表达式将用来验证数据是否满足该条件。在这些表达式中，你可以应用一些比较操作符，比如&quot;=&rdquo;（相等），&ldquo;&gt;&rdquo;（大于）或者&quot;&gt;=&rdquo;（大于等于）。例如，以下表达式应用了&quot;&gt;=&rdquo;：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="s2">&#34;Age &gt;= 21&#34;</span>
 </code></pre></div><p>该表达式的作用在于：该操作只能作用于年龄在21岁及以上的用户，否则操作结果会出错。</p>
 <blockquote>
@@ -157,7 +157,7 @@
 <li>size(): 返回属性的大小，不同类型的属性，其大小的计算规则是不一样的。</li>
 </ul>
 <p>关于表达式中的比较操作符和函数，读者可以参考<a href="https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.OperatorsAndFunctions.html">官方文档</a>。</p>
-<h2 id="表达式的占位符">表达式的占位符</h2>
+<h2 id="heading-1">表达式的占位符</h2>
 <p>之前的内容表明，表达式是一个具有逻辑运算的字符串，DynamoDB通过执行这个表达式来得到一个是或否的结果。然而，有的时候你需要一种更加清晰的方式来编写表达式，比如在表达式中使用变量，然后在其它地方提供变量值。</p>
 <p>DynamoDB允许你使用<code>--expression-attribute-names</code>和<code>--expression-attribute-values</code>选项来编写更加清晰的表达式。通过这种做法，你可以在表达式中指定变量，然后分别使用以上选项来指定变量值，DynamoDB会将这些变量值自动替换掉表达式中的变量。接下来，让我们看看这2个选项的含义。</p>
 <ul>
@@ -166,28 +166,28 @@
 <p>有时，你希望针对一个属性编写表达式，但是由于DynamoDB的限制，你无法直接在表达式中使用该属性名，比如：</p>
 <ul>
 <li>你的属性名称刚好是DynamoDB中预留的关键字。DynamoDB预先保留了大量的关键字，其中包括了：&ldquo;Date&rdquo;，&ldquo;Year&quot;和&quot;Name&quot;等。如果你的属性名称恰巧在这些预留的关键字里，那么你需要借助这个选项来提供属性名称的占位符</li>
-<li>你的属性名称中包含&rdquo;.&quot;。DynamoDB使用&quot;.&ldquo;来获取嵌套类型（比如Map类型）中的子项。如果你的属性名中包含了&rdquo;.&quot;，那么你需要借助这个选项来提供属性名称的占位符</li>
+<li>你的属性名称中包含&rdquo;.&quot;。DynamoDB使用&rdquo;.&ldquo;来获取嵌套类型（比如Map类型）中的子项。如果你的属性名中包含了&rdquo;.&quot;，那么你需要借助这个选项来提供属性名称的占位符</li>
 <li>你的属性名称开头包含数字。DynamoDB不允许表达式中的属性名称以数字开头，因此如果你的属性名称以数字开头，那么你需要借助这个选项来提供属性名称的占位符</li>
 </ul>
-<p>在使用这个选项时，你只需要提供一个Map格式的属性名称集合。这个Map中的key是表达式中的占位符，而value是属性名称。例如，你可以为&quot;Age&quot;属性定义占位符&quot;#a&quot;，而这个占位符可用于表达式，具体示例如下所示：</p>
+<p>在使用这个选项时，你只需要提供一个Map格式的属性名称集合。这个Map中的key是表达式中的占位符，而value是属性名称。例如，你可以为&quot;Age&quot;属性定义占位符&rdquo;#a&rdquo;，而这个占位符可用于表达式，具体示例如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">  --expression-attribute-names <span class="s1">&#39;{
 </span><span class="s1">    &#34;#a&#34;: &#34;Age&#34;
 </span><span class="s1">  }&#39;</span>
 </code></pre></div><blockquote>
-<p>当使用<code>--expression-attribute-names</code>时，占位符必须以&quot;<strong>#</strong>&ldquo;开头。</p>
+<p>当使用<code>--expression-attribute-names</code>时，占位符必须以&rdquo;<strong>#</strong>&ldquo;开头。</p>
 </blockquote>
 <p>在之前的<a href="https://2cloudlab.com/nosql/inserting-retrieving-items/">GetItem</a>的例子中，我们使用了<code>--projection-expression</code>选项来返回某项数据的部分属性。为了能够在该选项中使用占位符，我们需要将之前的例子改如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb get-item <span class="se">\
-</span><span class="se"></span>    --table-name Users <span class="se">\
-</span><span class="se"></span>    --projection-expression <span class="s2">&#34;#a, #u&#34;</span> <span class="se">\
-</span><span class="se"></span>    --expression-attribute-names <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb get-item <span class="se">\</span>
+    --table-name Users <span class="se">\</span>
+    --projection-expression <span class="s2">&#34;#a, #u&#34;</span> <span class="se">\</span>
+    --expression-attribute-names <span class="s1">&#39;{
 </span><span class="s1">      &#34;#a&#34;: &#34;Age&#34;,
 </span><span class="s1">      &#34;#u&#34;: &#34;Username&#34;
-</span><span class="s1">    }&#39;</span> <span class="se">\
-</span><span class="se"></span>    --key <span class="s1">&#39;{
+</span><span class="s1">    }&#39;</span> <span class="se">\</span>
+    --key <span class="s1">&#39;{
 </span><span class="s1">      &#34;Username&#34;: {&#34;S&#34;: &#34;daffyduck&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\
-</span><span class="se"></span>    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\</span>
+    <span class="nv">$LOCAL</span>
 
 <span class="o">{</span>
     <span class="s2">&#34;Item&#34;</span>: <span class="o">{</span>
@@ -199,38 +199,38 @@
         <span class="o">}</span>
     <span class="o">}</span>
 <span class="o">}</span>
-</code></pre></div><p>注意，在以上例子中，我们在<code>--projection-expression</code>中使用了2个占位符，分别是&rdquo;#a&quot;和&quot;#u&quot;。而这2个占位符定义在<code>--expression-attribute-names</code>选项中，分别对应&quot;Age&quot;和&quot;Username&quot;属性。</p>
-<p>最后需要注意的是：如果表达式中的属性是Map类型中的某个键（比如&quot;Address.State&quot;），那么你需要定义对应的占位符。比如，你的数据项中有一个类型为Map的属性&quot;Address&quot;，这个属性包含了3个键，它们分别是：&ldquo;Street&rdquo;，&ldquo;City&quot;和&quot;State&rdquo;。如果你想判断&quot;State&quot;是否是指定的一个值时，你需要在表达式中使用&quot;Address.State&quot;，但是这种表达方式只能通过<code>--expression-attribute-names</code>来完成，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">--condition-expression <span class="s2">&#34;#a.#st = &#39;Nebraska&#39; &#34;</span> <span class="se">\
-</span><span class="se"></span>    --expression-attribute-names <span class="s1">&#39;{
+</code></pre></div><p>注意，在以上例子中，我们在<code>--projection-expression</code>中使用了2个占位符，分别是&rdquo;#a&quot;和&rdquo;#u&rdquo;。而这2个占位符定义在<code>--expression-attribute-names</code>选项中，分别对应&quot;Age&quot;和&quot;Username&quot;属性。</p>
+<p>最后需要注意的是：如果表达式中的属性是Map类型中的某个键（比如&quot;Address.State&rdquo;），那么你需要定义对应的占位符。比如，你的数据项中有一个类型为Map的属性&quot;Address&rdquo;，这个属性包含了3个键，它们分别是：&ldquo;Street&rdquo;，&ldquo;City&quot;和&quot;State&rdquo;。如果你想判断&quot;State&quot;是否是指定的一个值时，你需要在表达式中使用&quot;Address.State&rdquo;，但是这种表达方式只能通过<code>--expression-attribute-names</code>来完成，如下所示：</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">--condition-expression <span class="s2">&#34;#a.#st = &#39;Nebraska&#39; &#34;</span> <span class="se">\</span>
+    --expression-attribute-names <span class="s1">&#39;{
 </span><span class="s1">      &#34;#a&#34;: &#34;Address&#34;,
 </span><span class="s1">      &#34;#st&#34;: &#34;State&#34;
 </span><span class="s1">    }&#39;</span>
-</code></pre></div><p>注意，在以上例子中，&quot;#a.#st&quot;会被替换成&quot;Address.State&quot;。</p>
+</code></pre></div><p>注意，在以上例子中，&quot;#a.#st&quot;会被替换成&quot;Address.State&rdquo;。</p>
 <ul>
 <li><code>--expression-attribute-values</code></li>
 </ul>
-<p><code>--expression-attribute-values</code>选项的作用与<code>--expression-attribute-names</code>不同，跟在它后面的参数将作用于表达式中的属性值，比如可以定义一个占位符&quot;:stn&quot;来替代&quot;#a.#st = &lsquo;Nebraska&rsquo; &ldquo;中的&rsquo;Nebraska'。除此之外，在格式上也有些不一样：</p>
+<p><code>--expression-attribute-values</code>选项的作用与<code>--expression-attribute-names</code>不同，跟在它后面的参数将作用于表达式中的属性值，比如可以定义一个占位符&rdquo;:stn&quot;来替代&rdquo;#a.#st = &lsquo;Nebraska&rsquo; &ldquo;中的'Nebraska&rsquo;。除此之外，在格式上也有些不一样：</p>
 <ul>
-<li>占位符必须是以&rdquo;:&ldquo;作为开头，比如上面的&rdquo;:stn&quot;，而不是&quot;#&quot;</li>
-<li>在设置值的时候，必须提供该值的类型，比如：{&quot;:agelimit&quot;: {&ldquo;N&rdquo;: 21} }</li>
+<li>占位符必须是以&rdquo;:&ldquo;作为开头，比如上面的&rdquo;:stn&rdquo;，而不是&rdquo;#&rdquo;</li>
+<li>在设置值的时候，必须提供该值的类型，比如：{&quot;:agelimit&rdquo;: {&ldquo;N&rdquo;: 21} }</li>
 </ul>
 <p>关于其用法的例子，可以参考使用<a href="https://2cloudlab.com/nosql/updating-deleting-items/">UpdateItem API的文章</a></p>
-<h2 id="条件表达式">条件表达式</h2>
+<h2 id="heading-2">条件表达式</h2>
 <p>这一节将通过一个使用条件表达式的例子结束本章的内容。还记得<a href="https://2cloudlab.com/nosql/inserting-retrieving-items/">我们之前使用PutItem</a>来向&quot;User&quot;表中插入数据的例子吗！这个例子有一个问题：如果&quot;Users&quot;表中已经包含了正在插入的数据项，那么这个操作将覆盖已存在的数据项，这种操作将破坏老的数据项，这也许不是我们想要的结果。</p>
 <p>好在，我们可以使用条件表达式来避免这种毁灭性操作。下面的示例给出了一种解决方法：我们可以添加&ndash;condition-expression &ldquo;attribute_not_exists(#u)&ldquo;选项，这个选项的作用在于确保插入的User是不存在的，如果存在，那么这次插入将会失败。</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb put-item <span class="se">\
-</span><span class="se"></span>    --table-name Users <span class="se">\
-</span><span class="se"></span>    --item <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb put-item <span class="se">\</span>
+    --table-name Users <span class="se">\</span>
+    --item <span class="s1">&#39;{
 </span><span class="s1">      &#34;Username&#34;: {&#34;S&#34;: &#34;yosemitesam&#34;},
 </span><span class="s1">      &#34;Name&#34;: {&#34;S&#34;: &#34;Yosemite Sam&#34;},
 </span><span class="s1">      &#34;Age&#34;: {&#34;N&#34;: &#34;73&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\
-</span><span class="se"></span>    --condition-expression <span class="s2">&#34;attribute_not_exists(#u)&#34;</span> <span class="se">\
-</span><span class="se"></span>    --expression-attribute-names <span class="s1">&#39;{
+</span><span class="s1">    }&#39;</span> <span class="se">\</span>
+    --condition-expression <span class="s2">&#34;attribute_not_exists(#u)&#34;</span> <span class="se">\</span>
+    --expression-attribute-names <span class="s1">&#39;{
 </span><span class="s1">      &#34;#u&#34;: &#34;Username&#34;
-</span><span class="s1">    }&#39;</span> <span class="se">\
-</span><span class="se"></span>    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\</span>
+    <span class="nv">$LOCAL</span>
 </code></pre></div><p>需要注意的是，我们在条件表达式中使用了函数attribute_not_exists()来判断给定的&quot;Username&quot;属性是否存在，并期望它是不存在的，然后期望这次插入操作将会成功。如果你再一次运行以上指令，那么你将得到以下错误：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">An error occurred <span class="o">(</span>ConditionalCheckFailedException<span class="o">)</span> when calling the PutItem operation: The conditional request failed
 </code></pre></div><p>以上错误表明，&ldquo;Username&quot;为&quot;yosemitesam&quot;的User已经存在，attribute_not_exists(#u)的执行过程是这样的：根据&quot;yosemitesam&quot;获取该User，如果获取成功，那么再判断&quot;Username&quot;属性是否存在于User，如果存在，那么该函数返回的结果是false，如果不存在，该函数返回的结果是true。</p>

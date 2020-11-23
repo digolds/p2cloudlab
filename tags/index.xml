@@ -6,7 +6,11 @@
     <description>Recent content in Tags on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 15 Apr 2020 12:27:38 +0600</lastBuildDate><atom:link href="https://2cloudlab.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 15 Apr 2020 12:27:38 +0600</lastBuildDate>
+    
+	<atom:link href="https://2cloudlab.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>Data-Intensive</title>
       <link>https://2cloudlab.com/tags/data-intensive/</link>
@@ -31,6 +35,15 @@
       <pubDate>Wed, 15 Apr 2020 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/nosql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CI/CD</title>
+      <link>https://2cloudlab.com/tags/ci/cd/</link>
+      <pubDate>Fri, 20 Mar 2020 12:21:58 +0600</pubDate>
+      
+      <guid>https://2cloudlab.com/tags/ci/cd/</guid>
       <description></description>
     </item>
     
@@ -197,7 +210,7 @@
     </item>
     
     <item>
-      <title>CICD</title>
+      <title>cicd</title>
       <link>https://2cloudlab.com/tags/cicd/</link>
       <pubDate>Tue, 10 Mar 2020 12:29:40 +0600</pubDate>
       
@@ -215,7 +228,7 @@
     </item>
     
     <item>
-      <title>DevOps</title>
+      <title>devops</title>
       <link>https://2cloudlab.com/tags/devops/</link>
       <pubDate>Tue, 10 Mar 2020 12:29:40 +0600</pubDate>
       
@@ -301,15 +314,6 @@
       <pubDate>Thu, 21 Feb 2019 12:27:38 +0600</pubDate>
       
       <guid>https://2cloudlab.com/tags/infrastructureascode/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CI/CD</title>
-      <link>https://2cloudlab.com/tags/ci/cd/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://2cloudlab.com/tags/ci/cd/</guid>
       <description></description>
     </item>
     
