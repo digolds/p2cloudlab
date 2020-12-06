@@ -6,7 +6,7 @@
   
   <meta name="description" content="This is meta description">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.78.1" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -133,7 +133,7 @@
                 
                 
                 <div class="work-single-content">
-                    <h1 id="-nosqlhttps2cloudlabcomportfoliohow-to-craft-a-nosql-storage-system-in-one-day-dynamodb-large-scale-cloud-computing"><a href="https://2cloudlab.com/portfolio/how-to-craft-a-nosql-storage-system-in-one-day-dynamodb-large-scale-cloud-computing/">如何在一天之内搭建大规模存储系统-NoSQL</a></h1>
+                    <h1 id="如何在一天之内搭建大规模存储系统-nosqlhttps2cloudlabcomportfoliohow-to-craft-a-nosql-storage-system-in-one-day-dynamodb-large-scale-cloud-computing"><a href="https://2cloudlab.com/portfolio/how-to-craft-a-nosql-storage-system-in-one-day-dynamodb-large-scale-cloud-computing/">如何在一天之内搭建大规模存储系统-NoSQL</a></h1>
 <p>这篇指南将通过以下4步来帮助你<strong>在一天之内搭建大规模存储系统-NoSQL</strong>：</p>
 <ul>
 <li>开箱即用的云原生解决方案</li>
@@ -142,14 +142,14 @@
 <li>具体案例</li>
 <li>存在的问题</li>
 </ul>
-<h2 id="heading">开箱即用的云原生解决方案</h2>
+<h2 id="开箱即用的云原生解决方案">开箱即用的云原生解决方案</h2>
 <p><a href="https://github.com/2cloudlab/module_dynamodb">module_dynamodb</a>模块用于创建DynamoDB存储系统，它是NoSQL数据库，非常<strong>适合大规模数据存取</strong>，即便是数据量大规模增长了，它依然能提供10毫秒(ms)以内的数据存取性能。在使用它之前，你需要参考<a href="https://www.digolds.cn/article/001605969144845d618aa67ad2f4f5a890c0a43d5aa5f71000">这里来准备研发环境和了解一些注意事项</a>。这个解决方案能够帮助你创建一个NoSQL存取系统，你只需要提供表的主键或排序键以及创建索引即可。关于DynamoDB的使用，你可以<a href="https://www.digolds.cn/article/001572926018754ebaf8e3696284bab9e5e2c940396c424000">参考这里</a>，在那里，你可以看到如何使用DynamoDB来高效存取层级数据，除此之外，你还能看到Amazon是如何使用它来存取购物车信息的，实际上它需要一系列的教程来介绍它。这套开箱即用的解决方案能够帮助你快速地创建DynamoDB存储系统，它可以集成到其它服务，如下图最右边的部分所示：</p>
 <p>
 <img class="lazy" data-src="https://2cloudlab.com/images/blog/load-balance-nosql-cloud-computing-WSGI-python-gunicorn-supervisior-nginx-ec2.png" alt=""  />
 </p>
-<h2 id="heading-1">现实情况</h2>
+<h2 id="现实情况">现实情况</h2>
 <p>你拥有一支非常擅长业务应用的研发团队，然而却<strong>缺乏大规模数据存取系统搭建的经验</strong>和软件工程经验。你迫切希望，你的团队能够研发一款面向互联网的服务，该服务能够大规模存取用户产生的数据。</p>
-<h2 id="heading-2">准备和实现</h2>
+<h2 id="准备和实现">准备和实现</h2>
 <p><strong>首先</strong>，你需要为你的业务进行<strong>数据建模</strong>，以及分析<strong>数据存取模式</strong>。</p>
 <p><strong>数据建模</strong>要解决的问题是将现实世界里的对象抽象化，通过数据结构来定义和描述现实世界里的对象，每一个数据结构由一些字段来构成，每个字段有对应的类型，常见的类型有Number、String、Bool、Enum等等。</p>
 <p><strong>数据存取模式</strong>要解决的问题是搞清楚存取哪些数据和存取操作都有哪些。比如，你正在做一个电商服务，因此你需要存储商品数据，此外，你肯定会陈列商品以及展示商品的详细，这些都是属于数据存取模式要解决的问题。</p>
@@ -201,7 +201,7 @@ terraform apply
 Outputs:
 ...
 </code></pre></div><p>创建成功之后，你就可以借助各种编程语言来操作DynamoDB服务了，可选的编程语言有Go、Python、Node.JS、C++、Java等等，AWS均为这些编程语言提供了对应的SDK，你应该优先选择SDK来操作DynamoDB服务。</p>
-<h2 id="heading-3">具体案例</h2>
+<h2 id="具体案例">具体案例</h2>
 <p>在之前<a href="https://www.digolds.cn/article/001605969485805c873b6a1c226495b82cf1f88aef67d22000">这篇文章</a>里，我们搭建了一个WSGI兼容的博客应用，它是基于Python研发的，虽然，在那里我们能够在一个小时之内将该App接入互联网，你也可以访问它的主页，然而它依然没有存储文章的能力。接下来，让我们为这个博客应用增加存储能力，它的源码托管在<a href="https://github.com/digolds/digolds_sample">这里</a>。</p>
 <p>之前说过，在创建DynamoDB服务之前，你需要为你的业务场景进行数据建模和分析数据存取模式，在我们这个例子里，该业务场景就是博客应用，它需要对单篇文章进行增删改查，除此之外，它还需要分页显示文章列表以及获取当前正在阅读文章的前一篇和后一篇文章。</p>
 <p>文章的格式如下所示：</p>
@@ -250,12 +250,12 @@ module <span class="s2">&#34;dynamodb&#34;</span> <span class="o">{</span>
       <span class="nv">name</span> <span class="o">=</span> <span class="s2">&#34;CreatedDateTime&#34;</span>
       <span class="nb">type</span> <span class="o">=</span> <span class="s2">&#34;N&#34;</span>
   <span class="o">}</span>, <span class="o">]</span>
-  <span class="nv">global_secondary_indexes</span> <span class="o">=</span> <span class="o">[</span><span class="o">{</span>
+  <span class="nv">global_secondary_indexes</span> <span class="o">=</span> <span class="o">[{</span>
     <span class="nv">name</span>               <span class="o">=</span> <span class="s2">&#34;ContentGlobalIndex&#34;</span>
     <span class="nv">hash_key</span>           <span class="o">=</span> <span class="s2">&#34;ContentType&#34;</span>
     <span class="nv">range_key</span>          <span class="o">=</span> <span class="s2">&#34;CreatedDateTime&#34;</span>
-    <span class="nv">write_capacity</span>     <span class="o">=</span> 10
-    <span class="nv">read_capacity</span>      <span class="o">=</span> 10
+    <span class="nv">write_capacity</span>     <span class="o">=</span> <span class="m">10</span>
+    <span class="nv">read_capacity</span>      <span class="o">=</span> <span class="m">10</span>
     <span class="nv">projection_type</span>    <span class="o">=</span> <span class="s2">&#34;INCLUDE&#34;</span>
     <span class="nv">non_key_attributes</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&#34;Id&#34;</span>, <span class="s2">&#34;Title&#34;</span>, <span class="s2">&#34;Description&#34;</span>, <span class="s2">&#34;AuthorName&#34;</span><span class="o">]</span>
   <span class="o">}</span>, <span class="o">]</span>
@@ -279,10 +279,10 @@ terraform apply
 Outputs:
 ...
 </code></pre></div><p>虽然，你成功创建了DynamoDB服务，但是它和这个博客应用是相互独立的，因此，你需要通过某种方式将两者集成在一起，一种比较好的做法是在博客应用中加入<strong>环境变量</strong>，事实上，该博客应用的源码已经包含了下面2个环境变量：</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">TABLE_NAME</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">personal-articles-table</span><span class="s1">&#39;</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="sa"></span><span class="s1">&#39;</span><span class="s1">INDEX_NAME</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa"></span><span class="s1">&#39;</span><span class="s1">ContentGlobalIndex</span><span class="s1">&#39;</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TABLE_NAME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;personal-articles-table&#39;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;INDEX_NAME&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;ContentGlobalIndex&#39;</span>
 </code></pre></div><p>因此，为了能让这个博客应用访问上面创建的DynamoDB服务，你需要在<a href="https://www.digolds.cn/article/001605969485805c873b6a1c226495b82cf1f88aef67d22000">之前的文章</a>中增加2个环境变量。同时，你也会看到在这个博客应用里使用了<code>boto3</code>库，它是AWS提供的专门用于操作AWS服务的Python版SDK。</p>
-<h2 id="heading-4">存在的问题</h2>
+<h2 id="存在的问题">存在的问题</h2>
 <p>在使用这个开箱即用的解决方案时，你需要注意以下几点：</p>
 <ol>
 <li>选择的hash_key最好能均匀分布，而选择的range_key最好能够根据业务场景对数据进行排序</li>

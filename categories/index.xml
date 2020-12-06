@@ -5,10 +5,6 @@
     <link>https://2cloudlab.com/categories/</link>
     <description>Recent content in Categories on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    
-	<atom:link href="https://2cloudlab.com/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language><atom:link href="https://2cloudlab.com/categories/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
