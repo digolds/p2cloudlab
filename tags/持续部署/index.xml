@@ -6,7 +6,11 @@
     <description>Recent content in 持续部署 on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Mar 2020 12:21:58 +0600</lastBuildDate><atom:link href="https://2cloudlab.com/tags/%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 Mar 2020 12:21:58 +0600</lastBuildDate>
+    
+	<atom:link href="https://2cloudlab.com/tags/%E6%8C%81%E7%BB%AD%E9%83%A8%E7%BD%B2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>从提出想法-&gt;对外发布产品--如何0成本在github上缩短该过程</title>
       <link>https://2cloudlab.com/blog/how-to-craft-url-shorten-service-for-one-day/</link>
@@ -47,7 +51,7 @@ github平台存储了开发者的代码，提供了搭建CI的Action服务，拥
 组建一个团队来搭建CI，需要准备服务器，安装软件，用网线连接服务器等，而借助github，则只需要编写yaml文件就能快速构建出一个稳定的CI，这种转变大大地缩短了搭建CI的时间，让开发者专注于软件的功能研发！
 接下来让我们看一个具体的例子来实践在github上构建CI
 通过一个Go示例在github上构建CI 这个例子是由Go语言来编写的，完整的源码可以到这里获取，其目录结构如下所示：
-. |____.github | |____workflows | | |____integration_workflow.yaml | | |____master_workflow.yaml |____go.mod |____main.go |____main_integration_test.go |____main_test.go |____Makefile |____mylib | |____external_lib.go | |____external_lib_test.</description>
+.|____.github| |____workflows| | |____integration_workflow.yaml| | |____master_workflow.yaml|____go.mod|____main.go|____main_integration_test.go|____main_test.go|____Makefile|____mylib| |____external_lib.go| |____external_lib_test.</description>
     </item>
     
   </channel>

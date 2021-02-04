@@ -6,7 +6,11 @@
     <description>Recent content in InfrastructureAsCode on 2cloudlab | 企业数字化转型的催化剂</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 21 Feb 2019 12:27:38 +0600</lastBuildDate><atom:link href="https://2cloudlab.com/tags/infrastructureascode/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 21 Feb 2019 12:27:38 +0600</lastBuildDate>
+    
+	<atom:link href="https://2cloudlab.com/tags/infrastructureascode/index.xml" rel="self" type="application/rss+xml" />
+    
+    
     <item>
       <title>企业为何需要在内部推广Devops</title>
       <link>https://2cloudlab.com/blog/devops-cicd-infrastructure-as-code/</link>

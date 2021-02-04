@@ -33,6 +33,11 @@
   </url>
   
   <url>
+    <loc>https://2cloudlab.com/tags/ci/cd/</loc>
+    <lastmod>2020-03-20T12:21:58+06:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://2cloudlab.com/tags/docker/</loc>
     <lastmod>2020-03-20T12:21:58+06:00</lastmod>
   </url>
@@ -424,10 +429,6 @@
   
   <url>
     <loc>https://2cloudlab.com/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>https://2cloudlab.com/tags/ci/cd/</loc>
   </url>
   
 </urlset>
