@@ -6,7 +6,7 @@
   
   <meta name="description" content="本文将介绍DynamoDB的Scans操作。该操作是DynamoDB的重型武器。做一个相似的对比: GetItem操作就是是一对镊子，可以夹出某个特定的物件。Query操作像把铁铲，能挖出一大堆物件，但是其作用的范围依旧很小。然而，Scan操作就像一辆拖拉机，把整个修整区域翻个底朝天。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -144,11 +144,11 @@
 <li>you use global secondary indexes in a special way to set up a work queue (very advanced).</li>
 </ul>
 <p>带着以上告诫，让我们来探索Scan操作的使用方式。</p>
-<h2 id="scan">Scan操作的基础知识</h2>
+<h2 id="scan操作的基础知识">Scan操作的基础知识</h2>
 <p>Scan操作是DynamoDB中最容易使用的功能。开发者只需要在执行该操作时提供表的名字，它就能帮你返回表格中所有数据项（返回的数据量不超过1MB）：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\</span>
-    --table-name UserOrdersTable <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\
+</span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>以下是返回结果（为了方便阅读，其中省略了中间部分）：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
     <span class="s2">&#34;Count&#34;</span>: 25,
@@ -184,10 +184,10 @@
 <p>与<a href="https://2cloudlab.com/nosql/inserting-retrieving-items/">GetItem</a>和<a href="https://2cloudlab.com/nosql/querying/">Query</a>操作类似，你可以在Scan操作时添加<code>--projection-expression</code>选项来指定返回特定的属性集。这里将不做演示，留给读者自行完成。</p>
 <p>DynamoDB对一次请求所返回的数据量有最多1MB的限制。Scans操作经常会导致返回的数据量超过1MB，这就意味着需要通过分页机制来获取表中所有数据项。而这种分页机制是通过返回结果中&quot;NextToken&quot;来完成的。你只需要在调用Scans操作时添加<code>--starting-token</code>选项和&quot;NextToken&quot;来获取下一页的数据。</p>
 <p>当然，在试验DynamoDB的Scans操作时，由于数据量并不会很大，因此为了测试这种行为，你可以使用<code>--max-items</code>选项来限制其返回数量。例如我们将该选项的值设置为1，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\</span>
-    --table-name UserOrdersTable <span class="se">\</span>
-    --max-items <span class="m">1</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\
+</span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\
+</span><span class="se"></span>    --max-items <span class="m">1</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>返回的结果只包含了一项数据，除此之外还包含了&quot;NextToken&rdquo;:</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
     <span class="s2">&#34;Count&#34;</span>: 25,
@@ -208,14 +208,14 @@
     <span class="s2">&#34;ScannedCount&#34;</span>: 25,
     <span class="s2">&#34;ConsumedCapacity&#34;</span>: null
 <span class="o">}</span>
-</code></pre></div><h2 id="scans">并发执行Scans</h2>
+</code></pre></div><h2 id="并发执行scans">并发执行Scans</h2>
 <p>Scan的一种使用场景是将数据导出到冷数据存储系统（冷数据系统是指读操作特别频繁但是写入操作很少的数据库系统）以便分析。然而，如果表中有大量数据（比如超过100TBs），那么执行Scan操作来读取表中的所有数据所需的时间会较长。为了缩短导出时间，DynamoDB的Scan操作有一种Segments的概念，它允许并发执行Scans操作。当你想让Scan操作并发执行，那么你需要指定需要将表分成几段，这个Scan操作作用在哪段。Segments的索引是从0开始的，比如你将表分成了3端，那么0，1，2分别是这3端的编号。开发者可以启动多个线程或进程来并发导出数据。</p>
 <p>即便是我们练习的表中数据量不大，但是我们依然可以测试这种行为。例如：我们可以将表分成3段，并启动一个进程来Scan分段编号为1的数据，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\</span>
-    --table-name UserOrdersTable <span class="se">\</span>
-    --total-segments <span class="m">3</span> <span class="se">\</span>
-    --segment <span class="m">1</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb scan <span class="se">\
+</span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\
+</span><span class="se"></span>    --total-segments <span class="m">3</span> <span class="se">\
+</span><span class="se"></span>    --segment <span class="m">1</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>从以下的结果可知，其返回了11项数据，而不是25项：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
     <span class="s2">&#34;Count&#34;</span>: 11,

@@ -6,7 +6,7 @@
   
   <meta name="description" content="企业在为软件产品提供运行环境时需要做的事情太多了。这些事情有安装软件、配置软件、创建服务器、准备数据库、监控等等。如果每一件事情都需要手动去完成，那么效率是低下的，而且容易出错！在2cloudlab，我们试图通过自动化的方式处理以上事情。因此2cloudlab提供了各种可重复使用的模块，通过组合这些模块以及依赖计算机执行这些模块来加速产品运行环境的生成！2cloudlab致力于让企业在一天之内创建完整的软件运行环境。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -138,7 +138,7 @@
 <li>在infrastructure_live中引用infrastructure_modules</li>
 <li>总结</li>
 </ol>
-<h2 id="heading">创建一个完整的产品运行环境所需的任务列表</h2>
+<h2 id="创建一个完整的产品运行环境所需的任务列表">创建一个完整的产品运行环境所需的任务列表</h2>
 <p>创建一个完整的产品运行环境需要考虑的事情太多了，这些事情有：</p>
 <ul>
 <li>安装：安装产品以及其依赖项（比如准备操作系统）</li>
@@ -158,25 +158,25 @@
 <li>测试：编写测试用例、自动化测试、集成测试和产品测试</li>
 </ul>
 <p>为产品准备运行环境都会遇到以上问题，企业需要根据实际情况来选择哪些事项是需要实施的，哪些事项当下是不需要实现的。以上事项如果都使用手动的方式来实现，那么结果将会是令人失望的。2cloudlab针对这些事项实现了一个个可复用的模块，用户只需要组合并使用这些模块就能轻松地创建出开箱即用的解决方案。2cloudlab所提供的模块经过大量的测试，并可以帮助企业在一天之内完成环境的准备。接下来让我们看看如何使用2cloudlab所提供的模块。</p>
-<h2 id="2cloudlabterraform">2cloudlab所提供的Terraform模块</h2>
+<h2 id="2cloudlab所提供的terraform模块">2cloudlab所提供的Terraform模块</h2>
 <p>2cloudlab基于Terraform编写了可复用的模块，这些模块主要托管在github上。每个模块的格式如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="p">.</span>
-<span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">e</span><span class="err">x</span><span class="err">a</span><span class="err">m</span><span class="err">p</span><span class="err">l</span><span class="err">e</span><span class="err">s</span>
-<span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">i</span><span class="err">a</span><span class="err">m</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">r</span><span class="err">o</span><span class="err">s</span><span class="err">s</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">o</span><span class="err">u</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">a</span><span class="err">s</span><span class="err">s</span><span class="err">i</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">n</span><span class="err">t</span>
-<span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">m</span><span class="err">a</span><span class="err">i</span><span class="err">n</span><span class="p">.</span><span class="err">t</span><span class="err">f</span>
-<span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span><span class="err">s</span><span class="p">.</span><span class="err">t</span><span class="err">f</span>
-<span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">R</span><span class="err">E</span><span class="err">A</span><span class="err">D</span><span class="err">M</span><span class="err">E</span><span class="p">.</span><span class="err">m</span><span class="err">d</span>
-<span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="err">i</span><span class="err">a</span><span class="err">b</span><span class="err">l</span><span class="err">e</span><span class="err">s</span><span class="p">.</span><span class="err">t</span><span class="err">f</span>
-<span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">m</span><span class="err">o</span><span class="err">d</span><span class="err">u</span><span class="err">l</span><span class="err">e</span><span class="err">s</span>
-<span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">i</span><span class="err">a</span><span class="err">m</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">r</span><span class="err">o</span><span class="err">s</span><span class="err">s</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">o</span><span class="err">u</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">a</span><span class="err">s</span><span class="err">s</span><span class="err">i</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">n</span><span class="err">t</span>
-<span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">m</span><span class="err">a</span><span class="err">i</span><span class="err">n</span><span class="p">.</span><span class="err">t</span><span class="err">f</span>
-<span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">o</span><span class="err">u</span><span class="err">t</span><span class="err">p</span><span class="err">u</span><span class="err">t</span><span class="err">s</span><span class="p">.</span><span class="err">t</span><span class="err">f</span>
-<span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">R</span><span class="err">E</span><span class="err">A</span><span class="err">D</span><span class="err">M</span><span class="err">E</span><span class="p">.</span><span class="err">m</span><span class="err">d</span>
-<span class="err">|</span> <span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="err">i</span><span class="err">a</span><span class="err">b</span><span class="err">l</span><span class="err">e</span><span class="err">s</span><span class="p">.</span><span class="err">t</span><span class="err">f</span>
-<span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">R</span><span class="err">E</span><span class="err">A</span><span class="err">D</span><span class="err">M</span><span class="err">E</span><span class="p">.</span><span class="err">m</span><span class="err">d</span>
-<span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">t</span><span class="err">e</span><span class="err">s</span><span class="err">t</span>
-<span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">R</span><span class="err">E</span><span class="err">A</span><span class="err">D</span><span class="err">M</span><span class="err">E</span><span class="p">.</span><span class="err">m</span><span class="err">d</span>
-<span class="err">|</span> <span class="err">|</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">_</span><span class="err">i</span><span class="err">a</span><span class="err">m</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">r</span><span class="err">o</span><span class="err">s</span><span class="err">s</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">o</span><span class="err">u</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">a</span><span class="err">s</span><span class="err">s</span><span class="err">i</span><span class="err">s</span><span class="err">t</span><span class="err">a</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">t</span><span class="err">e</span><span class="err">s</span><span class="err">t</span><span class="p">.</span><span class="err">g</span><span class="err">o</span>
+<span class="o">|</span><span class="err">____</span><span class="nx">examples</span>
+<span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">iam_across_account_assistant</span>
+<span class="o">|</span> <span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">main</span><span class="p">.</span><span class="nx">tf</span>
+<span class="o">|</span> <span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">outputs</span><span class="p">.</span><span class="nx">tf</span>
+<span class="o">|</span> <span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">README</span><span class="p">.</span><span class="nx">md</span>
+<span class="o">|</span> <span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nb">var</span><span class="nx">iables</span><span class="p">.</span><span class="nx">tf</span>
+<span class="o">|</span><span class="err">____</span><span class="nb">module</span><span class="nx">s</span>
+<span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">iam_across_account_assistant</span>
+<span class="o">|</span> <span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">main</span><span class="p">.</span><span class="nx">tf</span>
+<span class="o">|</span> <span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">outputs</span><span class="p">.</span><span class="nx">tf</span>
+<span class="o">|</span> <span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">README</span><span class="p">.</span><span class="nx">md</span>
+<span class="o">|</span> <span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nb">var</span><span class="nx">iables</span><span class="p">.</span><span class="nx">tf</span>
+<span class="o">|</span><span class="err">____</span><span class="nx">README</span><span class="p">.</span><span class="nx">md</span>
+<span class="o">|</span><span class="err">____</span><span class="nx">test</span>
+<span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">README</span><span class="p">.</span><span class="nx">md</span>
+<span class="o">|</span> <span class="o">|</span><span class="err">____</span><span class="nx">iam_across_account_assistant_test</span><span class="p">.</span><span class="nx">go</span>
 </code></pre></div><ul>
 <li>modules目录下包含了子功能，用户将引用这个目录下的子功能来完成环境的搭建</li>
 <li>examples目录下包含了如何使用modules目录下子功能的例子以及对应的说明文档</li>
@@ -190,7 +190,7 @@
 <li>infrastructure_live中的内容对应真实世界的环境，需要结合Terragrunt工具来生成</li>
 </ul>
 <p>在使用2cloudlab所提供的Terraform模块时，需要在github上注册一个账号，并且需要将注册好的用户名提供给2cloudlab，完成之后，该用户便可以访问2cloudlab所提供的所有Terraform模块。接着用户需要在github上创建2个repository，名称分别是infrastructure_modules和infrastructure_live。</p>
-<h2 id="infrastructure-modules">如何构建infrastructure_modules</h2>
+<h2 id="如何构建infrastructure_modules">如何构建infrastructure_modules</h2>
 <p><strong>infrastructure_modules</strong>对2cloudlab所提供的Terraform模块进行了封装。封装的好处是infrastructure_live能够复用infrastructure_modules组合好的模块。除此之外还可以为infrastructure_modules打上版本号，infrastructure_live可以自由切换不同版本的infrastructure_modules。一个比较通用的infrastructure_modules结构如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">.
 <span class="p">|</span>____networking
@@ -213,7 +213,7 @@
 <span class="p">|</span> <span class="p">|</span> <span class="p">|</span>____outputs.tf
 <span class="p">|</span> <span class="p">|</span> <span class="p">|</span>____variables.tf
 </code></pre></div><p>其中<code>networking</code>目录中主要存放网络相关的模块（比如<code>vpc_app</code>），而<code>security</code>目录中主要存放权限管理和日志模块（比如支持<a href="https://2cloudlab.com/portfolio/how-to-construct-enterprise-accounts/">多账号管理</a>的<code>iam</code>模块和记录用户行为的<code>cloudtrail</code>模块）。</p>
-<h2 id="infrastructure-live">如何构建infrastructure_live</h2>
+<h2 id="如何构建infrastructure_live">如何构建infrastructure_live</h2>
 <p><strong>infrastructure_live</strong>中的内容对应真是环境的描述，所以在这个repository做任何操作的时候都需要谨慎对待。infrastructure_live中的内容主要是后缀为<code>.hcl</code>的文件，并通过Terragrunt工具来执行。使用Terragrunt工具的作用在于减少重复代码，降低复制黏贴所带来的错误。以下是一个比较实用的infrastructure_live的目录结构：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">.
 <span class="p">|</span>____production
@@ -287,7 +287,7 @@
       └ &lt;environment&gt;
         └ &lt;resource&gt;
           └ terragrunt.hcl
-</code></pre></div><h2 id="infrastructure-modules2cloudlabterraform">在infrastructure_modules中引用2cloudlab的Terraform模块</h2>
+</code></pre></div><h2 id="在infrastructure_modules中引用2cloudlab的terraform模块">在infrastructure_modules中引用2cloudlab的Terraform模块</h2>
 <p>接下来通过一个例子来使用2cloudlab所提供的多账号创建模块：``。新建一个<code>security</code>目录，在该目录下建立<code>iam</code>目录，如下所示：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">security
 <span class="p">|</span>____iam
@@ -295,25 +295,25 @@
 <span class="p">|</span> <span class="p">|</span>____outputs.tf
 <span class="p">|</span> <span class="p">|</span>____variables.tf
 </code></pre></div><p>其中<code>main.tf</code>的内容如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="kr">provider</span> <span class="s">&#34;aws&#34;</span> {<span class="err"></span>
-<span class="na">  region</span>              <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">a</span><span class="err">w</span><span class="err">s</span><span class="err">_</span><span class="err">r</span><span class="err">e</span><span class="err">g</span><span class="err">i</span><span class="err">o</span><span class="err">n</span>
-  <span class="na">version</span>             <span class="o">=</span><span class="na"> &#34;</span><span class="o">=</span> <span class="m">2</span><span class="p">.</span><span class="m">46</span><span class="err">&#34;</span>
-  <span class="na">allowed_account_ids</span> <span class="o">=</span> <span class="p">[</span><span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">a</span><span class="err">w</span><span class="err">s</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">o</span><span class="err">u</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">i</span><span class="err">d</span><span class="p">]</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="kr">provider</span> <span class="s2">&#34;aws&#34;</span> <span class="p">{</span>
+  <span class="na">region</span>              = <span class="nb">var</span><span class="p">.</span><span class="nx">aws_region</span>
+  <span class="na">version</span>             = <span class="s2">&#34;= 2.46&#34;</span>
+  <span class="na">allowed_account_ids</span> = <span class="p">[</span><span class="nb">var</span><span class="p">.</span><span class="nx">aws_account_id</span><span class="p">]</span>
+<span class="p">}</span>
 
-<span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
-  <span class="err">b</span><span class="err">a</span><span class="err">c</span><span class="err">k</span><span class="err">e</span><span class="err">n</span><span class="err">d</span> <span class="s2">&#34;s3&#34;</span> {}
-  <span class="na">required_version</span> <span class="o">=</span><span class="na"> &#34;</span><span class="o">=</span> <span class="m">0</span><span class="p">.</span><span class="m">12</span><span class="p">.</span><span class="m">19</span><span class="err">&#34;</span>
-}
+<span class="nx">terraform</span> <span class="p">{</span>
+  <span class="nx">backend</span> <span class="s2">&#34;s3&#34;</span> <span class="p">{}</span>
+  <span class="na">required_version</span> = <span class="s2">&#34;= 0.12.19&#34;</span>
+<span class="p">}</span>
+<span class="kr">
+</span><span class="kr">module</span> <span class="s2">&#34;iam_across_account_assistant&#34;</span> <span class="p">{</span>
+  <span class="na">source</span> = <span class="s2">&#34;git::git@github.com:2cloudlab.git/module_security.git//modules/iam_across_account_assistant?ref=v0.0.1&#34;</span>
 
-<span class="kr">module</span> <span class="s">&#34;iam_across_account_assistant&#34;</span> {<span class="err"></span>
-<span class="na">  source</span> <span class="o">=</span><span class="na"> &#34;git::git@github.com:2cloudlab.git/module_security.git//modules/iam_across_account_assistant?ref</span><span class="o">=</span><span class="err">v</span><span class="m">0</span><span class="p">.</span><span class="m">0</span><span class="p">.</span><span class="m">1</span><span class="err">&#34;</span>
-
-  <span class="na">allow_read_only_access_from_other_account_arns</span> <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">a</span><span class="err">l</span><span class="err">l</span><span class="err">o</span><span class="err">w</span><span class="err">_</span><span class="err">r</span><span class="err">e</span><span class="err">a</span><span class="err">d</span><span class="err">_</span><span class="err">o</span><span class="err">n</span><span class="err">l</span><span class="err">y</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">e</span><span class="err">s</span><span class="err">s</span><span class="err">_</span><span class="err">f</span><span class="err">r</span><span class="err">o</span><span class="err">m</span><span class="err">_</span><span class="err">o</span><span class="err">t</span><span class="err">h</span><span class="err">e</span><span class="err">r</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">o</span><span class="err">u</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">a</span><span class="err">r</span><span class="err">n</span><span class="err">s</span>
-  <span class="na">should_require_mfa</span>                             <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">s</span><span class="err">h</span><span class="err">o</span><span class="err">u</span><span class="err">l</span><span class="err">d</span><span class="err">_</span><span class="err">r</span><span class="err">e</span><span class="err">q</span><span class="err">u</span><span class="err">i</span><span class="err">r</span><span class="err">e</span><span class="err">_</span><span class="err">m</span><span class="err">f</span><span class="err">a</span>
-  <span class="na">across_account_access_role_arns_by_group</span>       <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">a</span><span class="err">c</span><span class="err">r</span><span class="err">o</span><span class="err">s</span><span class="err">s</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">o</span><span class="err">u</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">a</span><span class="err">c</span><span class="err">c</span><span class="err">e</span><span class="err">s</span><span class="err">s</span><span class="err">_</span><span class="err">r</span><span class="err">o</span><span class="err">l</span><span class="err">e</span><span class="err">_</span><span class="err">a</span><span class="err">r</span><span class="err">n</span><span class="err">s</span><span class="err">_</span><span class="err">b</span><span class="err">y</span><span class="err">_</span><span class="err">g</span><span class="err">r</span><span class="err">o</span><span class="err">u</span><span class="err">p</span>
-  <span class="na">user_groups</span>                                    <span class="o">=</span> <span class="err">v</span><span class="err">a</span><span class="err">r</span><span class="p">.</span><span class="err">u</span><span class="err">s</span><span class="err">e</span><span class="err">r</span><span class="err">_</span><span class="err">g</span><span class="err">r</span><span class="err">o</span><span class="err">u</span><span class="err">p</span><span class="err">s</span>
-}
+  <span class="na">allow_read_only_access_from_other_account_arns</span> = <span class="nb">var</span><span class="p">.</span><span class="nx">allow_read_only_access_from_other_account_arns</span>
+  <span class="na">should_require_mfa</span>                             = <span class="nb">var</span><span class="p">.</span><span class="nx">should_require_mfa</span>
+  <span class="na">across_account_access_role_arns_by_group</span>       = <span class="nb">var</span><span class="p">.</span><span class="nx">across_account_access_role_arns_by_group</span>
+  <span class="na">user_groups</span>                                    = <span class="nb">var</span><span class="p">.</span><span class="nx">user_groups</span>
+<span class="p">}</span>
 </code></pre></div><p>以上<code>main.tf</code>主要做了3件事情：</p>
 <ol>
 <li>定义云服务提供商，并且指定区域和账号。</li>
@@ -327,7 +327,7 @@
 <li>引用2cloudlab所提供的<code>iam_across_account_assistant</code>模块</li>
 </ol>
 <p>最后，在<code>main.tf</code>文件中通过以下方式引用了2cloudlab所提供的<code>iam_across_account_assistant</code>模块：</p>
-<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="na">source</span> <span class="o">=</span><span class="na"> &#34;git::git@github.com:2cloudlab.git/module_security.git//modules/iam_across_account_assistant?ref</span><span class="o">=</span><span class="err">v</span><span class="m">0</span><span class="p">.</span><span class="m">0</span><span class="p">.</span><span class="m">1</span><span class="err">&#34;</span>
+<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="na">source</span> = <span class="s2">&#34;git::git@github.com:2cloudlab.git/module_security.git//modules/iam_across_account_assistant?ref=v0.0.1&#34;</span>
 </code></pre></div><p>这里有2点需要注意的：1）<code>ref=v0.0.1</code>指定了使用哪一个版本；2）ssh地址后面多了一个<code>/</code>符号。</p>
 <p>最后别忘了在<code>variables.tf</code>和<code>outputs.tf</code>文件中定义输入变量和输出变量，以及通过以下git命令提交带有版本的<code>iam</code>模块：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">git add security/iam
@@ -335,44 +335,44 @@ git commit -m <span class="s2">&#34;Add iam wrapper module&#34;</span>
 git tag -a <span class="s2">&#34;v0.3.0&#34;</span> -m <span class="s2">&#34;Created iam module&#34;</span>
 git push --follow-tags
 </code></pre></div><p>接下来让我们看看：如何在infrastructure_live中引用<code>iam</code>模块。</p>
-<h2 id="infrastructure-liveinfrastructure-modules">在infrastructure_live中引用infrastructure_modules</h2>
+<h2 id="在infrastructure_live中引用infrastructure_modules">在infrastructure_live中引用infrastructure_modules</h2>
 <p>infrastructure_modules只是提供Terraform模块，其本身并不会在现实世界中创建资源。而infrastructure_live则不同，它不仅要引用infrastructure_modules中的模块，而且还需要对应到现实环境中的资源，因此每次修改infrastructure_live中的内容时，都应该持有谨慎的态度。接下来让我们从之前infrastructure_live的目录结构中使用infrastructure_modules所提供的模块<code>iam</code>。</p>
 <p>假设，你打算在AWS的root账号中创建2组：<code>full_access</code>和<code>billing</code>，那么<code>root/_global/iam</code>目录下<code>terragrunt.hcl</code>的内容应该如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="err">t</span><span class="err">e</span><span class="err">r</span><span class="err">r</span><span class="err">a</span><span class="err">f</span><span class="err">o</span><span class="err">r</span><span class="err">m</span> {
-  <span class="na">source</span> <span class="o">=</span><span class="na"> &#34;git@github.com/&lt;YOUR_ORG&gt;/infrastructure-modules.git//security/iam?ref</span><span class="o">=</span><span class="err">v</span><span class="m">0</span><span class="p">.</span><span class="m">3</span><span class="p">.</span><span class="m">0</span><span class="err">&#34;</span>
-}
+<div class="highlight"><pre class="chroma"><code class="language-terraform" data-lang="terraform"><span class="nx">terraform</span> <span class="p">{</span>
+  <span class="na">source</span> = <span class="s2">&#34;git@github.com/&lt;YOUR_ORG&gt;/infrastructure-modules.git//security/iam?ref=v0.3.0&#34;</span>
+<span class="p">}</span>
 
-<span class="na">inputs</span> <span class="o">=</span> {<span class="c1">
+<span class="na">inputs</span> = <span class="p">{</span><span class="c1">
 </span><span class="c1">  # Fill in your region you want to use (only used for API calls) and the ID of your root AWS account
-</span><span class="c1"></span><span class="na">  aws_region</span>     <span class="o">=</span> <span class="s2">&#34;us-east-2&#34;</span>
-  <span class="na">aws_account_id</span> <span class="o">=</span> <span class="s2">&#34;111122223333&#34;</span>
+</span><span class="c1"></span>  <span class="na">aws_region</span>     = <span class="s2">&#34;us-east-2&#34;</span>
+  <span class="na">aws_account_id</span> = <span class="s2">&#34;111122223333&#34;</span>
 
-  <span class="na">should_require_mfa</span> <span class="o">=</span> <span class="kt">true</span>
-  <span class="na">user_groups</span> <span class="o">=</span> <span class="p">[</span>
-    {
-      <span class="na">group_name</span> <span class="o">=</span> <span class="s2">&#34;billing&#34;</span>
-      <span class="na">user_profiles</span> <span class="o">=</span> <span class="p">[</span>
-        {
-          <span class="na">user_name</span> <span class="o">=</span> <span class="s2">&#34;Jim&#34;</span><span class="p">,</span>
-          <span class="na">pgp_key</span>   <span class="o">=</span> <span class="s2">&#34;keybase:jim&#34;</span>
-        }<span class="p">,</span>
+  <span class="na">should_require_mfa</span> = <span class="kc">true</span>
+  <span class="na">user_groups</span> = <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="na">group_name</span> = <span class="s2">&#34;billing&#34;</span>
+      <span class="na">user_profiles</span> = <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="na">user_name</span> = <span class="s2">&#34;Jim&#34;</span><span class="p">,</span>
+          <span class="na">pgp_key</span>   = <span class="s2">&#34;keybase:jim&#34;</span>
+        <span class="p">},</span>
       <span class="p">]</span>
-    }<span class="p">,</span>
-    {
-      <span class="na">group_name</span> <span class="o">=</span> <span class="s2">&#34;full_access&#34;</span>
-      <span class="na">user_profiles</span> <span class="o">=</span> <span class="p">[</span>
-        {
-          <span class="na">user_name</span> <span class="o">=</span> <span class="s2">&#34;Tony&#34;</span><span class="p">,</span>
-          <span class="na">pgp_key</span>   <span class="o">=</span> <span class="s2">&#34;keybase:tony&#34;</span>
-        }<span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="na">group_name</span> = <span class="s2">&#34;full_access&#34;</span>
+      <span class="na">user_profiles</span> = <span class="p">[</span>
+        <span class="p">{</span>
+          <span class="na">user_name</span> = <span class="s2">&#34;Tony&#34;</span><span class="p">,</span>
+          <span class="na">pgp_key</span>   = <span class="s2">&#34;keybase:tony&#34;</span>
+        <span class="p">},</span>
       <span class="p">]</span>
-    }
+    <span class="p">}</span>
   <span class="p">]</span>
-}
+<span class="p">}</span>
 
-<span class="err">i</span><span class="err">n</span><span class="err">c</span><span class="err">l</span><span class="err">u</span><span class="err">d</span><span class="err">e</span> {
-  <span class="na">path</span> <span class="o">=</span> <span class="err">f</span><span class="err">i</span><span class="err">n</span><span class="err">d</span><span class="err">_</span><span class="err">i</span><span class="err">n</span><span class="err">_</span><span class="err">p</span><span class="err">a</span><span class="err">r</span><span class="err">e</span><span class="err">n</span><span class="err">t</span><span class="err">_</span><span class="err">f</span><span class="err">o</span><span class="err">l</span><span class="err">d</span><span class="err">e</span><span class="err">r</span><span class="err">s</span><span class="p">(</span><span class="p">)</span>
-}
+<span class="nx">include</span> <span class="p">{</span>
+  <span class="na">path</span> = <span class="nx">find_in_parent_folders</span><span class="p">()</span>
+<span class="p">}</span>
 </code></pre></div><p>上面的代码做了3件事情：</p>
 <ol>
 <li>引用infrastructure_modules中的<code>root/_global/iam</code>模块，引用的版本号是<code>v0.3.0</code>,其中<code>&lt;YOUR_ORG&gt;</code>是注册github时的账号</li>
@@ -384,7 +384,7 @@ git push --follow-tags
   <span class="nv">backend</span> <span class="o">=</span> <span class="s2">&#34;s3&#34;</span>
   <span class="nv">config</span> <span class="o">=</span> <span class="o">{</span>
     <span class="nv">bucket</span>         <span class="o">=</span> <span class="s2">&#34;cloudlab-terraform-state-bucket&#34;</span>
-    <span class="nv">key</span>            <span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">path_relative_to_include</span><span class="p">()</span><span class="si">}</span><span class="s2">/terraform.tfstate</span><span class="s2">&#34;</span>
+    <span class="nv">key</span>            <span class="o">=</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">path_relative_to_include</span><span class="p">()</span><span class="si">}</span><span class="s2">/terraform.tfstate&#34;</span>
     <span class="nv">region</span>         <span class="o">=</span> <span class="s2">&#34;us-east-2&#34;</span>
     <span class="nv">encrypt</span>        <span class="o">=</span> <span class="nb">true</span>
     <span class="nv">dynamodb_table</span> <span class="o">=</span> <span class="s2">&#34;cloudlab-lock-table-1&#34;</span>
@@ -405,7 +405,7 @@ terragrunt apply
 <li>在这个临时目录下运行<code>terraform init</code>并且将根目录下的<code>terragrunt.hcl</code>文件内容配置到Terraform工具的backend上</li>
 <li>在这个临时目录下运行<code>terraform apply</code>，同时把<code>inputs = { ... }</code>中的内容设置到Terraform的环境变量</li>
 </ol>
-<h2 id="heading-1">总结</h2>
+<h2 id="总结">总结</h2>
 <p>创建一个完整的产品运行环境需要涉及诸多内容，这些事情包括安装软件，准备数据库，准备环境，负载均衡，安全等等。如果这些事情都需要通过手动来完成，那么结果是令人沮丧的！因此2cloudlab试图通过自动化的方式来解决这些问题。<em>infrastructure as code</em>的出现让这件事情成为可能！2cloudlab通过提供大量可复用的Terraform模块，使得企业能够在一天之内创建产品运行环境。</p>
 <p>2cloudlab的模块托管在github上，企业需要注册一个github账号，并将该账号提供给2cloudlab才能访问2cloudlab所提供的模块。使用2cloudlab所提供的模块时，最好的做法是在github上创建2个repository：<code>infrastructure_modules</code>和<code>infrastructure_live</code>，并根据前面内容来构建这2个repository。</p>
 <p><code>infrastructure_modules</code>主要封装了2cloudlab所提供的模块，而<code>infrastructure_live</code>则会引用<code>infrastructure_modules</code>中的模块。为了能够减少复制黏贴所引发的错误，<code>infrastructure_live</code>中的内容主要是由后缀为<code>.hcl</code>的文件组成。这些文件根据现实世界中所需要的资源而划分成不同的模块，并最终由Terragrunt工具执行。一个完整的产品运行环境是分步实现的，首先需要创建云服务账号，在不同的账号下创建不同的资源，这些资源有网络资源、数据库资源、日志资源等等。因此在<code>infrastructure_live</code>需要将不同的资源模块独立在不同的目录中，并按照定义好的依赖关系依次执行每一个模块。</p>

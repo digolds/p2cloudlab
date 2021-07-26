@@ -24,7 +24,7 @@
 Terraform的运行机制 terraform是单文件命令行程序，它基于infrastructure as code方式来运行的，因此需要给terraform提供脚本文件让其运行。脚本文件的后缀是.tf，其中的内容涉及选择云服务提供商、创建何种类型的资源以及定义输入输出变量等等。
 在开始运行terraform之前，需要准备以下条件:
  一台笔记本电脑 根据操作系统下载对应的terraform可执行性文件，并把该文件所在位置添加到系统的环境变量中 到AWS注册一个根账号，并用根账号创建一个子账号，这个子账号会被terraform使用 将子账号生成的ID和Key提供给terraform  以上步骤准备好之后，接下来编写以下terraform脚本文件:
-# main.tfterraform {required_version =&amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34;}provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS providerversion = &amp;#34;~&amp;gt; 2.0&amp;#34;}resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34;instance_type = &amp;#34;t2.</description>
+# main.tf  terraform { required_version = &amp;#34;&amp;gt;= 0.12, &amp;lt; 0.13&amp;#34; } provider &amp;#34;aws&amp;#34; { region = &amp;#34;us-east-2&amp;#34;# Allow any 2.x version of the AWS provider  version = &amp;#34;~&amp;gt; 2.0&amp;#34; } resource &amp;#34;aws_instance&amp;#34; &amp;#34;example&amp;#34; { ami = &amp;#34;ami-0d5d9d301c853a04a&amp;#34; instance_type = &amp;#34;t2.</description>
     </item>
     
   </channel>

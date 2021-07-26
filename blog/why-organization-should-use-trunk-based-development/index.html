@@ -6,7 +6,7 @@
   
   <meta name="description" content="企业的研发团队在研发产品功能时通常会选择2种分支管理策略，它们分别是Feature Branches Development和Trunk-based Development。2种分支管理策略都有它们适用的场景，比如在github上研发开源软件时，经常会使用Feature Branches Development模式，而Google，Facebook，LinkedIn，微软常常会使用Trunk-based Development模式。企业在实施CI（持续集成）时通常需要Trunk-based Development方面的实践，原因在于这种模式能够快速输出集成的结果。本文将围绕Trunk-based Development展开，并提供一些可实施该模式的操作步骤。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -137,7 +137,7 @@
 <li>使用github来实施Trunk-Based Development的基本思路</li>
 <li>结论和参考</li>
 </ol>
-<h2 id="trunk-based-development">什么是Trunk-based Development？</h2>
+<h2 id="什么是trunk-based-development">什么是Trunk-based Development？</h2>
 <p>Trunk-based Development是指：所有研发人员围绕主分支<code>trunk</code>(也就是github上的<code>master</code>分支)来共同研发，在研发过程中拒绝创建存活时间较长的分支，并使用Feature Toggles和Branch by Abstraction等技术在主分支上逐步发布需要长时间（通常是1周）才能研发完成的功能。<a href="https://trunkbaseddevelopment.com/#one-line-summary">官方</a>对Trunk-based Development的概括如下所示：</p>
 <blockquote>
 <p>A source-control branching model, where developers collaborate on code in a single branch called ‘trunk’ *, resist any pressure to create other long-lived development branches by employing documented techniques. They therefore avoid merge hell, do not break the build, and live happily ever after.</p>
@@ -155,7 +155,7 @@
 <li>在<code>trunk</code>分支上，每个commit之间的提交间隔很短，通常在一天之内提交好几次，甚至更多次</li>
 </ol>
 <p>在这些规则之下，研发者可以持续地在<code>trunk</code>分支中提交代码，而且期间没有合并。为了能够使得每一次提交都能够顺利地在<code>trunk</code>分支中通过，则需要一些技巧和CI服务器。接下来让我们看看都有哪些技巧能够使得企业成功地实施Trunk-based Development。</p>
-<h2 id="trunk-based-development-1">团队需要掌握哪些技巧来实践Trunk-based Development？</h2>
+<h2 id="团队需要掌握哪些技巧来实践trunk-based-development">团队需要掌握哪些技巧来实践Trunk-based Development？</h2>
 <p>为了使Trunk-based Development能够在研发团队中顺利开展起来，需要团队成员掌握以下技巧，并且达成共识。</p>
 <ol>
 <li>将任务划分成许多可以在1天以内完成的小模块</li>
@@ -186,10 +186,10 @@
 <p>团队在日常的研发事务中总是会犯错，如果一次疏忽导致<code>trunk</code>分支无法通过测试，那么需要第一时间解决这个问题。如果这个问题无法快速解决，那么需要将此次提交撤销，并回退到上一次提交。这么做就是要确保<code>trunk</code>分支随时可用。</p>
 <p>Trunk-Based Development自身并无没有给团队带来任何好处。为团队带来好处的是在Trunk-Based Development中应用了以上6点技巧。因此在企业研发部门实施Trunk-Based Development时，需要团队中的每一名成员都要掌握以上技巧，最终养成习惯。从这个角度来看，Trunk-Based Development更多的是依赖于人的行为，在一致的行为下应用自动化工具能够从整体上提高企业的研发效率！</p>
 <p>当研发人员都掌握了以上技巧，同时，企业的研发部门已经决定使用Trunk-Based Development来研发产品，那么接下来就需要搭建一些自动化基础设施来辅助整个研发团队，其中CI服务就是构建现代化高效软件研发流程的初始环节。</p>
-<h2 id="trunk-based-developmentci">为Trunk-Based Development配套CI服务</h2>
+<h2 id="为trunk-based-development配套ci服务">为Trunk-Based Development配套CI服务</h2>
 <p>CI（Continues Integration）是指将各个研发团队的研发成果正确且快速地集成在一起，并提供给其他团队（测试团队、DevOps团队等）使用。为了将Trunk-Based Development向整个研发部门推广，则需要一个好的CI服务。每一个提交到<code>trunk</code>上的改动，都会自动地触发CI服务，并由该服务获取<code>trunk</code>上的源码并顺序执行自定义的一些步骤。这些步骤有编译该源码和执行单元测试，每一步执行结束后都会输出一些结果，这些结果有成功或者失败，如果失败则会出现失败的信息。为了能够让团队成员及时看到失败的结果，一种做法是将在团队周围放置一台大电视，用于显示CI服务的执行结果。</p>
 <p>除了要搭建CI服务，还需要应用一些发布策略。比如上图从<code>trunk</code>分支中拉出<code>release</code>分支，这么做是为了基于<code>release</code>分支对外发布产品，同时团队的其他成员依然能够在<code>trunk</code>上提交代码。由于<code>release</code>分支主要是为了对外发布产品，因此它不仅需要CI的支持，还需要CD（Continuous Delivery）的支持，2者结合就是CI/CD。与<code>trunk</code>不同，CI服务不仅需要监测<code>release</code>分支的变化并自动地编译源码、执行单元测试，而且还需要将编译的结果归档到团队内部共享的存储服务上，并自动地触发CD服务，使得CD服务能够将编译结果从存储服务中自动地部署到研发环境（dev）、测试环境（test）、预生产环境（stage）和生产环境（prod）。环境越多，实施自动化部署将任务也将增多，因此企业需要结合自身的现实状况来决定哪些环境是需要的（比如大多数企业只需要stage和prod环境就足够了）。</p>
-<h2 id="trunk-based-development-2">Trunk-Based Development的实施细节</h2>
+<h2 id="trunk-based-development的实施细节">Trunk-Based Development的实施细节</h2>
 <p>不同企业在研发团队中实施Trunk-Based Development都会有一些细微的差别，对于大多数需要<strong>研发软件产品</strong>的企业，可以参考以下步骤在研发团队中实施Trunk-Based Development。</p>
 <ul>
 <li>将产品相关的代码放到一个repository里，并且严格要求这个repository的分支数量每天不能超过研发人数（比如该研发团队有5个研发，2个测试，1个PO，1个UX，1个SM以及1个架构师，一共11个人）</li>
@@ -199,7 +199,7 @@
 <li>为团队的每一个研发人员预留时间学习和掌握之前提到的技巧，使得团队成员达成共识</li>
 <li>每次发布只能通过<code>release</code>分支，修复bug和性能优化的改动应该提交到<code>trunk</code>分支，最终通过cherry-pick的方式将这些提交merge到<code>release</code>分支。当有新功能对外发布时，需要删除原来的<code>release</code>分支，并从<code>trunk</code>分支拉取新的<code>release</code>分支</li>
 </ul>
-<h2 id="githubtrunk-based-development">使用github来实施Trunk-Based Development的基本思路</h2>
+<h2 id="使用github来实施trunk-based-development的基本思路">使用github来实施Trunk-Based Development的基本思路</h2>
 <p>github是一个非常有影响力的程序员社交平台。这个平台不仅向全世界的开发者提供了线上交流的平台，而且提供了方便开发者研发软件所需的功能。其中，有2个功能非常流行，一个是代码托管和Actions服务，而且这2个服务是免费的！这2个服务使得任何研发团队都可以快速搭建现代化的CI/CD流程。</p>
 <p>github提供了大多数功能给开发者使用，这些功能有：账号管理、源码托管、Action服务（也就是CI/CD）、文件存储和协作沟通的线上通道。接下来我将介绍在github上实践Trunk-Based Development的基本思路。在掌握这些思路之后，读者需要进一步参考这篇文章<a href="https://2cloudlab.com/blog/how-to-setup-ci-service-base-on-github/">&lt;如何0成本在github上构建CI&gt;</a>来实践Trunk-Based Development。</p>
 <ol>
@@ -219,7 +219,7 @@
 <p>当以上CI流程搭建完毕之后，研发人员只需要向<code>master</code>分支提交代码，此时Actions服务就会自动执行build和test步骤来验证此次提交是正确的（通过<code>master.yml</code>所定义的workflow来保证）。</p>
 <p>当研发人员在<code>release</code>分支打上tag的时候（比如<code>v0.0.1</code>或者<code>v0.0.2</code>），此时Actions服务会自动执行build、test和archive步骤（通过<code>release.yml</code>所定义的workflow来保证），其中archive步骤会把生成的结果发布到github的release存储中。</p>
 <p>为了能够更好地理解以上过程，我将在这篇文章<a href="https://2cloudlab.com/blog/how-to-setup-ci-service-base-on-github/">&lt;如何0成本在github上构建CI&gt;</a>中，通过一个具体的例子来说明如何基于github搭建CI流程。</p>
-<h2 id="heading">结论和参考</h2>
+<h2 id="结论和参考">结论和参考</h2>
 <p>Trunk-based Development已经被各大公司成功实践了十几年，这些公司有Google、Facebook、LinkedIn等。企业在研发<strong>产品</strong>时，想要在研发部门中顺利地实施Trunk-based Development，还需要掌握一些技巧和搭建自动化基础设施。这些技巧需要所有研发人员达成共识，并养成习惯。</p>
 <p>当习惯形成之后，则需要借助一些自动化基础设施来加速研发流程，这个研发流程就是CI/CD。目前有许多成熟的工具提供CI的支持，比如我们可以免费使用github提供的服务来快速搭建CI流程（读者可以参考这篇文章<a href="https://2cloudlab.com/blog/how-to-setup-ci-service-base-on-github/">&lt;如何0成本在github上构建CI&gt;</a>）。</p>
 <p>当研发流程搭建起来之后，则需要应用一些发布策略。一切就绪之后，整个研发团队的研发效率将会达到一个质的飞跃。在研发团队中实施Trunk-based Development以及为其搭建CI服务只是构建企业级软件研发流程的第一步。当新功能完成研发，并准备好发布的时候，也需要一套基础设施将研发好的功能及时高效地发布到用户现场，这就是Continuous Delivery(CD)。企业要想搭建完整的CI/CD流程，除了实施本文提到CI部分，还需要参考这篇文章<a href="https://2cloudlab.com/blog/why-organization-should-practice-cicd/">&lt;如何提高企业的研发效率&ndash;CI/CD&gt;</a>来实施CD部分。</p>

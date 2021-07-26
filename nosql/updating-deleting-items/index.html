@@ -6,7 +6,7 @@
   
   <meta name="description" content="本文是关于DynamoDB的表达式。表达式是DynamoDB的内置功能，它又细分为以下几类表达式：">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -129,7 +129,7 @@
                 
                 <div class="post-content">
                     <p>在这篇文章中，我们将学习如何向表中更新和删除单项数据。这是最后一篇关于单项数据操作的文章，后续的文章将涉及多个数据项的操作，这些操作主要有Queries和Scans。</p>
-<h2 id="heading">更新单项数据</h2>
+<h2 id="更新单项数据">更新单项数据</h2>
 <p>在之前的例子中，我们使用PutItem操作来向表中插入单项数据。我们也看到这种操作将会完全覆盖表中已存在的数据。为了不让这个操作覆盖已存在的数据项，我们在这个操作上使用了条件表达式。</p>
 <p>有时需要处理这种场景：只更新某项数据的一个或者多个属性，而其它属性保持不变。为了处理这种场景，DynamoDB提供了UpdateItem操作，该操作允许开发者在不读取数据的情况下更新数据。</p>
 <p>当使用UpdateItem操作时，你需要指定<a href="https://2cloudlab.com/nosql/expression-basics/"><strong>更新表达式</strong></a>，该表达式由2部分构成，分别是：更新的语义（比如是向数据项中添加属性还是移除属性）和表达式。</p>
@@ -146,27 +146,27 @@
 </ul>
 <p>在更新数据项时，最常用的更新操作是SET。比如，如果我想向某项数据添加一个新的属性或者覆盖已有的属性，那么这个SET操作会被用到。</p>
 <p>让我们看看最开始的例子：PutItem，假设，我们想让已经添加的用户拥有属性DateOfBirth。 如果不使用UpdateItem操作，我们的做法是首先通过GetItem获取该数据项，然后通过PutItem插入一项包含DateOfBirth属性的数据项。然而通过UpdateItem操作，我们只需要直接插入属性DateOfBirth即可，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb update-item <span class="se">\</span>
-    --table-name Users <span class="se">\</span>
-    --key <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb update-item <span class="se">\
+</span><span class="se"></span>    --table-name Users <span class="se">\
+</span><span class="se"></span>    --key <span class="s1">&#39;{
 </span><span class="s1">      &#34;Username&#34;: {&#34;S&#34;: &#34;daffyduck&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    --update-expression <span class="s1">&#39;SET #dob = :dob&#39;</span> <span class="se">\</span>
-    --expression-attribute-names <span class="s1">&#39;{
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    --update-expression <span class="s1">&#39;SET #dob = :dob&#39;</span> <span class="se">\
+</span><span class="se"></span>    --expression-attribute-names <span class="s1">&#39;{
 </span><span class="s1">      &#34;#dob&#34;: &#34;DateOfBirth&#34;
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    --expression-attribute-values <span class="s1">&#39;{
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    --expression-attribute-values <span class="s1">&#39;{
 </span><span class="s1">      &#34;:dob&#34;: {&#34;S&#34;: &#34;1937-04-17&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>注意我们使用了选项<code>--expression-attribute-names</code>和<code>--expression-attribute-values</code>。</p>
 <p>如果我们再次获取该数据项，那么我们不仅能看到之前的属性，而且还能看到新添的属性，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb get-item <span class="se">\</span>
-    --table-name Users <span class="se">\</span>
-    --key <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb get-item <span class="se">\
+</span><span class="se"></span>    --table-name Users <span class="se">\
+</span><span class="se"></span>    --key <span class="s1">&#39;{
 </span><span class="s1">      &#34;Username&#34;: {&#34;S&#34;: &#34;daffyduck&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 
 <span class="o">{</span>
     <span class="s2">&#34;Item&#34;</span>: <span class="o">{</span>
@@ -189,17 +189,17 @@
 </ul>
 <p>带有REMOVE语义的UpdateItem操作与带有SET语义的UpdateItem操作相反&ndash;它用于从一个数据项中删除指定属性。</p>
 <p>让我们使用它来移除之前我们添加的属性&quot;DateOfBirth&rdquo;。我们将使用<code>--return-values</code>选项来告诉DynamoDB返回更新之后的结果，以便不需要使用GetItem来获取更新之后的数据项。该选项提供了若干选项，包括返回更新之前的所有属性或部分正在更新的属性。在这里，我们将选择选项&quot;ALL_NEW&rdquo;，该选项的作用是让DynamoDB在执行UpdateItem成功之后，返回该项数据的已更新过的所有属性。如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb update-item <span class="se">\</span>
-    --table-name Users <span class="se">\</span>
-    --key <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb update-item <span class="se">\
+</span><span class="se"></span>    --table-name Users <span class="se">\
+</span><span class="se"></span>    --key <span class="s1">&#39;{
 </span><span class="s1">      &#34;Username&#34;: {&#34;S&#34;: &#34;daffyduck&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    --update-expression <span class="s1">&#39;REMOVE #dob&#39;</span> <span class="se">\</span>
-    --expression-attribute-names <span class="s1">&#39;{
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    --update-expression <span class="s1">&#39;REMOVE #dob&#39;</span> <span class="se">\
+</span><span class="se"></span>    --expression-attribute-names <span class="s1">&#39;{
 </span><span class="s1">      &#34;#dob&#34;: &#34;DateOfBirth&#34;
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    --return-values <span class="s1">&#39;ALL_NEW&#39;</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    --return-values <span class="s1">&#39;ALL_NEW&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 
 <span class="o">{</span>
     <span class="s2">&#34;Attributes&#34;</span>: <span class="o">{</span>
@@ -215,31 +215,31 @@
     <span class="o">}</span>
 <span class="o">}</span>
 </code></pre></div><p>以上的返回结果表明，该数据项已经不包含属性DateOfBirth。</p>
-<h2 id="heading-1">删除单项数据</h2>
+<h2 id="删除单项数据">删除单项数据</h2>
 <p>最后一个关于单项数据的操作是删除操作，也就是DeleteItem。在有些场景，你需要删除表中的某项数据，而这个操作则能满足该场景。</p>
 <p>DeleteItem操作相当简单&ndash;你只需要提供想要删除数据项的主键信息，如下所示：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb delete-item <span class="se">\</span>
-    --table-name Users <span class="se">\</span>
-    --key <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb delete-item <span class="se">\
+</span><span class="se"></span>    --table-name Users <span class="se">\
+</span><span class="se"></span>    --key <span class="s1">&#39;{
 </span><span class="s1">      &#34;Username&#34;: {&#34;S&#34;: &#34;daffyduck&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>以上操作将把&quot;Username&quot;为&quot;daffyduck&quot;的数据项从表中移除。如果你想通过GetItem操作来获取该用户，那么你将得到空的结果。</p>
 <p>类似于PutItem操作，你能够使用<code>--condition-expression</code>来指定删除的条件。比如我想删除该用户，但是前提条件是该用户的年龄必须是少于21岁，示例如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb delete-item <span class="se">\</span>
-    --table-name Users <span class="se">\</span>
-    --key <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb delete-item <span class="se">\
+</span><span class="se"></span>    --table-name Users <span class="se">\
+</span><span class="se"></span>    --key <span class="s1">&#39;{
 </span><span class="s1">      &#34;Username&#34;: {&#34;S&#34;: &#34;yosemitesam&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    --condition-expression <span class="s2">&#34;Age &lt; :a&#34;</span> <span class="se">\</span>
-    --expression-attribute-values <span class="s1">&#39;{
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    --condition-expression <span class="s2">&#34;Age &lt; :a&#34;</span> <span class="se">\
+</span><span class="se"></span>    --expression-attribute-values <span class="s1">&#39;{
 </span><span class="s1">      &#34;:a&#34;: {&#34;N&#34;: &#34;21&#34;}
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 
 An error occurred <span class="o">(</span>ConditionalCheckFailedException<span class="o">)</span> when calling the DeleteItem operation: The conditional request failed
 </code></pre></div><p>通过以上示例的执行结果可知：由于Yosemite Sam已经73岁了，所以条件表达式将无法通过，最终导致此次删除操作失败。</p>
-<h2 id="heading-2">结论</h2>
+<h2 id="结论">结论</h2>
 <p>本文将结束单项数据操作的内容。到目前为止，我们已经学习了什么是<a href="https://2cloudlab.com/nosql/anatomy-of-an-item/">数据项以及其基础知识</a>，这些知识包括了主键，属性和属性类型。然后我们还学习了<a href="https://2cloudlab.com/nosql/inserting-retrieving-items/">如何插入和查询单项数据</a>。在实践这些操作的过程中，我们还介绍了表达式的使用，包括<code>--expression-attribute-names</code>和<code>--expression-attribute-values</code>的使用。在本文中，我们介绍了更新和删除单项数据，这些操作可以单独使用，也可以配合表达式来使用。</p>
 <p>在接下来的章节中，会陆续介绍多项数据的操作，包括查询和遍历操作，除此之外还会使用过滤表达式。这些操作与复合主键结合在一起，能够为开发者带来各种高效数据查询的模式。</p>
 <ul>

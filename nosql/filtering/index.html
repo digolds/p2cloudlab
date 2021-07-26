@@ -6,7 +6,7 @@
   
   <meta name="description" content="在过去的几篇文章里，我们讨论了关键字表达式，条件表达式，映射表达式以及更新表达式。本文将讨论最后一类表达式--过滤器表达式。">
   <meta name="author" content="2cloudlab">
-  <meta name="generator" content="Hugo 0.62.1" />
+  <meta name="generator" content="Hugo 0.74.3" />
   
   <!-- Mobile Specific Metas -->
   <meta name="format-detection" content="telephone=no">
@@ -130,7 +130,7 @@
                 <div class="post-content">
                     <p>在过去的几篇文章里，我们讨论了<a href="https://2cloudlab.com/nosql/expression-basics/">关键字表达式，条件表达式，映射表达式以及更新表达式</a>。本文将讨论最后一类表达式&ndash;过滤器表达式。</p>
 <p>过滤器表达式用于<a href="https://2cloudlab.com/nosql/querying/">Query</a>和<a href="https://2cloudlab.com/nosql/scans/">Scan</a>操作，它在作用于这些操作所返回的数据集，并过滤出满足条件的数据项，进而返回给客户端。在深入了解Filter之前，我们有必要来了解一下Query或Scan底层的执行过程。</p>
-<h2 id="queryscan">Query和Scan的执行过程</h2>
+<h2 id="query和scan的执行过程">Query和Scan的执行过程</h2>
 <p>对于DynamoDB的Query和Scan操作，有3步是需要DynamoDB来完成的：</p>
 <ol>
 <li>从表中查找数据。对于这2类操作，查询将从Starting Token开始，如果在Query中提供了关键字表达式，那么查询的过程中将考虑这类关键字</li>
@@ -142,18 +142,18 @@
 <blockquote>
 <p>关于更多Filter以及什么时候使用它的知识可以参考这篇文章<a href="https://www.alexdebrie.com/posts/dynamodb-filter-expressions/">When to use (and when not to use) DynamoDB Filter Expressions</a>。</p>
 </blockquote>
-<h2 id="filter">如何使用Filter</h2>
+<h2 id="如何使用filter">如何使用Filter</h2>
 <p>Filter表达式与关键字表达式类似，都可以和Query操作配合&ndash;你只需要在过滤表达式中指定想要过滤的属性，查询结果就会更具该表达式来过滤。</p>
 <p>让我们基于之前Query来查找用户&quot;daffyduck&quot;的订单。这一次我们想依据订单额度来过滤数据，比如我们只想返回订单量超过100美元的订单，示例如下：</p>
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb query <span class="se">\</span>
-    --table-name UserOrdersTable <span class="se">\</span>
-    --key-condition-expression <span class="s2">&#34;Username = :username&#34;</span> <span class="se">\</span>
-    --filter-expression <span class="s2">&#34;Amount &gt; :amount&#34;</span> <span class="se">\</span>
-    --expression-attribute-values <span class="s1">&#39;{
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">$ aws dynamodb query <span class="se">\
+</span><span class="se"></span>    --table-name UserOrdersTable <span class="se">\
+</span><span class="se"></span>    --key-condition-expression <span class="s2">&#34;Username = :username&#34;</span> <span class="se">\
+</span><span class="se"></span>    --filter-expression <span class="s2">&#34;Amount &gt; :amount&#34;</span> <span class="se">\
+</span><span class="se"></span>    --expression-attribute-values <span class="s1">&#39;{
 </span><span class="s1">        &#34;:username&#34;: { &#34;S&#34;: &#34;daffyduck&#34; },
 </span><span class="s1">        &#34;:amount&#34;: { &#34;N&#34;: &#34;100&#34; }
-</span><span class="s1">    }&#39;</span> <span class="se">\</span>
-    <span class="nv">$LOCAL</span>
+</span><span class="s1">    }&#39;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nv">$LOCAL</span>
 </code></pre></div><p>以下的返回结果只返回了一个订单：</p>
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="o">{</span>
     <span class="s2">&#34;Count&#34;</span>: 1,
